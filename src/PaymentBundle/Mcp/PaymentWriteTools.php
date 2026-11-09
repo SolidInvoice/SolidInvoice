@@ -22,6 +22,8 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
+use SolidInvoice\McpBundle\Mcp\Output\McpOutput;
+use SolidInvoice\McpBundle\Mcp\Output\RecordedPaymentOutput;
 use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
 use SolidInvoice\McpBundle\Mcp\Tool\MoneyInput;
 use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
@@ -54,11 +56,10 @@ final readonly class PaymentWriteTools
      * @param string|null $notes      Optional notes
      * @param string|null $method     Gateway name of an enabled offline payment method (e.g. cash, bank_transfer, credit); cash when omitted
      * @param string|null $paid_at    Date the payment was received (YYYY-MM-DD); today when omitted
-     *
-     * @return array<string, mixed>
      */
-    #[McpTool(name: 'record_payment', title: 'Record payment', description: 'Record an offline payment against an invoice; the invoice transitions to paid once its balance is settled, and any overpayment becomes client credit.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false))]
+    #[McpTool(name: 'record_payment', title: 'Record payment', description: 'Record an offline payment against an invoice; the invoice transitions to paid once its balance is settled, and any overpayment becomes client credit.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true))]
     #[McpScopeRequired(McpScope::Write)]
+    #[McpOutput(RecordedPaymentOutput::class)]
     public function recordPayment(
         string $invoice_id,
         string $amount,
@@ -67,7 +68,7 @@ final readonly class PaymentWriteTools
         ?string $notes = null,
         ?string $method = null,
         ?string $paid_at = null,
-    ): array {
+    ): RecordedPaymentOutput {
         $this->scopeGuard->require(McpScope::Write);
 
         $invoice = $this->invoiceRepository->find(UlidParser::parse($invoice_id, 'invoice_id'));
@@ -98,9 +99,9 @@ final readonly class PaymentWriteTools
             throw new ToolCallException($exception->getMessage(), $exception->getCode(), $exception);
         }
 
-        return [
-            ...get_object_vars($this->normalizer->payment($payment)),
-            'credit_added' => $this->normalizer->money($payment->getCreditAdded(), $payment->getAmount()->getCurrency()->getCode()),
-        ];
+        return new RecordedPaymentOutput(
+            payment: $this->normalizer->payment($payment),
+            credit_added: $this->normalizer->money($payment->getCreditAdded(), $payment->getAmount()->getCurrency()->getCode()),
+        );
     }
 }

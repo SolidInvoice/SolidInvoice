@@ -33,6 +33,7 @@ use SolidInvoice\InvoiceBundle\Model\Graph as InvoiceGraph;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
 use SolidInvoice\McpBundle\Mcp\Output\Entity\RecurringInvoiceOutput;
+use SolidInvoice\McpBundle\Mcp\Output\McpOutput;
 use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
 use SolidInvoice\McpBundle\Mcp\Tool\LineItemBuilder;
 use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
@@ -81,8 +82,9 @@ final readonly class RecurringInvoiceWriteTools
      *                                                        net_60, net_90, end_of_month, end_of_next_month or custom (no due date).
      *                                                        Defaults to the client's terms, else the company's.
      */
-    #[McpTool(name: 'create_recurring_invoice', title: 'Create recurring invoice', description: 'Create a new recurring invoice for a client with a scheduled cadence (daily/weekly/monthly/yearly).', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false))]
+    #[McpTool(name: 'create_recurring_invoice', title: 'Create recurring invoice', description: 'Create a new recurring invoice for a client with a scheduled cadence (daily/weekly/monthly/yearly).', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true))]
     #[McpScopeRequired(McpScope::Write)]
+    #[McpOutput(RecurringInvoiceOutput::class)]
     public function createRecurringInvoice(
         string $client_id,
         array $lines,

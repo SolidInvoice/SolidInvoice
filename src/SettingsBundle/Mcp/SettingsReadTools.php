@@ -15,6 +15,7 @@ namespace SolidInvoice\SettingsBundle\Mcp;
 
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
+use Mcp\Schema\ToolAnnotations;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
@@ -37,7 +38,7 @@ final readonly class SettingsReadTools
     /**
      * Basic information about the company this token is bound to.
      */
-    #[McpTool(name: 'get_company_info', description: 'Return id, name, and default currency for the active company.')]
+    #[McpTool(name: 'get_company_info', title: 'Get company info', description: 'Return id, name, and default currency for the active company.', annotations: new ToolAnnotations(readOnlyHint: true, openWorldHint: false))]
     #[McpScopeRequired(McpScope::Read)]
     #[McpOutput(CompanyInfoOutput::class)]
     public function getCompanyInfo(): CompanyInfoOutput

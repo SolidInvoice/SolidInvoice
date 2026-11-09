@@ -225,8 +225,9 @@ final readonly class ClientWriteTools
      * @param string $value     Identifier value
      * @param bool   $primary   Whether this is the primary identifier for the client
      */
-    #[McpTool(name: 'add_client_tax_identifier', description: 'Add a tax identifier (VAT, GSTIN, TIN, ABN, CNPJ, TRN, Other) to a client.')]
+    #[McpTool(name: 'add_client_tax_identifier', title: 'Add client tax identifier', description: 'Add a tax identifier (VAT, GSTIN, TIN, ABN, CNPJ, TRN, Other) to a client.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false))]
     #[McpScopeRequired(McpScope::Write)]
+    #[McpOutput(TaxIdentifierOutput::class)]
     public function addTaxIdentifier(string $client_id, string $label, string $value, bool $primary = false): TaxIdentifierOutput
     {
         $this->scopeGuard->require(McpScope::Write);
@@ -266,16 +267,16 @@ final readonly class ClientWriteTools
      * Remove a tax identifier from a client.
      *
      * @param string $tax_identifier_id Tax identifier ULID
-     *
-     * @return array{removed: bool}
      */
-    #[McpTool(name: 'remove_client_tax_identifier', description: 'Remove a tax identifier from a client by identifier ULID.')]
+    #[McpTool(name: 'remove_client_tax_identifier', title: 'Remove client tax identifier', description: 'Remove a tax identifier from a client by identifier ULID.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: false))]
     #[McpScopeRequired(McpScope::Write)]
-    public function removeTaxIdentifier(string $tax_identifier_id): array
+    #[McpOutput(DeletedOutput::class)]
+    public function removeTaxIdentifier(string $tax_identifier_id): DeletedOutput
     {
         $this->scopeGuard->require(McpScope::Write);
 
-        $identifier = $this->taxIdentifierRepository->find(UlidParser::parse($tax_identifier_id, 'tax_identifier_id'));
+        $ulid = UlidParser::parse($tax_identifier_id, 'tax_identifier_id');
+        $identifier = $this->taxIdentifierRepository->find($ulid);
 
         if (! $identifier instanceof TaxIdentifier) {
             throw new ToolCallException(sprintf('Tax identifier %s not found.', $tax_identifier_id));
@@ -284,7 +285,7 @@ final readonly class ClientWriteTools
         $this->entityManager->remove($identifier);
         $this->entityManager->flush();
 
-        return ['removed' => true];
+        return new DeletedOutput(deleted: true, id: $ulid->toBase58());
     }
 
     private function findClient(string $id, string $field): Client

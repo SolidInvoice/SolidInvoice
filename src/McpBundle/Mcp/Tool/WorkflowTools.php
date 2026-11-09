@@ -22,6 +22,8 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
+use SolidInvoice\McpBundle\Mcp\Output\McpOutput;
+use SolidInvoice\McpBundle\Mcp\Output\WorkflowTransitionsOutput;
 use SolidInvoice\McpBundle\Security\McpScope;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -46,12 +48,11 @@ final readonly class WorkflowTools
      *
      * @param string $resource One of: invoice, quote, recurring_invoice
      * @param string $id       ULID of the record
-     *
-     * @return array{current_status: string|null, enabled_transitions: list<string>}
      */
     #[McpTool(name: 'list_workflow_transitions', title: 'List workflow transitions', description: 'List transitions currently enabled on a record (invoice, quote, or recurring_invoice).', annotations: new ToolAnnotations(readOnlyHint: true, openWorldHint: false))]
     #[McpScopeRequired(McpScope::Read)]
-    public function listWorkflowTransitions(string $resource, string $id): array
+    #[McpOutput(WorkflowTransitionsOutput::class)]
+    public function listWorkflowTransitions(string $resource, string $id): WorkflowTransitionsOutput
     {
         $this->scopeGuard->require(McpScope::Read);
 
@@ -89,9 +90,6 @@ final readonly class WorkflowTools
             $status = $current instanceof BackedEnum ? $current->value : (\is_string($current) ? $current : null);
         }
 
-        return [
-            'current_status' => $status,
-            'enabled_transitions' => $transitions,
-        ];
+        return new WorkflowTransitionsOutput(current_status: $status, enabled_transitions: $transitions);
     }
 }

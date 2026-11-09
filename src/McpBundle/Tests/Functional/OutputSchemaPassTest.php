@@ -64,9 +64,9 @@ final class OutputSchemaPassTest extends KernelTestCase
         );
     }
 
-    public function testUnmarkedToolHasNoOutputSchema(): void
+    public function testUnmarkedToolIsLeftWithoutOutputSchema(): void
     {
-        self::assertNull($this->registry()->getTool('get_dashboard_stats')->tool->outputSchema);
+        self::assertNull($this->processTool('unmarked'));
     }
 
     #[DataProvider('mismatchedReturnTypes')]

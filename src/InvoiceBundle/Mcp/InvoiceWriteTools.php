@@ -38,6 +38,8 @@ use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
 use SolidInvoice\McpBundle\Mcp\Output\Entity\InvoiceOutput;
 use SolidInvoice\McpBundle\Mcp\Output\Entity\RecurringInvoiceOutput;
+use SolidInvoice\McpBundle\Mcp\Output\McpOutput;
+use SolidInvoice\McpBundle\Mcp\Output\ReminderSentOutput;
 use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
 use SolidInvoice\McpBundle\Mcp\Tool\InvoiceTaxBuilder;
 use SolidInvoice\McpBundle\Mcp\Tool\LineItemBuilder;
@@ -101,8 +103,9 @@ final readonly class InvoiceWriteTools
      *                                                        Defaults to the client's terms (else the company's), or custom when `due` is given.
      *                                                        `due` can only be combined with custom.
      */
-    #[McpTool(name: 'create_invoice', title: 'Create invoice', description: 'Create a new invoice for a client, with line items, optional discount, due date, contacts, and invoice-level taxes.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false))]
+    #[McpTool(name: 'create_invoice', title: 'Create invoice', description: 'Create a new invoice for a client, with line items, optional discount, due date, contacts, and invoice-level taxes.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true))]
     #[McpScopeRequired(McpScope::Write)]
+    #[McpOutput(InvoiceOutput::class)]
     public function createInvoice(
         string $client_id,
         array $lines,
@@ -211,8 +214,9 @@ final readonly class InvoiceWriteTools
      * @param string $invoice_id Invoice ULID
      * @param string $transition One of: accept, cancel, overdue, pay, reopen, archive
      */
-    #[McpTool(name: 'apply_invoice_transition', description: 'Apply a workflow transition (accept, cancel, overdue, pay, reopen, archive) to an invoice.')]
+    #[McpTool(name: 'apply_invoice_transition', title: 'Apply invoice transition', description: 'Apply a workflow transition (accept, cancel, overdue, pay, reopen, archive) to an invoice.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true))]
     #[McpScopeRequired(McpScope::Write)]
+    #[McpOutput(InvoiceOutput::class)]
     public function applyInvoiceTransition(string $invoice_id, string $transition): InvoiceOutput
     {
         $this->scopeGuard->require(McpScope::Write);
@@ -243,8 +247,9 @@ final readonly class InvoiceWriteTools
      * @param string $recurring_id Recurring invoice ULID
      * @param string $transition   One of: activate, pause, resume, complete, cancel, archive
      */
-    #[McpTool(name: 'apply_recurring_transition', description: 'Apply a workflow transition to a recurring invoice.')]
+    #[McpTool(name: 'apply_recurring_transition', title: 'Apply recurring invoice transition', description: 'Apply a workflow transition to a recurring invoice.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true))]
     #[McpScopeRequired(McpScope::Write)]
+    #[McpOutput(RecurringInvoiceOutput::class)]
     public function applyRecurringTransition(string $recurring_id, string $transition): RecurringInvoiceOutput
     {
         $this->scopeGuard->require(McpScope::Write);
@@ -274,8 +279,9 @@ final readonly class InvoiceWriteTools
      *
      * @param string $invoice_id Invoice ULID
      */
-    #[McpTool(name: 'clone_invoice', description: 'Clone an existing invoice into a new draft with the same line items.')]
+    #[McpTool(name: 'clone_invoice', title: 'Clone invoice', description: 'Clone an existing invoice into a new draft with the same line items.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true))]
     #[McpScopeRequired(McpScope::Write)]
+    #[McpOutput(InvoiceOutput::class)]
     public function cloneInvoice(string $invoice_id): InvoiceOutput
     {
         $this->scopeGuard->require(McpScope::Write);
@@ -286,16 +292,9 @@ final readonly class InvoiceWriteTools
             throw new ToolCallException(sprintf('Invoice %s not found.', $invoice_id));
         }
 
+        // An Invoice clones to an Invoice, which InvoiceCloner saves through InvoiceManager::create().
         $cloned = $this->cloner->clone($invoice);
-
-        // InvoiceCloner::clone() only persists+flushes Invoice clones
-        // (via invoiceManager->create()); RecurringInvoice clones come back
-        // transient. Persist here so the MCP caller gets a saved entity and
-        // the normalised payload exposes a real id rather than null.
-        if ($cloned instanceof RecurringInvoice) {
-            $this->entityManager->persist($cloned);
-            $this->entityManager->flush();
-        }
+        \assert($cloned instanceof Invoice);
 
         return $this->normalizer->invoice($cloned);
     }
@@ -304,12 +303,11 @@ final readonly class InvoiceWriteTools
      * Send a manual reminder email to the contacts on an invoice.
      *
      * @param string $invoice_id Invoice ULID
-     *
-     * @return array{sent: bool, invoice_id: string}
      */
-    #[McpTool(name: 'send_invoice_reminder', description: 'Email a manual reminder for an invoice to its contacts.')]
+    #[McpTool(name: 'send_invoice_reminder', title: 'Send invoice reminder', description: 'Email a manual reminder for an invoice to its contacts.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true))]
     #[McpScopeRequired(McpScope::Write)]
-    public function sendInvoiceReminder(string $invoice_id): array
+    #[McpOutput(ReminderSentOutput::class)]
+    public function sendInvoiceReminder(string $invoice_id): ReminderSentOutput
     {
         $this->scopeGuard->require(McpScope::Write);
 
@@ -342,9 +340,6 @@ final readonly class InvoiceWriteTools
             throw new ToolCallException('Failed to send reminder. See server logs for details.', $exception->getCode(), $exception);
         }
 
-        return [
-            'sent' => true,
-            'invoice_id' => $invoice->getId()?->toBase58() ?? $invoice_id,
-        ];
+        return new ReminderSentOutput(sent: true, invoice_id: (string) $invoice->getId()?->toBase58());
     }
 }

@@ -30,6 +30,7 @@ use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
 use SolidInvoice\McpBundle\Mcp\Output\Entity\InvoiceOutput;
 use SolidInvoice\McpBundle\Mcp\Output\Entity\QuoteOutput;
+use SolidInvoice\McpBundle\Mcp\Output\McpOutput;
 use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
 use SolidInvoice\McpBundle\Mcp\Tool\InvoiceTaxBuilder;
 use SolidInvoice\McpBundle\Mcp\Tool\LineItemBuilder;
@@ -83,8 +84,9 @@ final readonly class QuoteWriteTools
      * @param list<array<string, mixed>>      $invoice_taxes  Invoice-level taxes (withholding/surcharge/informational):
      *                                                        [{tax_id, direction: Additive|Deductive|Informational, sequence?, note?}].
      */
-    #[McpTool(name: 'create_quote', title: 'Create quote', description: 'Create a new quote for a client, with line items, optional discount, due date, contacts, and invoice-level taxes.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false))]
+    #[McpTool(name: 'create_quote', title: 'Create quote', description: 'Create a new quote for a client, with line items, optional discount, due date, contacts, and invoice-level taxes.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true))]
     #[McpScopeRequired(McpScope::Write)]
+    #[McpOutput(QuoteOutput::class)]
     public function createQuote(
         string $client_id,
         array $lines,
@@ -180,8 +182,9 @@ final readonly class QuoteWriteTools
      * @param string $quote_id   Quote ULID
      * @param string $transition One of: send, accept, decline, cancel, reopen, archive
      */
-    #[McpTool(name: 'apply_quote_transition', description: 'Apply a workflow transition (send, accept, decline, cancel, reopen, archive) to a quote.')]
+    #[McpTool(name: 'apply_quote_transition', title: 'Apply quote transition', description: 'Apply a workflow transition (send, accept, decline, cancel, reopen, archive) to a quote.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true))]
     #[McpScopeRequired(McpScope::Write)]
+    #[McpOutput(QuoteOutput::class)]
     public function applyQuoteTransition(string $quote_id, string $transition): QuoteOutput
     {
         $this->scopeGuard->require(McpScope::Write);
@@ -211,8 +214,9 @@ final readonly class QuoteWriteTools
      *
      * @param string $quote_id Quote ULID
      */
-    #[McpTool(name: 'clone_quote', description: 'Clone an existing quote into a new draft with the same line items.')]
+    #[McpTool(name: 'clone_quote', title: 'Clone quote', description: 'Clone an existing quote into a new draft with the same line items.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true))]
     #[McpScopeRequired(McpScope::Write)]
+    #[McpOutput(QuoteOutput::class)]
     public function cloneQuote(string $quote_id): QuoteOutput
     {
         $this->scopeGuard->require(McpScope::Write);
@@ -239,8 +243,9 @@ final readonly class QuoteWriteTools
      *
      * @param string $quote_id Quote ULID
      */
-    #[McpTool(name: 'convert_quote_to_invoice', description: 'Convert a quote into a new invoice, copying client, line items, and totals.')]
+    #[McpTool(name: 'convert_quote_to_invoice', title: 'Convert quote to invoice', description: 'Convert a quote into a new invoice, copying client, line items, and totals.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true))]
     #[McpScopeRequired(McpScope::Write)]
+    #[McpOutput(InvoiceOutput::class)]
     public function convertQuoteToInvoice(string $quote_id): InvoiceOutput
     {
         $this->scopeGuard->require(McpScope::Write);

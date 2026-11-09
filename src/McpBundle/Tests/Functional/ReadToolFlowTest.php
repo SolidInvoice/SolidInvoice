@@ -16,18 +16,23 @@ namespace SolidInvoice\McpBundle\Tests\Functional;
 use Carbon\CarbonImmutable;
 use Mcp\Exception\ToolCallException;
 use PHPUnit\Framework\Attributes\Group;
+use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Mcp\ClientReadTools;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\DashboardBundle\Mcp\AnalyticsTools;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Mcp\InvoiceReadTools;
 use SolidInvoice\InvoiceBundle\Mcp\RecurringInvoiceReadTools;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\InvoiceBundle\Test\Factory\RecurringInvoiceFactory;
+use SolidInvoice\McpBundle\Mcp\Output\AmountOutput;
 use SolidInvoice\McpBundle\Mcp\Output\Entity\ClientOutput;
 use SolidInvoice\McpBundle\Mcp\Output\Entity\ContactOutput;
 use SolidInvoice\McpBundle\Mcp\Output\Entity\InvoiceOutput;
@@ -36,8 +41,12 @@ use SolidInvoice\McpBundle\Mcp\Output\Entity\PaymentOutput;
 use SolidInvoice\McpBundle\Mcp\Output\Entity\QuoteOutput;
 use SolidInvoice\McpBundle\Mcp\Output\Entity\RecurringInvoiceOutput;
 use SolidInvoice\McpBundle\Mcp\Output\Entity\TaxOutput;
+use SolidInvoice\McpBundle\Mcp\Output\RevenueByPeriodOutput;
+use SolidInvoice\McpBundle\Mcp\Output\RevenuePeriodOutput;
+use SolidInvoice\McpBundle\Mcp\Output\StatusCountOutput;
 use SolidInvoice\McpBundle\Security\McpOAuthAuthenticator;
 use SolidInvoice\McpBundle\Security\McpScope;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Mcp\PaymentMethodReadTools;
 use SolidInvoice\PaymentBundle\Mcp\PaymentReadTools;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentFactory;
@@ -289,27 +298,71 @@ final class ReadToolFlowTest extends KernelTestCase
         self::assertInstanceOf(TaxOutput::class, $taxList->results[0]);
     }
 
-    public function testDashboardStatsReturnsStructuredTotals(): void
+    public function testDashboardStatsReturnsDecimalTotalsPerCurrency(): void
+    {
+        $this->setActiveScopes([McpScope::Read->value]);
+
+        $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
+        $this->invoiceOf($client, InvoiceStatus::Pending, 1250);
+        $this->invoiceOf($client, InvoiceStatus::Overdue, 500);
+
+        $stats = $this->tool(AnalyticsTools::class)->getDashboardStats();
+
+        self::assertEquals([new AmountOutput('USD', '17.50')], $stats->outstanding);
+        self::assertEquals([new AmountOutput('USD', '5.00')], $stats->overdue);
+        self::assertEqualsCanonicalizing(
+            [new StatusCountOutput(InvoiceStatus::Pending, 1), new StatusCountOutput(InvoiceStatus::Overdue, 1)],
+            $stats->counts_by_status,
+        );
+        self::assertSame(2, $stats->total_invoices);
+        self::assertSame(1, $stats->total_clients);
+    }
+
+    /**
+     * An issued invoice keeps the currency it was issued in when its client's changes, so a
+     * client's total is kept per currency, each at that currency's own scale.
+     */
+    public function testClientTotalsAreKeptPerCurrency(): void
+    {
+        $this->setActiveScopes([McpScope::Read->value]);
+
+        $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
+        $this->invoiceOf($client, InvoiceStatus::Pending, 1250);
+        $this->invoiceOf($client, InvoiceStatus::Overdue, 1500, 'JPY');
+
+        $tool = $this->tool(AnalyticsTools::class);
+        $clientId = $client->getId()->toBase58();
+
+        self::assertEquals([new AmountOutput('JPY', '1500'), new AmountOutput('USD', '12.50')], $tool->getTotalOutstanding($clientId)->totals);
+        self::assertEquals([new AmountOutput('JPY', '1500')], $tool->getTotalOverdue($clientId)->totals);
+        self::assertEquals([new AmountOutput('JPY', '1500'), new AmountOutput('USD', '12.50')], $tool->getTotalOutstanding()->totals);
+    }
+
+    public function testRevenueByPeriodSumsCapturedPaymentsPerPeriodAndCurrency(): void
     {
         $this->setActiveScopes([McpScope::Read->value]);
 
         $client = ClientFactory::createOne(['company' => $this->company]);
-        InvoiceFactory::createOne([
-            'company' => $this->company,
-            'client' => $client,
-            'status' => InvoiceStatus::Pending,
-        ]);
 
-        $tool = self::getContainer()->get(AnalyticsTools::class);
-        self::assertInstanceOf(AnalyticsTools::class, $tool);
+        foreach ([['2026-03-02 10:00', 1000, 'USD'], ['2026-03-02 15:00', 250, 'USD'], ['2026-03-02 12:00', 1234, 'BHD'], ['2026-03-05 09:00', 700, 'USD']] as [$completed, $amount, $currency]) {
+            PaymentFactory::createOne([
+                'company' => $this->company,
+                'client' => $client,
+                'status' => PaymentStatus::Captured,
+                'completed' => CarbonImmutable::parse($completed),
+                'totalAmount' => $amount,
+                'currencyCode' => $currency,
+            ]);
+        }
 
-        $stats = $tool->getDashboardStats();
+        PaymentFactory::createOne(['company' => $this->company, 'client' => $client, 'status' => PaymentStatus::Failed, 'completed' => CarbonImmutable::parse('2026-03-02 11:00'), 'totalAmount' => 999, 'currencyCode' => 'USD']);
 
-        self::assertArrayHasKey('outstanding', $stats);
-        self::assertArrayHasKey('overdue', $stats);
-        self::assertArrayHasKey('counts_by_status', $stats);
-        self::assertArrayHasKey('total_invoices', $stats);
-        self::assertGreaterThanOrEqual(1, $stats['total_invoices']);
+        $revenue = $this->tool(AnalyticsTools::class)->getRevenueByPeriod('2026-03-01', '2026-03-31');
+
+        self::assertEquals(new RevenueByPeriodOutput('day', [
+            new RevenuePeriodOutput('2026-03-02', [new AmountOutput('BHD', '1.234'), new AmountOutput('USD', '12.50')]),
+            new RevenuePeriodOutput('2026-03-05', [new AmountOutput('USD', '7.00')]),
+        ]), $revenue);
     }
 
     public function testReadToolRejectsMissingScope(): void
@@ -325,27 +378,46 @@ final class ReadToolFlowTest extends KernelTestCase
         $tool->getCompanyInfo();
     }
 
-    public function testClientSummaryIsCompanyScoped(): void
+    public function testClientSummaryReportsDecimalTotalsPerCurrency(): void
+    {
+        $this->setActiveScopes([McpScope::Read->value]);
+
+        $client = ClientFactory::createOne(['company' => $this->company, 'currencyCode' => 'USD']);
+        $invoice = $this->invoiceOf($client, InvoiceStatus::Pending, 10000);
+        PaymentFactory::createOne(['company' => $this->company, 'client' => $client, 'invoice' => $invoice, 'status' => PaymentStatus::Captured, 'totalAmount' => 2500, 'currencyCode' => 'USD']);
+
+        $summary = $this->tool(ClientReadTools::class)->getClientSummary($client->getId()->toBase58());
+
+        self::assertSame($client->getId()->toBase58(), $summary->client->id);
+        self::assertEquals([new StatusCountOutput(InvoiceStatus::Pending, 1)], $summary->counts_by_status);
+        self::assertEquals([new AmountOutput('USD', '100.00')], $summary->total_invoiced);
+        self::assertEquals([new AmountOutput('USD', '100.00')], $summary->outstanding);
+        self::assertEquals([new AmountOutput('USD', '25.00')], $summary->total_paid);
+    }
+
+    public function testListClientTaxIdentifiersReturnsTheListEnvelope(): void
     {
         $this->setActiveScopes([McpScope::Read->value]);
 
         $client = ClientFactory::createOne(['company' => $this->company]);
-        InvoiceFactory::createOne([
-            'company' => $this->company,
-            'client' => $client,
-            'status' => InvoiceStatus::Pending,
-        ]);
 
-        $tool = self::getContainer()->get(ClientReadTools::class);
-        self::assertInstanceOf(ClientReadTools::class, $tool);
+        $empty = $this->tool(ClientReadTools::class)->listTaxIdentifiers($client->getId()->toBase58());
 
-        $summary = $tool->getClientSummary($client->getId()->toBase58());
+        self::assertSame([], $empty->results);
+        self::assertSame(1, $empty->page);
+        self::assertSame(0, $empty->total);
+    }
 
-        self::assertSame($client->getId()->toBase58(), $summary['client']['id']);
-        self::assertArrayHasKey('counts_by_status', $summary);
-        self::assertArrayHasKey('total_invoiced_amount', $summary);
-        self::assertArrayHasKey('outstanding_amount', $summary);
-        self::assertArrayHasKey('total_paid_amount', $summary);
+    /**
+     * An invoice whose total and balance are $minorUnits: the save listener recalculates both from its lines.
+     */
+    private function invoiceOf(Client $client, InvoiceStatus $status, int $minorUnits, ?string $currency = null): Invoice
+    {
+        return InvoiceFactory::new(['company' => $this->company, 'client' => $client, 'status' => $status, 'currencyCode' => $currency, 'discount' => new Discount()])
+            ->afterInstantiate(static function (Invoice $invoice) use ($minorUnits): void {
+                $invoice->addLine(new Line()->setQty(1)->setPrice($minorUnits));
+            })
+            ->create();
     }
 
     /**

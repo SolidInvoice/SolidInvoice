@@ -54,6 +54,11 @@ final class ReturnTypeTools
         return new LineOutput('x');
     }
 
+    public function unmarked(): LineOutput
+    {
+        return new LineOutput('x');
+    }
+
     #[McpOutput(LineOutput::class, list: true)]
     public function listReturningItem(): LineOutput
     {

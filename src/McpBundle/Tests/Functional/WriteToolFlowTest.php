@@ -233,12 +233,12 @@ final class WriteToolFlowTest extends KernelTestCase
 
         self::assertSame(InvoiceStatus::Pending, $invoice->getStatus());
         self::assertTrue(BigDecimal::of(99999)->isEqualTo($invoice->getBalance()));
-        self::assertSame('0.00', $result['credit_added']);
+        self::assertSame('0.00', $result->credit_added);
 
         $result = $tool->recordPayment($invoice->getId()->toBase58(), '1009.99', 'USD');
 
         self::assertSame(InvoiceStatus::Paid, $invoice->getStatus());
-        self::assertSame('10.00', $result['credit_added']);
+        self::assertSame('10.00', $result->credit_added);
     }
 
     public function testRecordPaymentRejectsADraftInvoice(): void
@@ -291,10 +291,10 @@ final class WriteToolFlowTest extends KernelTestCase
 
         $result = $this->tool(PaymentWriteTools::class)->recordPayment($invoice->getId()->toBase58(), $amount, $currency);
 
-        self::assertSame($amount, $result['amount']);
-        self::assertSame($currency, $result['currency']);
+        self::assertSame($amount, $result->payment->amount);
+        self::assertSame($currency, $result->payment->currency);
 
-        $payment = $this->repository(Payment::class)->find(Ulid::fromString((string) $result['id']));
+        $payment = $this->repository(Payment::class)->find(Ulid::fromString((string) $result->payment->id));
         self::assertInstanceOf(Payment::class, $payment);
         self::assertSame((string) $minorUnits, $payment->getAmount()->getAmount());
     }
