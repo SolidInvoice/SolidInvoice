@@ -27,14 +27,24 @@ use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\EntityFilter;
 use SolidInvoice\ProductBundle\Entity\Product;
 use SolidInvoice\ProductBundle\Repository\ProductRepository;
+use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\TaxBundle\Entity\Tax;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\Translation\TranslatableMessage;
 use function mb_strimwidth;
 
+/**
+ * @see \SolidInvoice\ProductBundle\Tests\DataGrid\ProductGridTest
+ */
 #[AsDataGrid(name: 'product_grid', title: 'Products')]
 final class ProductGrid extends Grid
 {
     private const int DESCRIPTION_LENGTH = 80;
+
+    public function __construct(
+        private readonly FeatureGate $featureGate,
+    ) {
+    }
 
     public function entityFQCN(): string
     {
@@ -80,7 +90,12 @@ final class ProductGrid extends Grid
                 ->icon('trash')
                 ->color('danger')
                 ->confirmMessage('product.grid.delete_confirm')
-                ->action(static function (ProductRepository $repository, array $selectedItems): void {
+                // The grid has no hook to deny the whole list, so the destructive action checks the gate itself.
+                ->action(function (ProductRepository $repository, array $selectedItems): void {
+                    if (! $this->featureGate->isEnabled(Feature::Products->value)) {
+                        return;
+                    }
+
                     $repository->deleteProducts($selectedItems);
                 }),
         ];

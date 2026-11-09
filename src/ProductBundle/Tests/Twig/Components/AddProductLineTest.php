@@ -201,6 +201,7 @@ final class AddProductLineTest extends LiveComponentTest
         $subject->addProductLine();
 
         self::assertSame([], $subject->formValues['lines']);
+        self::assertSame((string) $product->getId(), $subject->formValues['addProduct']);
     }
 
     /**

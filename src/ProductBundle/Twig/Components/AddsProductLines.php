@@ -44,9 +44,13 @@ trait AddsProductLines
     public function addProductLine(): void
     {
         $id = $this->formValues['addProduct'] ?? '';
+        if (! $this->featureGate->isEnabled(Feature::Products->value)) {
+            return;
+        }
+
         $this->formValues['addProduct'] = '';
 
-        if (! $this->featureGate->isEnabled(Feature::Products->value) || ! is_string($id) || ! Ulid::isValid($id, Ulid::FORMAT_BASE_32)) {
+        if (! is_string($id) || ! Ulid::isValid($id, Ulid::FORMAT_BASE_32)) {
             return;
         }
 
