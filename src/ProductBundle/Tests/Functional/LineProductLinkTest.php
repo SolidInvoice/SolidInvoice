@@ -141,7 +141,10 @@ final class LineProductLinkTest extends KernelTestCase
         // Foreign keys off while seeding, so the rows need no parents beyond the product.
         $connection->executeStatement('PRAGMA foreign_keys = OFF');
 
-        foreach (new SchemaTool($this->em)->getCreateSchemaSql($this->em->getMetadataFactory()->getAllMetadata()) as $sql) {
+        // Rendered for this connection's platform: the suite's own may be MySQL or PostgreSQL.
+        $schema = new SchemaTool($this->em)->getSchemaFromMetadata($this->em->getMetadataFactory()->getAllMetadata());
+
+        foreach ($schema->toSql($connection->getDatabasePlatform()) as $sql) {
             $connection->executeStatement($sql);
         }
 
