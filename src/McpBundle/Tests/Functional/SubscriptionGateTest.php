@@ -167,7 +167,7 @@ final class SubscriptionGateTest extends KernelTestCase
         self::assertInstanceOf(McpAccessTokenRepository::class, $accessTokenRepo);
 
         return new McpOAuthAuthenticator(
-            $this->buildMockServerFactory($token->getJti(), $token->getUser()->getId()->toRfc4122()),
+            $this->buildMockServerFactory($token->getJti(), $token->getUser()->getId()->toBase58()),
             $accessTokenRepo,
             $container->get(CompanySelector::class),
             $authorizationChecker,

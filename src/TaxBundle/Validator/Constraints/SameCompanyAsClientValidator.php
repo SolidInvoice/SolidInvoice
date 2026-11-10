@@ -45,7 +45,7 @@ final class SameCompanyAsClientValidator extends ConstraintValidator
         $identifierCompany = $value->getCompany();
         $clientCompany = $client->getCompany();
 
-        if ($identifierCompany->getId()->toRfc4122() !== $clientCompany->getId()->toRfc4122()) {
+        if (! $identifierCompany->getId()->equals($clientCompany->getId())) {
             $this->context->buildViolation($constraint->message)
                 ->atPath('client')
                 ->addViolation();

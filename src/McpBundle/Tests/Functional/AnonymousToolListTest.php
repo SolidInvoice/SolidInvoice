@@ -43,6 +43,16 @@ final class AnonymousToolListTest extends WebTestCase
         $sessionId = $client->getResponse()->headers->get('Mcp-Session-Id');
         self::assertNotNull($sessionId);
 
+        $result = json_decode((string) $client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR)['result'];
+        self::assertSame('SolidInvoice', $result['serverInfo']['name']);
+        self::assertSame('https://solidinvoice.co/docs/ai/mcp-server/', $result['serverInfo']['websiteUrl']);
+        self::assertSame([
+            ['src' => 'https://solidinvoice.co/logo-512.png', 'mimeType' => 'image/png', 'sizes' => ['512x512']],
+            ['src' => 'https://solidinvoice.co/logo-192.png', 'mimeType' => 'image/png', 'sizes' => ['192x192']],
+        ], $result['serverInfo']['icons']);
+        self::assertNotEmpty($result['instructions']);
+        self::assertLessThanOrEqual(600, \strlen($result['instructions']));
+
         $this->rpc($client, ['jsonrpc' => '2.0', 'method' => 'notifications/initialized'], $sessionId);
         self::assertResponseIsSuccessful();
 
@@ -78,17 +88,36 @@ final class AnonymousToolListTest extends WebTestCase
         self::assertResponseStatusCodeSame(401);
     }
 
+    public function testAnonymousServerDiscoverIsAllowed(): void
+    {
+        self::ensureKernelShutdown();
+        $client = self::createClient();
+
+        $this->rpc($client, ['jsonrpc' => '2.0', 'id' => 1, 'method' => 'server/discover', 'params' => ['_meta' => ['io.modelcontextprotocol/protocolVersion' => '2026-07-28', 'io.modelcontextprotocol/clientCapabilities' => new stdClass()]]], null, ['HTTP_MCP_PROTOCOL_VERSION' => '2026-07-28', 'HTTP_MCP_METHOD' => 'server/discover']);
+        self::assertResponseIsSuccessful();
+
+        $result = json_decode((string) $client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR)['result'];
+        self::assertArrayHasKey('tools', $result['capabilities']);
+    }
+
     /**
      * @param array<mixed> $payload
+     * @param array<string, string> $headers extra server params, e.g. HTTP_MCP_PROTOCOL_VERSION
      */
-    private function rpc(KernelBrowser $client, array $payload, ?string $sessionId = null): void
+    private function rpc(KernelBrowser $client, array $payload, ?string $sessionId = null, array $headers = []): void
     {
-        $server = ['CONTENT_TYPE' => 'application/json', 'HTTP_ACCEPT' => 'application/json, text/event-stream'];
+        $server = [
+            // A non-localhost Host, as in production: the SDK's DNS-rebinding
+            // guard 403s anything but localhost unless mcp.http.allowed_hosts is off.
+            'HTTP_HOST' => 'app.example.com',
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_ACCEPT' => 'application/json, text/event-stream',
+        ];
 
         if ($sessionId !== null) {
             $server['HTTP_MCP_SESSION_ID'] = $sessionId;
         }
 
-        $client->request(Request::METHOD_POST, '/_mcp', [], [], $server, json_encode($payload, JSON_THROW_ON_ERROR));
+        $client->request(Request::METHOD_POST, '/_mcp', [], [], $headers + $server, json_encode($payload, JSON_THROW_ON_ERROR));
     }
 }

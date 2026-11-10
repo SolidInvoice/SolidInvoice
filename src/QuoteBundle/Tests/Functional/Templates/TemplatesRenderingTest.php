@@ -372,7 +372,7 @@ final class TemplatesRenderingTest extends KernelTestCase
         $case = self::URGENCY_STATES[$state];
 
         $quote = $this->createFixtureQuote(
-            due: CarbonImmutable::now()->addDays($case['days'])->addHours(6)
+            due: CarbonImmutable::today()->addDays($case['days'])->setTime(12, 0)
         );
 
         $twig = self::getContainer()->get('twig');
@@ -443,7 +443,7 @@ final class TemplatesRenderingTest extends KernelTestCase
         $case = self::URGENCY_STATES[$state];
 
         $quote = $this->createFixtureQuote(
-            due: CarbonImmutable::now()->addDays($case['days'])->addHours(6)
+            due: CarbonImmutable::today()->addDays($case['days'])->setTime(12, 0)
         );
 
         $twig = self::getContainer()->get('twig');

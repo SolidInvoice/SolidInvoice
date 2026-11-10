@@ -16,6 +16,7 @@ namespace SolidInvoice\McpBundle\Mcp\Tool;
 use Brick\Math\BigDecimal;
 use Doctrine\ORM\EntityManagerInterface;
 use Mcp\Exception\ToolCallException;
+use Money\Currency;
 use SolidInvoice\CoreBundle\Billing\LineName;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceLine;
@@ -33,6 +34,7 @@ final readonly class LineItemBuilder
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
+        private MoneyInput $moneyInput,
     ) {
     }
 
@@ -41,9 +43,9 @@ final readonly class LineItemBuilder
      *
      * @return list<InvoiceLine>
      */
-    public function buildInvoiceLines(array $lines): array
+    public function buildInvoiceLines(array $lines, Currency $currency): array
     {
-        return $this->buildLines($lines, static fn (): InvoiceLine => new InvoiceLine());
+        return $this->buildLines($lines, $currency, static fn (): InvoiceLine => new InvoiceLine());
     }
 
     /**
@@ -51,9 +53,9 @@ final readonly class LineItemBuilder
      *
      * @return list<QuoteLine>
      */
-    public function buildQuoteLines(array $lines): array
+    public function buildQuoteLines(array $lines, Currency $currency): array
     {
-        return $this->buildLines($lines, static fn (): QuoteLine => new QuoteLine());
+        return $this->buildLines($lines, $currency, static fn (): QuoteLine => new QuoteLine());
     }
 
     /**
@@ -61,16 +63,16 @@ final readonly class LineItemBuilder
      *
      * @return list<RecurringInvoiceLine>
      */
-    public function buildRecurringInvoiceLines(array $lines): array
+    public function buildRecurringInvoiceLines(array $lines, Currency $currency): array
     {
-        return $this->buildLines($lines, static fn (): RecurringInvoiceLine => new RecurringInvoiceLine());
+        return $this->buildLines($lines, $currency, static fn (): RecurringInvoiceLine => new RecurringInvoiceLine());
     }
 
     /**
-     * @param string|null     $type  "percentage" or "money" (or null for no discount)
-     * @param int|float|null  $value Numeric discount value (required if $type is set)
+     * @param string|null $type  "percentage" or "money" (or null for no discount)
+     * @param string|null $value Decimal string (required if $type is set): a percentage, or an amount in $currency
      */
-    public function buildDiscount(?string $type, int | float | null $value): Discount
+    public function buildDiscount(?string $type, ?string $value, Currency $currency): Discount
     {
         $discount = new Discount();
 
@@ -83,6 +85,10 @@ final readonly class LineItemBuilder
         }
 
         if ($type === Discount::TYPE_PERCENTAGE) {
+            if (preg_match('/^-?\d+(\.\d+)?\z/', $value) !== 1) {
+                throw new ToolCallException(sprintf('discount_value "%s" is not a percentage such as "10".', $value));
+            }
+
             $discount->setType(Discount::TYPE_PERCENTAGE);
             $discount->setValuePercentage((float) $value);
 
@@ -91,12 +97,7 @@ final readonly class LineItemBuilder
 
         if ($type === Discount::TYPE_MONEY) {
             $discount->setType(Discount::TYPE_MONEY);
-
-            try {
-                $discount->setValueMoney(BigDecimal::of((string) $value));
-            } catch (Throwable) {
-                throw new ToolCallException(sprintf('Invalid discount_value: %s', (string) $value));
-            }
+            $discount->setValueMoney($this->moneyInput->toMinorUnits($value, $currency, 'discount_value', signed: true));
 
             return $discount;
         }
@@ -117,7 +118,7 @@ final readonly class LineItemBuilder
      *
      * @return list<T>
      */
-    private function buildLines(array $lines, callable $factory): array
+    private function buildLines(array $lines, Currency $currency, callable $factory): array
     {
         if ($lines === []) {
             throw new ToolCallException('At least one line item is required.');
@@ -145,7 +146,7 @@ final readonly class LineItemBuilder
             }
 
             if ($price === null) {
-                throw new ToolCallException(sprintf('Line item #%d requires a "price" (in the minor unit, e.g. cents).', $index));
+                throw new ToolCallException(sprintf('Line item #%d requires a "price" (a decimal string in the document currency, e.g. "50.00").', $index));
             }
 
             $qty ??= 1;
@@ -173,11 +174,7 @@ final readonly class LineItemBuilder
                 $line->setDescription($description);
             }
 
-            try {
-                $line->setPrice(BigDecimal::of($this->toExactString($price)));
-            } catch (Throwable) {
-                throw new ToolCallException(sprintf('Line item #%d has an invalid "price": %s', $index, $this->describe($price)));
-            }
+            $line->setPrice($this->moneyInput->toMinorUnits($price, $currency, sprintf('lines[%d].price', $index), signed: true));
 
             try {
                 $line->setQty(BigDecimal::of($this->toExactString($qty)));

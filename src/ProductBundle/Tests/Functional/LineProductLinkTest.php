@@ -121,7 +121,7 @@ final class LineProductLinkTest extends KernelTestCase
             ->getData()
             ->getProduct();
 
-        self::assertSame($mine->getId()->toRfc4122(), $submit((string) $mine->getId())?->getId()->toRfc4122());
+        self::assertSame($mine->getId()->toBase58(), $submit((string) $mine->getId())?->getId()->toBase58());
         self::assertNotInstanceOf(Product::class, $submit((string) $theirs->getId()));
         self::assertNotInstanceOf(Product::class, $submit('not-a-ulid'));
         self::assertNotInstanceOf(Product::class, $submit(''));

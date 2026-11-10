@@ -16,8 +16,12 @@ namespace SolidInvoice\TaxBundle\Mcp;
 use Doctrine\ORM\EntityManagerInterface;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
+use Mcp\Schema\ToolAnnotations;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
+use SolidInvoice\McpBundle\Mcp\Output\DeletedOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\TaxOutput;
+use SolidInvoice\McpBundle\Mcp\Output\McpOutput;
 use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
 use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
 use SolidInvoice\McpBundle\Security\McpScope;
@@ -43,18 +47,17 @@ final readonly class TaxWriteTools
      * @param string $type     One of: Inclusive, Exclusive, Flat Rate
      * @param string $category One of: Standard, ZeroRated, Exempt, OutOfScope, ReverseCharge (default Standard)
      * @param bool   $compound Whether this tax compounds on top of other taxes
-     *
-     * @return array<string, mixed>
      */
-    #[McpTool(name: 'create_tax_rate', description: 'Create a new tax rate (name, rate, type, category, compound flag).')]
+    #[McpTool(name: 'create_tax_rate', title: 'Create tax rate', description: 'Create a new tax rate (name, rate, type, category, compound flag).', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false))]
     #[McpScopeRequired(McpScope::Write)]
+    #[McpOutput(TaxOutput::class)]
     public function createTaxRate(
         string $name,
         float $rate,
         string $type,
         string $category = 'Standard',
         bool $compound = false,
-    ): array {
+    ): TaxOutput {
         $this->scopeGuard->require(McpScope::Write);
 
         if (! \in_array($type, [Tax::TYPE_INCLUSIVE, Tax::TYPE_EXCLUSIVE, Tax::TYPE_FLAT_RATE], true)) {
@@ -81,7 +84,7 @@ final readonly class TaxWriteTools
         $this->entityManager->persist($tax);
         $this->entityManager->flush();
 
-        return $this->normalizer->normalize($tax);
+        return $this->normalizer->tax($tax);
     }
 
     /**
@@ -93,11 +96,10 @@ final readonly class TaxWriteTools
      * @param string|null $type     New type: Inclusive, Exclusive, Flat Rate (optional)
      * @param string|null $category New category: Standard, ZeroRated, Exempt, OutOfScope, ReverseCharge (optional)
      * @param bool|null   $compound Whether this tax compounds on top of other taxes (optional)
-     *
-     * @return array<string, mixed>
      */
-    #[McpTool(name: 'update_tax_rate', description: 'Update an existing tax rate. Pass only the fields you want to change.')]
+    #[McpTool(name: 'update_tax_rate', title: 'Update tax rate', description: 'Update an existing tax rate. Pass only the fields you want to change.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: false))]
     #[McpScopeRequired(McpScope::Write)]
+    #[McpOutput(TaxOutput::class)]
     public function updateTaxRate(
         string $tax_id,
         ?string $name = null,
@@ -105,7 +107,7 @@ final readonly class TaxWriteTools
         ?string $type = null,
         ?string $category = null,
         ?bool $compound = null,
-    ): array {
+    ): TaxOutput {
         $this->scopeGuard->require(McpScope::Write);
 
         $tax = $this->repository->find(UlidParser::parse($tax_id, 'tax_id'));
@@ -150,6 +152,32 @@ final readonly class TaxWriteTools
 
         $this->entityManager->flush();
 
-        return $this->normalizer->normalize($tax);
+        return $this->normalizer->tax($tax);
+    }
+
+    /**
+     * Delete a tax rate. Documents that already use it keep their own copy of the rate.
+     *
+     * @param string $id Tax ULID
+     */
+    #[McpTool(name: 'delete_tax_rate', title: 'Delete tax rate', description: 'Delete a tax rate belonging to the current company.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: false))]
+    #[McpScopeRequired(McpScope::Write)]
+    #[McpOutput(DeletedOutput::class)]
+    public function deleteTaxRate(string $id): DeletedOutput
+    {
+        $this->scopeGuard->require(McpScope::Write);
+
+        $tax = $this->repository->find(UlidParser::parse($id));
+
+        if (! $tax instanceof Tax) {
+            throw new ToolCallException(sprintf('Tax rate %s not found.', $id));
+        }
+
+        $taxId = $tax->getId()->toBase58();
+
+        $this->entityManager->remove($tax);
+        $this->entityManager->flush();
+
+        return new DeletedOutput(deleted: true, id: $taxId);
     }
 }

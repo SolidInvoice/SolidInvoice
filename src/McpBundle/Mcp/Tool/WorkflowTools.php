@@ -17,10 +17,13 @@ use BackedEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
+use Mcp\Schema\ToolAnnotations;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
+use SolidInvoice\McpBundle\Mcp\Output\McpOutput;
+use SolidInvoice\McpBundle\Mcp\Output\WorkflowTransitionsOutput;
 use SolidInvoice\McpBundle\Security\McpScope;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -29,7 +32,6 @@ use Symfony\Component\Workflow\WorkflowInterface;
 final readonly class WorkflowTools
 {
     public function __construct(
-        private ResourceRegistry $registry,
         private EntityManagerInterface $entityManager,
         #[Autowire(service: 'state_machine.invoice')]
         private WorkflowInterface $invoiceWorkflow,
@@ -46,23 +48,21 @@ final readonly class WorkflowTools
      *
      * @param string $resource One of: invoice, quote, recurring_invoice
      * @param string $id       ULID of the record
-     *
-     * @return array{current_status: string|null, enabled_transitions: list<string>}
      */
-    #[McpTool(name: 'list_workflow_transitions', description: 'List transitions currently enabled on a record (invoice, quote, or recurring_invoice).')]
+    #[McpTool(name: 'list_workflow_transitions', title: 'List workflow transitions', description: 'List transitions currently enabled on a record (invoice, quote, or recurring_invoice).', annotations: new ToolAnnotations(readOnlyHint: true, openWorldHint: false))]
     #[McpScopeRequired(McpScope::Read)]
-    public function listWorkflowTransitions(string $resource, string $id): array
+    #[McpOutput(WorkflowTransitionsOutput::class)]
+    public function listWorkflowTransitions(string $resource, string $id): WorkflowTransitionsOutput
     {
         $this->scopeGuard->require(McpScope::Read);
 
         $ulid = UlidParser::parse($id);
-        $class = $this->registry->resolve($resource);
-
-        $allowed = [Invoice::class, Quote::class, RecurringInvoice::class];
-
-        if (! \in_array($class, $allowed, true)) {
-            throw new ToolCallException(sprintf('Resource "%s" has no workflow attached.', $resource));
-        }
+        $class = match ($resource) {
+            'invoice' => Invoice::class,
+            'quote' => Quote::class,
+            'recurring_invoice' => RecurringInvoice::class,
+            default => throw new ToolCallException(sprintf('Resource "%s" has no workflow attached. Use one of: invoice, quote, recurring_invoice.', $resource)),
+        };
 
         $entity = $this->entityManager->getRepository($class)->find($ulid);
 
@@ -90,9 +90,6 @@ final readonly class WorkflowTools
             $status = $current instanceof BackedEnum ? $current->value : (\is_string($current) ? $current : null);
         }
 
-        return [
-            'current_status' => $status,
-            'enabled_transitions' => $transitions,
-        ];
+        return new WorkflowTransitionsOutput(current_status: $status, enabled_transitions: $transitions);
     }
 }

@@ -75,7 +75,7 @@ final readonly class IdempotencyListener
             return;
         }
 
-        $cacheKey = hash('sha256', $key . '|' . $this->security->getUser()?->getUserIdentifier() . '|' . $this->companySelector->getCompany()?->toRfc4122());
+        $cacheKey = hash('sha256', $key . '|' . $this->security->getUser()?->getUserIdentifier() . '|' . $this->companySelector->getCompany()?->toBase58());
         // The headers that choose the response's representation are part of the request: replaying a body
         // in another money format or media type would hand the client something it did not ask for.
         $requestHash = hash('sha256', implode("\n", [

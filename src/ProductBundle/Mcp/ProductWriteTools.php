@@ -19,8 +19,12 @@ use Brick\Math\NumberSyntax;
 use Doctrine\ORM\EntityManagerInterface;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
+use Mcp\Schema\ToolAnnotations;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
+use SolidInvoice\McpBundle\Mcp\Output\DeletedOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\ProductOutput;
+use SolidInvoice\McpBundle\Mcp\Output\McpOutput;
 use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
 use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
 use SolidInvoice\McpBundle\Security\McpScope;
@@ -53,18 +57,17 @@ final readonly class ProductWriteTools
      * @param string|null $description Optional description
      * @param string      $quantity    Default quantity as a decimal string (default "1")
      * @param string|null $tax_id      Optional tax rate ULID
-     *
-     * @return array<string, mixed>
      */
-    #[McpTool(name: 'create_product', description: 'Create a catalogue product (name, price, description, default quantity, tax rate). Price and quantity are decimal strings.')]
+    #[McpTool(name: 'create_product', title: 'Create product', description: 'Create a catalogue product (name, price, description, default quantity, tax rate). Price and quantity are decimal strings.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false))]
     #[McpScopeRequired(McpScope::Write)]
+    #[McpOutput(ProductOutput::class)]
     public function createProduct(
         string $name,
         string $price,
         ?string $description = null,
         string $quantity = '1',
         ?string $tax_id = null,
-    ): array {
+    ): ProductOutput {
         $this->guard();
 
         $product = new Product();
@@ -79,7 +82,7 @@ final readonly class ProductWriteTools
         $this->entityManager->persist($product);
         $this->entityManager->flush();
 
-        return $this->normalizer->normalize($product);
+        return $this->normalizer->product($product);
     }
 
     /**
@@ -91,11 +94,10 @@ final readonly class ProductWriteTools
      * @param string|null $description New description
      * @param string|null $quantity    New default quantity, decimal string
      * @param string|null $tax_id      New tax rate ULID
-     *
-     * @return array<string, mixed>
      */
-    #[McpTool(name: 'update_product', description: 'Update a product. Pass only the fields you want to change.')]
+    #[McpTool(name: 'update_product', title: 'Update product', description: 'Update a product. Pass only the fields you want to change.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: false))]
     #[McpScopeRequired(McpScope::Write)]
+    #[McpOutput(ProductOutput::class)]
     public function updateProduct(
         string $product_id,
         ?string $name = null,
@@ -103,7 +105,7 @@ final readonly class ProductWriteTools
         ?string $description = null,
         ?string $quantity = null,
         ?string $tax_id = null,
-    ): array {
+    ): ProductOutput {
         $this->guard();
 
         $product = $this->find($product_id);
@@ -143,29 +145,28 @@ final readonly class ProductWriteTools
 
         $this->entityManager->flush();
 
-        return $this->normalizer->normalize($product);
+        return $this->normalizer->product($product);
     }
 
     /**
      * Delete a product. Lines already created from it are unaffected.
      *
      * @param string $product_id Product ULID
-     *
-     * @return array{deleted: bool, id: string}
      */
-    #[McpTool(name: 'delete_product', description: 'Delete a product from the catalogue.')]
+    #[McpTool(name: 'delete_product', title: 'Delete product', description: 'Delete a product from the catalogue.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: false))]
     #[McpScopeRequired(McpScope::Write)]
-    public function deleteProduct(string $product_id): array
+    #[McpOutput(DeletedOutput::class)]
+    public function deleteProduct(string $product_id): DeletedOutput
     {
         $this->guard();
 
         $product = $this->find($product_id);
-        $id = $product->getId()?->toRfc4122() ?? $product_id;
+        $id = $product->getId()?->toBase58() ?? $product_id;
 
         $this->entityManager->remove($product);
         $this->entityManager->flush();
 
-        return ['deleted' => true, 'id' => $id];
+        return new DeletedOutput(deleted: true, id: $id);
     }
 
     private function guard(): void

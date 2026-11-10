@@ -11,6 +11,15 @@ parameters:
         - vendor/autoload.php
     excludePaths:
         - src/CoreBundle/Tests/Fixtures/file.php
+        - src/CoreBundle/Tests/PHPStan/data
     symfony:
         containerXmlPath: var/cache/dev/SolidInvoice_KernelDevDebugContainer.xml
     treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+        # The Postgres `uuid` filter parameter needs the RFC 4122 form.
+        -
+            message: '#^Use toBase58\(\) instead of toRfc4122\(\)#'
+            path: src/CoreBundle/Company/CompanySelector.php
+
+rules:
+    - SolidInvoice\CoreBundle\PHPStan\NoRfc4122Rule

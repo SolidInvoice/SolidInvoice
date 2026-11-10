@@ -76,7 +76,7 @@ class OAuthClient implements ClientEntityInterface
 
     public function getIdentifier(): string
     {
-        $id = $this->id?->toRfc4122();
+        $id = $this->id?->toBase58();
 
         if ($id === null || $id === '') {
             throw new LogicException('Client identifier is not set.');

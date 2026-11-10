@@ -115,10 +115,10 @@ final class LineTaxTest extends KernelTestCase
 
         self::assertSame(
             $this->company->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             $lineTax->getCompany()
                 ->getId()
-                ->toRfc4122(),
+                ->toBase58(),
         );
     }
 
@@ -143,10 +143,10 @@ final class LineTaxTest extends KernelTestCase
 
         self::assertSame(
             $this->company->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             $lineTax->getCompany()
                 ->getId()
-                ->toRfc4122(),
+                ->toBase58(),
         );
     }
 

@@ -14,10 +14,18 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Mcp;
 
 use Mcp\Capability\Attribute\McpTool;
+use Mcp\Exception\ToolCallException;
+use Mcp\Schema\ToolAnnotations;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\PaymentMethodOutput;
+use SolidInvoice\McpBundle\Mcp\Output\ListOutput;
+use SolidInvoice\McpBundle\Mcp\Output\McpOutput;
 use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
+use SolidInvoice\McpBundle\Mcp\Tool\Paginator;
+use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
 use SolidInvoice\McpBundle\Security\McpScope;
+use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
 use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 
 final readonly class PaymentMethodReadTools
@@ -25,28 +33,45 @@ final readonly class PaymentMethodReadTools
     public function __construct(
         private PaymentMethodRepository $repository,
         private EntityNormalizer $normalizer,
+        private Paginator $paginator,
         private McpScopeGuard $scopeGuard,
     ) {
     }
 
     /**
-     * List payment methods configured for the current company.
+     * Fetch a single payment method by its ID.
      *
-     * @return array{results: list<array<string, mixed>>, count: int}
+     * @param string $id Payment method ULID
      */
-    #[McpTool(name: 'list_payment_methods', description: 'List configured payment methods for the current company.')]
+    #[McpTool(name: 'get_payment_method', title: 'Get payment method', description: 'Fetch a single configured payment method by ID.', annotations: new ToolAnnotations(readOnlyHint: true, openWorldHint: false))]
     #[McpScopeRequired(McpScope::Read)]
-    public function listPaymentMethods(): array
+    #[McpOutput(PaymentMethodOutput::class)]
+    public function getPaymentMethod(string $id): PaymentMethodOutput
     {
         $this->scopeGuard->require(McpScope::Read);
 
-        $methods = $this->repository->createQueryBuilder('m')
-            ->orderBy('m.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+        $method = $this->repository->find(UlidParser::parse($id));
 
-        $results = $this->normalizer->normalizeMany($methods);
+        if (! $method instanceof PaymentMethod) {
+            throw new ToolCallException(sprintf('Payment method %s not found.', $id));
+        }
 
-        return ['results' => $results, 'count' => count($results)];
+        return $this->normalizer->paymentMethod($method);
+    }
+
+    /**
+     * List payment methods configured for the current company, by name.
+     *
+     * @param int $page           1-indexed page number
+     * @param int $items_per_page Results per page (1..100)
+     */
+    #[McpTool(name: 'list_payment_methods', title: 'List payment methods', description: 'List configured payment methods for the current company, with pagination.', annotations: new ToolAnnotations(readOnlyHint: true, openWorldHint: false))]
+    #[McpScopeRequired(McpScope::Read)]
+    #[McpOutput(PaymentMethodOutput::class, list: true)]
+    public function listPaymentMethods(int $page = 1, int $items_per_page = 25): ListOutput
+    {
+        $this->scopeGuard->require(McpScope::Read);
+
+        return $this->paginator->paginate($this->repository->createQueryBuilder('m')->orderBy('m.name', 'ASC'), $page, $items_per_page);
     }
 }

@@ -15,13 +15,19 @@ namespace SolidInvoice\InvoiceBundle\Mcp;
 
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
+use Mcp\Schema\ToolAnnotations;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
+use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\InvoiceOutput;
+use SolidInvoice\McpBundle\Mcp\Output\ListOutput;
+use SolidInvoice\McpBundle\Mcp\Output\McpOutput;
 use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
+use SolidInvoice\McpBundle\Mcp\Tool\Paginator;
 use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
 use SolidInvoice\McpBundle\Security\McpScope;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -32,77 +38,65 @@ final readonly class InvoiceReadTools
         private InvoiceRepository $invoiceRepository,
         private ClientRepository $clientRepository,
         private EntityNormalizer $normalizer,
+        private Paginator $paginator,
         private McpScopeGuard $scopeGuard,
     ) {
     }
 
     /**
-     * List overdue invoices for the current company, optionally scoped to a single client.
+     * Fetch a single invoice by its ID.
      *
-     * @param string|null $client_id Optional client ULID
-     * @param int         $limit     Max rows (1..100)
-     *
-     * @return array{results: list<array<string, mixed>>, count: int}
+     * @param string $id Invoice ULID
      */
-    #[McpTool(name: 'list_overdue_invoices', description: 'List overdue invoices, optionally for a specific client.')]
+    #[McpTool(name: 'get_invoice', title: 'Get invoice', description: 'Fetch a single invoice by ID, with its lines, taxes and totals.', annotations: new ToolAnnotations(readOnlyHint: true, openWorldHint: false))]
     #[McpScopeRequired(McpScope::Read)]
-    public function listOverdueInvoices(?string $client_id = null, int $limit = 25): array
+    #[McpOutput(InvoiceOutput::class)]
+    public function getInvoice(string $id): InvoiceOutput
     {
         $this->scopeGuard->require(McpScope::Read);
-        $limit = max(1, min($limit, 100));
 
-        $qb = $this->invoiceRepository->createQueryBuilder('i')
-            ->andWhere('i.status = :status')
-            ->setParameter('status', InvoiceStatus::Overdue)
-            ->orderBy('i.due', 'ASC')
-            ->setMaxResults($limit);
+        $invoice = $this->invoiceRepository->find(UlidParser::parse($id));
 
-        if ($client_id !== null) {
-            $client = $this->clientRepository->find(UlidParser::parse($client_id, 'client_id'));
-
-            if (! $client instanceof Client) {
-                throw new ToolCallException(sprintf('Client %s not found.', $client_id));
-            }
-
-            $qb->andWhere('i.client = :client')->setParameter('client', $client->getId(), UlidType::NAME);
+        if (! $invoice instanceof Invoice) {
+            throw new ToolCallException(sprintf('Invoice %s not found.', $id));
         }
 
-        $results = $this->normalizer->normalizeMany($qb->getQuery()->getResult());
-
-        return ['results' => $results, 'count' => count($results)];
+        return $this->normalizer->invoice($invoice);
     }
 
     /**
-     * List invoices filtered by status, optionally scoped to a client.
+     * List invoices, newest first, optionally filtered by status and/or client. With status
+     * "overdue" the list is ordered by due date, the longest overdue first.
      *
-     * @param string      $status    One of: new, draft, pending, paid, overdue, cancelled, archived
-     * @param string|null $client_id Optional client ULID
-     * @param int         $limit     Max rows (1..100)
-     *
-     * @return array{results: list<array<string, mixed>>, count: int}
+     * @param string|null $status         One of: new, draft, pending, paid, overdue, cancelled, archived (optional)
+     * @param string|null $client_id      Client ULID (optional)
+     * @param int         $page           1-indexed page number
+     * @param int         $items_per_page Results per page (1..100)
      */
-    #[McpTool(name: 'list_invoices_by_status', description: 'List invoices filtered by status.')]
+    #[McpTool(name: 'list_invoices', title: 'List invoices', description: 'List invoices with pagination, optionally filtered by status (e.g. overdue) and/or client.', annotations: new ToolAnnotations(readOnlyHint: true, openWorldHint: false))]
     #[McpScopeRequired(McpScope::Read)]
-    public function listInvoicesByStatus(string $status, ?string $client_id = null, int $limit = 25): array
+    #[McpOutput(InvoiceOutput::class, list: true)]
+    public function listInvoices(?string $status = null, ?string $client_id = null, int $page = 1, int $items_per_page = 25): ListOutput
     {
         $this->scopeGuard->require(McpScope::Read);
-        $limit = max(1, min($limit, 100));
 
-        $statusEnum = InvoiceStatus::tryFrom($status);
+        $qb = $this->invoiceRepository->createQueryBuilder('i');
 
-        if ($statusEnum === null) {
-            throw new ToolCallException(sprintf(
+        if ($status !== null) {
+            $statusEnum = InvoiceStatus::tryFrom($status) ?? throw new ToolCallException(sprintf(
                 'Invalid status "%s". Valid values: %s.',
                 $status,
-                implode(', ', array_map(static fn (InvoiceStatus $s): string => $s->value, InvoiceStatus::cases())),
+                implode(', ', array_column(InvoiceStatus::cases(), 'value')),
             ));
+
+            $qb->andWhere('i.status = :status')->setParameter('status', $statusEnum);
         }
 
-        $qb = $this->invoiceRepository->createQueryBuilder('i')
-            ->andWhere('i.status = :status')
-            ->setParameter('status', $statusEnum)
-            ->orderBy('i.created', 'DESC')
-            ->setMaxResults($limit);
+        if ($status === InvoiceStatus::Overdue->value) {
+            $qb->orderBy('i.due', 'ASC');
+        } else {
+            $qb->orderBy('i.created', 'DESC');
+        }
 
         if ($client_id !== null) {
             $client = $this->clientRepository->find(UlidParser::parse($client_id, 'client_id'));
@@ -114,8 +108,6 @@ final readonly class InvoiceReadTools
             $qb->andWhere('i.client = :client')->setParameter('client', $client->getId(), UlidType::NAME);
         }
 
-        $results = $this->normalizer->normalizeMany($qb->getQuery()->getResult());
-
-        return ['results' => $results, 'count' => count($results)];
+        return $this->paginator->paginate($qb, $page, $items_per_page);
     }
 }

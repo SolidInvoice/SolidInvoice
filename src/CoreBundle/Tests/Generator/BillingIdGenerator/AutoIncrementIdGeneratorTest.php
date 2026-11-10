@@ -58,6 +58,18 @@ final class AutoIncrementIdGeneratorTest extends KernelTestCase
         self::assertSame('1', $generator->generate(new Quote(), ['field' => 'quoteId']));
     }
 
+    public function testItIgnoresUnnumberedDocuments(): void
+    {
+        $client = ClientFactory::new([]);
+
+        InvoiceFactory::createOne(['client' => $client, 'invoiceId' => '7']);
+        InvoiceFactory::createOne(['client' => $client, 'invoiceId' => '']);
+
+        $generator = new AutoIncrementIdGenerator(self::getContainer()->get('doctrine'));
+
+        self::assertSame('8', $generator->generate(new Invoice(), ['field' => 'invoiceId']));
+    }
+
     public function testItIncrementsTheIdWithPrefix(): void
     {
         $client = ClientFactory::new([]);

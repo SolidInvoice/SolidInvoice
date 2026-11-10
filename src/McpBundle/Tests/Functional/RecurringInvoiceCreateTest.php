@@ -17,6 +17,8 @@ use Mcp\Exception\ToolCallException;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
+use SolidInvoice\CronBundle\Enum\ScheduleEndType;
+use SolidInvoice\CronBundle\Enum\ScheduleRecurringType;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
@@ -49,8 +51,8 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
 
         $result = $tool->createRecurringInvoice(
             client_id: $client->getId()
-                ->toRfc4122(),
-            lines: [['description' => 'Monthly retainer', 'price' => 250000, 'qty' => 1]],
+                ->toBase58(),
+            lines: [['description' => 'Monthly retainer', 'price' => '2500', 'qty' => 1]],
             date_start: '2026-05-01',
             schedule: [
                 'type' => 'monthly',
@@ -60,18 +62,17 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
             terms: 'Monthly billing',
         );
 
-        self::assertArrayHasKey('id', $result);
-        self::assertSame('250000', $result['total']);
-        self::assertSame('monthly', $result['schedule']['type']);
+        self::assertSame('2500.00', $result->total);
+        self::assertSame(ScheduleRecurringType::MONTHLY, $result->schedule->type);
         // No payment_terms passed, so the client's own terms apply.
-        self::assertSame('net_45', $result['payment_terms']);
-        self::assertSame('after', $result['schedule']['end_type']);
-        self::assertSame(12, $result['schedule']['end_occurrence']);
-        self::assertSame('2026-05-01', substr((string) $result['date_start'], 0, 10));
+        self::assertSame(PaymentTerms::Net45, $result->payment_terms);
+        self::assertSame(ScheduleEndType::AFTER, $result->schedule->end_type);
+        self::assertSame(12, $result->schedule->end_occurrence);
+        self::assertSame('2026-05-01', substr((string) $result->date_start, 0, 10));
 
-        $recurring = self::getContainer()->get('doctrine')->getRepository(RecurringInvoice::class)->find(Ulid::fromString($result['id']));
+        $recurring = self::getContainer()->get('doctrine')->getRepository(RecurringInvoice::class)->find(Ulid::fromString((string) $result->id));
         self::assertInstanceOf(RecurringInvoice::class, $recurring);
-        self::assertSame($this->company->getId()->toRfc4122(), $recurring->getCompany()->getId()->toRfc4122());
+        self::assertSame($this->company->getId()->toBase58(), $recurring->getCompany()->getId()->toBase58());
     }
 
     public function testCreateRecurringWithEndTypeNever(): void
@@ -85,16 +86,16 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
 
         $result = $tool->createRecurringInvoice(
             client_id: $client->getId()
-                ->toRfc4122(),
-            lines: [['description' => 'Weekly cleanup', 'price' => 5000, 'qty' => 1]],
+                ->toBase58(),
+            lines: [['description' => 'Weekly cleanup', 'price' => '50', 'qty' => 1]],
             date_start: '2026-04-30',
             schedule: ['type' => 'weekly', 'end_type' => 'never'],
         );
 
-        self::assertSame('weekly', $result['schedule']['type']);
-        self::assertSame('never', $result['schedule']['end_type']);
-        self::assertNull($result['schedule']['end_date']);
-        self::assertNull($result['schedule']['end_occurrence']);
+        self::assertSame(ScheduleRecurringType::WEEKLY, $result->schedule->type);
+        self::assertSame(ScheduleEndType::NEVER, $result->schedule->end_type);
+        self::assertNull($result->schedule->end_date);
+        self::assertNull($result->schedule->end_occurrence);
     }
 
     public function testCreateRecurringRejectsInvalidScheduleType(): void
@@ -111,8 +112,8 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
 
         $tool->createRecurringInvoice(
             client_id: $client->getId()
-                ->toRfc4122(),
-            lines: [['description' => 'Bad', 'price' => 1, 'qty' => 1]],
+                ->toBase58(),
+            lines: [['description' => 'Bad', 'price' => '0.01', 'qty' => 1]],
             date_start: '2026-05-01',
             schedule: ['type' => 'hourly'],
         );
@@ -132,8 +133,8 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
 
         $tool->createRecurringInvoice(
             client_id: $client->getId()
-                ->toRfc4122(),
-            lines: [['description' => 'Lines', 'price' => 100, 'qty' => 1]],
+                ->toBase58(),
+            lines: [['description' => 'Lines', 'price' => '1', 'qty' => 1]],
             date_start: '2026-05-01',
             schedule: ['type' => 'monthly', 'end_type' => 'on'],
         );
@@ -148,7 +149,9 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
 
         $result = $tool->listRecurringInvoices();
 
-        self::assertSame(['results' => [], 'count' => 0], $result);
+        self::assertSame([], $result->results);
+        self::assertSame(0, $result->total);
+        self::assertSame('{"results":[],"page":1,"items_per_page":25,"total":0}', json_encode($result));
     }
 
     public function testCreateRecurringReadOnlyRejected(): void
@@ -165,8 +168,8 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
 
         $tool->createRecurringInvoice(
             client_id: $client->getId()
-                ->toRfc4122(),
-            lines: [['description' => 'x', 'price' => 1, 'qty' => 1]],
+                ->toBase58(),
+            lines: [['description' => 'x', 'price' => '0.01', 'qty' => 1]],
             date_start: '2026-05-01',
             schedule: ['type' => 'monthly'],
         );

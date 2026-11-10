@@ -35,7 +35,7 @@ final class IdempotencyTest extends ApiTestCase
 
     public function testSameKeyAndRequestReplaysTheStoredResponse(): void
     {
-        $key = Uuid::v4()->toRfc4122();
+        $key = (string) Uuid::v4();
 
         $first = $this->postClient($key, ['name' => 'Replayed']);
         self::assertSame(201, $first->getStatusCode());
@@ -52,7 +52,7 @@ final class IdempotencyTest extends ApiTestCase
 
     public function testSameKeyWithADifferentRequestIsRejected(): void
     {
-        $key = Uuid::v4()->toRfc4122();
+        $key = (string) Uuid::v4();
 
         self::assertSame(201, $this->postClient($key, ['name' => 'First'])->getStatusCode());
 
@@ -64,7 +64,7 @@ final class IdempotencyTest extends ApiTestCase
 
     public function testSameKeyWithADifferentApiVersionIsRejected(): void
     {
-        $key = Uuid::v4()->toRfc4122();
+        $key = (string) Uuid::v4();
 
         self::assertSame(201, $this->postClient($key, ['name' => 'Versioned'])->getStatusCode());
 
@@ -84,7 +84,7 @@ final class IdempotencyTest extends ApiTestCase
 
     public function testKeysAreScopedPerUser(): void
     {
-        $key = Uuid::v4()->toRfc4122();
+        $key = (string) Uuid::v4();
         $otherUser = UserFactory::createOne(['companies' => [$this->company]]);
         $otherToken = self::getContainer()->get(ApiTokenManager::class)->getOrCreate($otherUser, 'Functional Test')->plaintext;
 
@@ -98,7 +98,7 @@ final class IdempotencyTest extends ApiTestCase
 
     public function testFailedResponsesAreNotStored(): void
     {
-        $key = Uuid::v4()->toRfc4122();
+        $key = (string) Uuid::v4();
 
         self::assertSame(422, $this->postClient($key, ['name' => ''])->getStatusCode());
 
@@ -109,8 +109,8 @@ final class IdempotencyTest extends ApiTestCase
 
     public function testKeyInUseByARunningRequestConflicts(): void
     {
-        $key = Uuid::v4()->toRfc4122();
-        $cacheKey = hash('sha256', $key . '|' . $this->user->getUserIdentifier() . '|' . $this->company->getId()->toRfc4122());
+        $key = (string) Uuid::v4();
+        $cacheKey = hash('sha256', $key . '|' . $this->user->getUserIdentifier() . '|' . $this->company->getId()->toBase58());
         $lock = self::getContainer()->get(LockFactory::class)->createLock('idempotency_' . $cacheKey);
         self::assertTrue($lock->acquire());
 

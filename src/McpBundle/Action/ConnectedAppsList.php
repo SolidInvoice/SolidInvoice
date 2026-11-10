@@ -64,7 +64,7 @@ final readonly class ConnectedAppsList
 
         foreach ($tokens as $token) {
             $company = $token->getCompany();
-            $groupKey = $token->getOAuthClient()->getIdentifier() . ':' . ($company->getId()?->toRfc4122() ?? '');
+            $groupKey = $token->getOAuthClient()->getIdentifier() . ':' . ($company->getId()?->toBase58() ?? '');
 
             if (! isset($byClient[$groupKey])) {
                 $byClient[$groupKey] = [

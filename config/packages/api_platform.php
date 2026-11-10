@@ -44,6 +44,9 @@ return App::config([
         'title' => SolidInvoiceCoreBundle::APP_NAME,
         'version' => SolidInvoiceCoreBundle::VERSION,
         'show_webby' => false,
+        // SolidInvoice's MCP tools are plain mcp-bundle attributes. API Platform 4.4's
+        // SecureRegistry decorator does not implement mcp/sdk 0.9's RegistryInterface.
+        'mcp' => ['enabled' => false],
         'enable_profiler' => param('kernel.debug'),
         'path_segment_name_generator' => 'api_platform.metadata.path_segment_name_generator.dash',
         'formats' => $formats,

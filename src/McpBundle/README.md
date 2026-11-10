@@ -4,8 +4,8 @@ Exposes SolidInvoice to AI agents (Claude Desktop, Cursor, Goose, mcp-inspector,
 
 ## What it gives AI agents
 
-- **Read tools** (scope `mcp:read`): list/get invoices, quotes, clients, contacts, payments, taxes, recurring invoices; dashboard analytics; payment-method and tax-rate lookups; workflow-state inspection.
-- **Write tools** (scope `mcp:write`): create/update/delete clients, contacts, taxes; apply workflow transitions on invoices, quotes, and recurring invoices; record offline payments; clone invoices/quotes; convert a quote to an invoice; add a contact to a client; send a manual invoice reminder.
+- **Read tools** (scope `mcp:read`): list/get invoices, quotes, clients, contacts, payments, taxes, recurring invoices, products; dashboard analytics; payment-method and tax-rate lookups; workflow-state inspection.
+- **Write tools** (scope `mcp:write`): create/update/delete clients, contacts, tax rates, products and client tax identifiers; create invoices, quotes and recurring invoices; apply workflow transitions on invoices, quotes, and recurring invoices; record offline payments; clone invoices/quotes; convert a quote to an invoice; send a manual invoice reminder.
 
 Every tool call runs under **exactly one company** — bound at consent time, immutable afterwards, enforced by the Doctrine `CompanyFilter`. A token issued for company A cannot access company B's data, even if the agent requests it.
 
@@ -104,7 +104,7 @@ Three independent layers:
 
 1. **Token binding (write-time)** — `McpAccessToken.company_id` is set at consent time from the user's choice, immutable.
 2. **Filter activation (read-time)** — `McpOAuthAuthenticator` calls `CompanySelector::switchCompany()` on every authenticated MCP request, enabling `CompanyFilter`.
-3. **Write-path overrides** — `create_resource` / `record_payment` / `add_contact` strip any client-supplied `company` / `company_id`, always pulling from the active company.
+3. **Write-path overrides** — the write tools take no `company` / `company_id` argument; new records always get the active company.
 
 ## Connecting from Claude Desktop / mcp-inspector
 

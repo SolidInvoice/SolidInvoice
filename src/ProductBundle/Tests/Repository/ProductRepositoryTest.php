@@ -60,8 +60,8 @@ final class ProductRepositoryTest extends KernelTestCase
         $ulid = Type::getType(UlidType::NAME);
 
         self::assertSame(
-            [$theirs->getId()->toRfc4122()],
-            array_map(static fn (string $id): string => $ulid->convertToPHPValue($id, $connection->getDatabasePlatform())->toRfc4122(), $connection->fetchFirstColumn('SELECT id FROM products')),
+            [$theirs->getId()->toBase58()],
+            array_map(static fn (string $id): string => $ulid->convertToPHPValue($id, $connection->getDatabasePlatform())->toBase58(), $connection->fetchFirstColumn('SELECT id FROM products')),
         );
     }
 

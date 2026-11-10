@@ -18,9 +18,10 @@ use SolidInvoice\ClientBundle\Mcp\ClientReadTools;
 use SolidInvoice\DashboardBundle\Mcp\AnalyticsTools;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Mcp\InvoiceReadTools;
-use SolidInvoice\McpBundle\Mcp\Tool\ResourceQueryTools;
+use SolidInvoice\InvoiceBundle\Mcp\RecurringInvoiceReadTools;
 use SolidInvoice\McpBundle\Mcp\Tool\WorkflowTools;
 use SolidInvoice\PaymentBundle\Mcp\PaymentMethodReadTools;
+use SolidInvoice\PaymentBundle\Mcp\PaymentReadTools;
 use SolidInvoice\ProductBundle\Mcp\ProductReadTools;
 use SolidInvoice\ProductBundle\Mcp\ProductWriteTools;
 use SolidInvoice\QuoteBundle\Mcp\QuoteReadTools;
@@ -40,7 +41,8 @@ final class ToolRegistrationTest extends KernelTestCase
     public function testAllReadToolClassesAreResolvable(): void
     {
         $expected = [
-            ResourceQueryTools::class,
+            RecurringInvoiceReadTools::class,
+            PaymentReadTools::class,
             WorkflowTools::class,
             InvoiceReadTools::class,
             QuoteReadTools::class,

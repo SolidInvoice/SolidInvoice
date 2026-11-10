@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle\Tests\Functional;
 
+use Mcp\Capability\Registry;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -87,13 +88,37 @@ final class WellKnownTest extends WebTestCase
         $data = json_decode((string) $client->getResponse()->getContent(), true);
 
         self::assertIsArray($data);
-        self::assertSame('SolidInvoice', $data['serverInfo']['name']);
-        self::assertArrayHasKey('version', $data['serverInfo']);
-        self::assertSame('http', $data['transport']['type']);
-        self::assertStringEndsWith('/_mcp', $data['transport']['endpoint']);
-        self::assertSame('oauth2', $data['authorization']['type']);
-        self::assertSame(['mcp:read', 'mcp:write'], $data['authorization']['scopes']);
-        self::assertArrayHasKey('tools', $data['capabilities']);
+        self::assertSame('https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json', $data['$schema']);
+        self::assertSame('co.solidinvoice/mcp', $data['name']);
+        self::assertSame('SolidInvoice', $data['title']);
+        self::assertArrayHasKey('version', $data);
+        self::assertSame('Create and send invoices and quotes, manage clients, and track payments in SolidInvoice.', $data['description']);
+        self::assertSame('https://solidinvoice.co/docs/ai/mcp-server/', $data['websiteUrl']);
+        self::assertSame([
+            ['src' => 'https://solidinvoice.co/logo-512.png', 'mimeType' => 'image/png', 'sizes' => ['512x512']],
+            ['src' => 'https://solidinvoice.co/logo-192.png', 'mimeType' => 'image/png', 'sizes' => ['192x192']],
+        ], $data['icons']);
+        self::assertSame([['type' => 'streamable-http', 'url' => 'http://localhost/_mcp']], $data['remotes']);
+
+        $auth = $data['_meta']['co.solidinvoice/authentication'];
+        self::assertSame('oauth2', $auth['type']);
+        self::assertSame('http://localhost/.well-known/oauth-protected-resource', $auth['protectedResourceMetadata']);
+        self::assertSame(['mcp:read', 'mcp:write'], $auth['scopes']);
+        self::assertTrue($auth['publicToolsList']);
+
+        self::getContainer()->get('mcp.server.solidinvoice');
+        /** @var Registry $registry */
+        $registry = self::getContainer()->get('mcp.server.solidinvoice.registry');
+        $registered = $registry->getTools()->references;
+        $tools = $data['_meta']['co.solidinvoice/tools'];
+
+        self::assertNotEmpty($registered);
+        self::assertCount(\count($registered), $tools);
+
+        foreach ($tools as $tool) {
+            self::assertSame(['name', 'title', 'description', 'annotations'], array_keys($tool));
+            self::assertArrayHasKey($tool['name'], $registered);
+        }
     }
 
     public function testAgentSkillsIndex(): void

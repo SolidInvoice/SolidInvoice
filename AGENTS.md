@@ -426,6 +426,10 @@ ULIDs, not UUIDs, despite older docs saying otherwise:
 private Ulid $id;
 ```
 
+IDs are serialised with `toBase58()` everywhere (API, MCP, cache keys, OAuth identifiers);
+inputs accept any ULID form via `Ulid::fromString()`. `toRfc4122()` is banned by
+`NoRfc4122Rule` (PHPStan). The one exception is `CompanySelector` (Postgres `uuid` filter parameter).
+
 ### Migrations — `migrations/`, `DoctrineMigrations` namespace
 
 Naming is **not** Doctrine's default. One file per version, split into numbered parts:

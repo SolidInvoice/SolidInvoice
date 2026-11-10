@@ -18,8 +18,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestMatcherInterface;
 
 /**
- * Matches the MCP requests an anonymous client may make: the handshake and
- * `tools/list`, so anyone can see which tools exist before signing in. Used as
+ * Matches the MCP requests an anonymous client may make: the handshake,
+ * `server/discover` (the modern-protocol handshake) and `tools/list`, so anyone can see which tools exist before signing in. Used as
  * a PUBLIC_ACCESS access_control rule; everything else (tools/call included)
  * falls through to ROLE_USER and gets the OAuth 401.
  *
@@ -32,6 +32,7 @@ final class PublicMcpRequestMatcher implements RequestMatcherInterface
         'initialize',
         'notifications/initialized',
         'ping',
+        'server/discover',
         'tools/list',
     ];
 

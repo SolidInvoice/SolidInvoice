@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\McpBundle;
 
+use SolidInvoice\McpBundle\DependencyInjection\McpOutputSchemaPass;
 use SolidInvoice\McpBundle\DependencyInjection\McpToolPublicPass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -29,5 +30,9 @@ final class SolidInvoiceMcpBundle extends Bundle
         // Run after Symfony\AI\McpBundle\DependencyInjection\McpPass (priority 0)
         // so tool services already have their `mcp.tool` tag when we mark them public.
         $container->addCompilerPass(new McpToolPublicPass(), PassConfig::TYPE_BEFORE_REMOVING, -10);
+
+        // Also after McpPass, which adds the `addTool()` calls this pass fills the outputSchema of.
+        // Before optimization, so the escaped schema is resolved like McpPass's own arguments.
+        $container->addCompilerPass(new McpOutputSchemaPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -10);
     }
 }

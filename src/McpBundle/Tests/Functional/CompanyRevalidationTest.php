@@ -92,7 +92,7 @@ final class CompanyRevalidationTest extends KernelTestCase
         $em->flush();
 
         $authenticator = new McpOAuthAuthenticator(
-            $this->buildMockServerFactory($jti, $user->getId()->toRfc4122()),
+            $this->buildMockServerFactory($jti, $user->getId()->toBase58()),
             $accessTokenRepo,
             $container->get(CompanySelector::class),
             $container->get(AuthorizationCheckerInterface::class),
@@ -142,7 +142,7 @@ final class CompanyRevalidationTest extends KernelTestCase
         $accessTokenRepo->persistNewAccessToken($token);
 
         $authenticator = new McpOAuthAuthenticator(
-            $this->buildMockServerFactory($jti, $user->getId()->toRfc4122()),
+            $this->buildMockServerFactory($jti, $user->getId()->toBase58()),
             $accessTokenRepo,
             $container->get(CompanySelector::class),
             $container->get(AuthorizationCheckerInterface::class),
@@ -156,7 +156,7 @@ final class CompanyRevalidationTest extends KernelTestCase
         self::assertInstanceOf(SelfValidatingPassport::class, $passport);
         $badge = $passport->getBadge(UserBadge::class);
         self::assertInstanceOf(UserBadge::class, $badge);
-        self::assertSame($user->getId()->toRfc4122(), $badge->getUserIdentifier());
+        self::assertSame($user->getId()->toBase58(), $badge->getUserIdentifier());
     }
 
     /**

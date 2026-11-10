@@ -142,7 +142,7 @@ final readonly class Authorize
             return $this->handleConsent($request, $server, $authRequest, $user, $client, $companies, $requestedScopeValues);
         }
 
-        $activeCompanyId = $this->companySelector->getCompany()?->toRfc4122();
+        $activeCompanyId = $this->companySelector->getCompany();
 
         // Single-company users with prior consent for the same scopes skip
         // the consent page. Multi-company users always see the picker so they
@@ -175,7 +175,7 @@ final readonly class Authorize
         OAuthClient $client,
         User $user,
         array $companies,
-        ?string $activeCompanyId,
+        ?Ulid $activeCompanyId,
         array $requestedScopes,
     ): ?Company {
         // Only skip the consent page for users with one company, or when an
@@ -185,9 +185,9 @@ final readonly class Authorize
 
         if (\count($companies) === 1) {
             $candidate = $companies[0];
-        } elseif ($activeCompanyId !== null) {
+        } elseif ($activeCompanyId instanceof Ulid) {
             foreach ($companies as $company) {
-                if ($company->getId()->toRfc4122() === $activeCompanyId) {
+                if ($company->getId()->equals($activeCompanyId)) {
                     $candidate = $company;
 
                     break;
@@ -227,7 +227,7 @@ final readonly class Authorize
 
         $authRequest->setScopes($grantedScopes);
 
-        $userId = $user->getId()->toRfc4122();
+        $userId = $user->getId()->toBase58();
 
         $authRequest->setUser(new OAuthUserEntity($userId));
         $authRequest->setAuthorizationApproved(true);

@@ -15,13 +15,19 @@ namespace SolidInvoice\QuoteBundle\Mcp;
 
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
+use Mcp\Schema\ToolAnnotations;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\QuoteOutput;
+use SolidInvoice\McpBundle\Mcp\Output\ListOutput;
+use SolidInvoice\McpBundle\Mcp\Output\McpOutput;
 use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
+use SolidInvoice\McpBundle\Mcp\Tool\Paginator;
 use SolidInvoice\McpBundle\Mcp\Tool\UlidParser;
 use SolidInvoice\McpBundle\Security\McpScope;
+use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Repository\QuoteRepository;
 use Symfony\Bridge\Doctrine\Types\UlidType;
@@ -32,41 +38,58 @@ final readonly class QuoteReadTools
         private QuoteRepository $quoteRepository,
         private ClientRepository $clientRepository,
         private EntityNormalizer $normalizer,
+        private Paginator $paginator,
         private McpScopeGuard $scopeGuard,
     ) {
     }
 
     /**
-     * List quotes filtered by status, optionally scoped to a client.
+     * Fetch a single quote by its ID.
      *
-     * @param string      $status    One of: new, draft, pending, accepted, cancelled, declined, archived, expired
-     * @param string|null $client_id Optional client ULID
-     * @param int         $limit     Max rows (1..100)
-     *
-     * @return array{results: list<array<string, mixed>>, count: int}
+     * @param string $id Quote ULID
      */
-    #[McpTool(name: 'list_quotes_by_status', description: 'List quotes filtered by status.')]
+    #[McpTool(name: 'get_quote', title: 'Get quote', description: 'Fetch a single quote by ID, with its lines, taxes and totals.', annotations: new ToolAnnotations(readOnlyHint: true, openWorldHint: false))]
     #[McpScopeRequired(McpScope::Read)]
-    public function listQuotesByStatus(string $status, ?string $client_id = null, int $limit = 25): array
+    #[McpOutput(QuoteOutput::class)]
+    public function getQuote(string $id): QuoteOutput
     {
         $this->scopeGuard->require(McpScope::Read);
-        $limit = max(1, min($limit, 100));
 
-        $statusEnum = QuoteStatus::tryFrom($status);
+        $quote = $this->quoteRepository->find(UlidParser::parse($id));
 
-        if ($statusEnum === null) {
-            throw new ToolCallException(sprintf(
-                'Invalid status "%s". Valid values: %s.',
-                $status,
-                implode(', ', array_map(static fn (QuoteStatus $s): string => $s->value, QuoteStatus::cases())),
-            ));
+        if (! $quote instanceof Quote) {
+            throw new ToolCallException(sprintf('Quote %s not found.', $id));
         }
 
-        $qb = $this->quoteRepository->createQueryBuilder('q')
-            ->andWhere('q.status = :status')
-            ->setParameter('status', $statusEnum)
-            ->orderBy('q.created', 'DESC')
-            ->setMaxResults($limit);
+        return $this->normalizer->quote($quote);
+    }
+
+    /**
+     * List quotes, newest first, optionally filtered by status and/or client.
+     *
+     * @param string|null $status         One of: new, draft, pending, accepted, cancelled, declined, archived, expired (optional)
+     * @param string|null $client_id      Client ULID (optional)
+     * @param int         $page           1-indexed page number
+     * @param int         $items_per_page Results per page (1..100)
+     */
+    #[McpTool(name: 'list_quotes', title: 'List quotes', description: 'List quotes with pagination, optionally filtered by status and/or client.', annotations: new ToolAnnotations(readOnlyHint: true, openWorldHint: false))]
+    #[McpScopeRequired(McpScope::Read)]
+    #[McpOutput(QuoteOutput::class, list: true)]
+    public function listQuotes(?string $status = null, ?string $client_id = null, int $page = 1, int $items_per_page = 25): ListOutput
+    {
+        $this->scopeGuard->require(McpScope::Read);
+
+        $qb = $this->quoteRepository->createQueryBuilder('q')->orderBy('q.created', 'DESC');
+
+        if ($status !== null) {
+            $statusEnum = QuoteStatus::tryFrom($status) ?? throw new ToolCallException(sprintf(
+                'Invalid status "%s". Valid values: %s.',
+                $status,
+                implode(', ', array_column(QuoteStatus::cases(), 'value')),
+            ));
+
+            $qb->andWhere('q.status = :status')->setParameter('status', $statusEnum);
+        }
 
         if ($client_id !== null) {
             $client = $this->clientRepository->find(UlidParser::parse($client_id, 'client_id'));
@@ -78,8 +101,6 @@ final readonly class QuoteReadTools
             $qb->andWhere('q.client = :client')->setParameter('client', $client->getId(), UlidType::NAME);
         }
 
-        $results = $this->normalizer->normalizeMany($qb->getQuery()->getResult());
-
-        return ['results' => $results, 'count' => count($results)];
+        return $this->paginator->paginate($qb, $page, $items_per_page);
     }
 }

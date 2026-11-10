@@ -19,6 +19,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Mcp\Capability\Attribute\McpTool;
 use Mcp\Exception\ToolCallException;
+use Mcp\Schema\ToolAnnotations;
 use Psr\Log\LoggerInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
@@ -35,6 +36,10 @@ use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\InvoiceBundle\Repository\RecurringInvoiceRepository;
 use SolidInvoice\McpBundle\Mcp\Attribute\McpScopeRequired;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\InvoiceOutput;
+use SolidInvoice\McpBundle\Mcp\Output\Entity\RecurringInvoiceOutput;
+use SolidInvoice\McpBundle\Mcp\Output\McpOutput;
+use SolidInvoice\McpBundle\Mcp\Output\ReminderSentOutput;
 use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
 use SolidInvoice\McpBundle\Mcp\Tool\InvoiceTaxBuilder;
 use SolidInvoice\McpBundle\Mcp\Tool\LineItemBuilder;
@@ -80,12 +85,12 @@ final readonly class InvoiceWriteTools
      *
      * @param string                          $client_id      Client ULID (must belong to the active company)
      * @param list<array<string, mixed>>      $lines          Line items: [{name, description?, price, qty, tax_id?, taxes?: [{tax_id, sequence?, compound?}]}, ...].
-     *                                                        Price is in the minor unit (e.g. cents). Provide `taxes[]` for multi-tax lines
+     *                                                        `price` is a decimal string in the client's currency (e.g. "50.00"). Provide `taxes[]` for multi-tax lines
      *                                                        (India GST split, Quebec GST+QST compound); `tax_id` is the legacy single-tax shorthand.
      * @param string|null                     $invoice_date   ISO-8601 date (defaults to today)
      * @param string|null                     $due            ISO-8601 due date (optional)
      * @param string|null                     $discount_type  "percentage" or "money" (optional)
-     * @param int|float|null                  $discount_value Numeric discount value; required if discount_type is set
+     * @param string|null                  $discount_value Decimal string, required if discount_type is set: a percentage ("10") or an amount in the client's currency ("25.00")
      * @param string|null                     $terms          Optional terms text
      * @param string|null                     $notes          Optional notes text
      * @param list<string>                    $contact_ids    Client contact ULIDs to attach to the invoice (optional)
@@ -97,25 +102,24 @@ final readonly class InvoiceWriteTools
      *                                                        end_of_next_month or custom. Any value but custom sets the due date from the invoice date.
      *                                                        Defaults to the client's terms (else the company's), or custom when `due` is given.
      *                                                        `due` can only be combined with custom.
-     *
-     * @return array<string, mixed>
      */
-    #[McpTool(name: 'create_invoice', description: 'Create a new invoice for a client, with line items, optional discount, due date, contacts, and invoice-level taxes.')]
+    #[McpTool(name: 'create_invoice', title: 'Create invoice', description: 'Create a new invoice for a client, with line items, optional discount, due date, contacts, and invoice-level taxes.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true))]
     #[McpScopeRequired(McpScope::Write)]
+    #[McpOutput(InvoiceOutput::class)]
     public function createInvoice(
         string $client_id,
         array $lines,
         ?string $invoice_date = null,
         ?string $due = null,
         ?string $discount_type = null,
-        int | float | null $discount_value = null,
+        ?string $discount_value = null,
         ?string $terms = null,
         ?string $notes = null,
         array $contact_ids = [],
         ?string $invoice_id = null,
         array $invoice_taxes = [],
         ?string $payment_terms = null,
-    ): array {
+    ): InvoiceOutput {
         $this->scopeGuard->require(McpScope::Write);
 
         if ($due !== null && $payment_terms !== null && $payment_terms !== PaymentTerms::Custom->value) {
@@ -142,11 +146,11 @@ final readonly class InvoiceWriteTools
             default => PaymentTerms::forClient($client, $this->systemConfig),
         });
 
-        foreach ($this->lineItemBuilder->buildInvoiceLines($lines) as $line) {
+        foreach ($this->lineItemBuilder->buildInvoiceLines($lines, $client->getCurrency()) as $line) {
             $invoice->addLine($line);
         }
 
-        $invoice->setDiscount($this->lineItemBuilder->buildDiscount($discount_type, $discount_value));
+        $invoice->setDiscount($this->lineItemBuilder->buildDiscount($discount_type, $discount_value, $client->getCurrency()));
 
         if ($terms !== null) {
             $invoice->setTerms($terms);
@@ -188,7 +192,7 @@ final readonly class InvoiceWriteTools
 
         $invoice = $this->invoiceManager->create($invoice);
 
-        return $this->normalizer->normalize($invoice);
+        return $this->normalizer->invoice($invoice);
     }
 
     private function parseDate(?string $value, DateTimeImmutable $default): DateTimeImmutable
@@ -209,12 +213,11 @@ final readonly class InvoiceWriteTools
      *
      * @param string $invoice_id Invoice ULID
      * @param string $transition One of: accept, cancel, overdue, pay, reopen, archive
-     *
-     * @return array<string, mixed>
      */
-    #[McpTool(name: 'apply_invoice_transition', description: 'Apply a workflow transition (accept, cancel, overdue, pay, reopen, archive) to an invoice.')]
+    #[McpTool(name: 'apply_invoice_transition', title: 'Apply invoice transition', description: 'Apply a workflow transition (accept, cancel, overdue, pay, reopen, archive) to an invoice.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true))]
     #[McpScopeRequired(McpScope::Write)]
-    public function applyInvoiceTransition(string $invoice_id, string $transition): array
+    #[McpOutput(InvoiceOutput::class)]
+    public function applyInvoiceTransition(string $invoice_id, string $transition): InvoiceOutput
     {
         $this->scopeGuard->require(McpScope::Write);
 
@@ -235,7 +238,7 @@ final readonly class InvoiceWriteTools
         $this->invoiceWorkflow->apply($invoice, $transition);
         $this->entityManager->flush();
 
-        return $this->normalizer->normalize($invoice);
+        return $this->normalizer->invoice($invoice);
     }
 
     /**
@@ -243,12 +246,11 @@ final readonly class InvoiceWriteTools
      *
      * @param string $recurring_id Recurring invoice ULID
      * @param string $transition   One of: activate, pause, resume, complete, cancel, archive
-     *
-     * @return array<string, mixed>
      */
-    #[McpTool(name: 'apply_recurring_transition', description: 'Apply a workflow transition to a recurring invoice.')]
+    #[McpTool(name: 'apply_recurring_transition', title: 'Apply recurring invoice transition', description: 'Apply a workflow transition to a recurring invoice.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: true))]
     #[McpScopeRequired(McpScope::Write)]
-    public function applyRecurringTransition(string $recurring_id, string $transition): array
+    #[McpOutput(RecurringInvoiceOutput::class)]
+    public function applyRecurringTransition(string $recurring_id, string $transition): RecurringInvoiceOutput
     {
         $this->scopeGuard->require(McpScope::Write);
 
@@ -269,19 +271,18 @@ final readonly class InvoiceWriteTools
         $this->recurringInvoiceWorkflow->apply($recurring, $transition);
         $this->entityManager->flush();
 
-        return $this->normalizer->normalize($recurring);
+        return $this->normalizer->recurringInvoice($recurring);
     }
 
     /**
      * Clone an existing invoice into a new draft.
      *
      * @param string $invoice_id Invoice ULID
-     *
-     * @return array<string, mixed>
      */
-    #[McpTool(name: 'clone_invoice', description: 'Clone an existing invoice into a new draft with the same line items.')]
+    #[McpTool(name: 'clone_invoice', title: 'Clone invoice', description: 'Clone an existing invoice into a new draft with the same line items.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true))]
     #[McpScopeRequired(McpScope::Write)]
-    public function cloneInvoice(string $invoice_id): array
+    #[McpOutput(InvoiceOutput::class)]
+    public function cloneInvoice(string $invoice_id): InvoiceOutput
     {
         $this->scopeGuard->require(McpScope::Write);
 
@@ -291,30 +292,22 @@ final readonly class InvoiceWriteTools
             throw new ToolCallException(sprintf('Invoice %s not found.', $invoice_id));
         }
 
+        // An Invoice clones to an Invoice, which InvoiceCloner saves through InvoiceManager::create().
         $cloned = $this->cloner->clone($invoice);
+        \assert($cloned instanceof Invoice);
 
-        // InvoiceCloner::clone() only persists+flushes Invoice clones
-        // (via invoiceManager->create()); RecurringInvoice clones come back
-        // transient. Persist here so the MCP caller gets a saved entity and
-        // the normalised payload exposes a real id rather than null.
-        if ($cloned instanceof RecurringInvoice) {
-            $this->entityManager->persist($cloned);
-            $this->entityManager->flush();
-        }
-
-        return $this->normalizer->normalize($cloned);
+        return $this->normalizer->invoice($cloned);
     }
 
     /**
      * Send a manual reminder email to the contacts on an invoice.
      *
      * @param string $invoice_id Invoice ULID
-     *
-     * @return array{sent: bool, invoice_id: string}
      */
-    #[McpTool(name: 'send_invoice_reminder', description: 'Email a manual reminder for an invoice to its contacts.')]
+    #[McpTool(name: 'send_invoice_reminder', title: 'Send invoice reminder', description: 'Email a manual reminder for an invoice to its contacts.', annotations: new ToolAnnotations(readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true))]
     #[McpScopeRequired(McpScope::Write)]
-    public function sendInvoiceReminder(string $invoice_id): array
+    #[McpOutput(ReminderSentOutput::class)]
+    public function sendInvoiceReminder(string $invoice_id): ReminderSentOutput
     {
         $this->scopeGuard->require(McpScope::Write);
 
@@ -333,7 +326,7 @@ final readonly class InvoiceWriteTools
 
             $this->logger->info('Manual reminder sent via MCP', [
                 'invoice_id' => $invoice->getInvoiceId(),
-                'company_id' => $invoice->getCompany()->getId()->toRfc4122(),
+                'company_id' => $invoice->getCompany()->getId()->toBase58(),
             ]);
         } catch (TransportExceptionInterface $exception) {
             // Don't surface transport-level detail (SMTP host, auth failures,
@@ -347,9 +340,6 @@ final readonly class InvoiceWriteTools
             throw new ToolCallException('Failed to send reminder. See server logs for details.', $exception->getCode(), $exception);
         }
 
-        return [
-            'sent' => true,
-            'invoice_id' => $invoice->getId()?->toRfc4122() ?? $invoice_id,
-        ];
+        return new ReminderSentOutput(sent: true, invoice_id: (string) $invoice->getId()?->toBase58());
     }
 }

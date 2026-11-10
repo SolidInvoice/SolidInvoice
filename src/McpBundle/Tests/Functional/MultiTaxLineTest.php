@@ -64,29 +64,28 @@ final class MultiTaxLineTest extends KernelTestCase
 
         $result = $tool->createInvoice(
             $client->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             [
                 [
                     'description' => 'Consulting',
-                    'price' => 100000,
+                    'price' => '1000',
                     'qty' => 1,
                     'taxes' => [
-                        ['tax_id' => $cgst->getId()->toRfc4122(), 'sequence' => 0, 'compound' => false],
-                        ['tax_id' => $sgst->getId()->toRfc4122(), 'sequence' => 1, 'compound' => false],
+                        ['tax_id' => $cgst->getId()->toBase58(), 'sequence' => 0, 'compound' => false],
+                        ['tax_id' => $sgst->getId()->toBase58(), 'sequence' => 1, 'compound' => false],
                     ],
                 ],
             ],
         );
 
-        self::assertArrayHasKey('lines', $result);
-        self::assertCount(1, $result['lines']);
-        self::assertCount(2, $result['lines'][0]['taxes']);
+        self::assertCount(1, $result->lines);
+        self::assertCount(2, $result->lines[0]->taxes);
 
-        $taxNames = array_column($result['lines'][0]['taxes'], 'name');
+        $taxNames = array_column($result->lines[0]->taxes, 'name');
         self::assertSame(['CGST', 'SGST'], $taxNames);
-        self::assertSame([0, 1], array_column($result['lines'][0]['taxes'], 'sequence'));
+        self::assertSame([0, 1], array_column($result->lines[0]->taxes, 'sequence'));
 
-        $invoice = self::getContainer()->get('doctrine')->getRepository(Invoice::class)->find(Ulid::fromString($result['id']));
+        $invoice = self::getContainer()->get('doctrine')->getRepository(Invoice::class)->find(Ulid::fromString((string) $result->id));
         self::assertInstanceOf(Invoice::class, $invoice);
         self::assertCount(2, $invoice->getLines()->first()->getTaxes());
     }
@@ -119,30 +118,29 @@ final class MultiTaxLineTest extends KernelTestCase
 
         $result = $tool->createQuote(
             $client->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             [
                 [
                     'description' => 'Service',
-                    'price' => 10000,
+                    'price' => '100',
                     'qty' => 1,
                     'taxes' => [
-                        ['tax_id' => $gst->getId()->toRfc4122(), 'sequence' => 0, 'compound' => false],
-                        ['tax_id' => $qst->getId()->toRfc4122(), 'sequence' => 1, 'compound' => true],
+                        ['tax_id' => $gst->getId()->toBase58(), 'sequence' => 0, 'compound' => false],
+                        ['tax_id' => $qst->getId()->toBase58(), 'sequence' => 1, 'compound' => true],
                     ],
                 ],
             ],
         );
 
-        self::assertArrayHasKey('lines', $result);
-        self::assertCount(1, $result['lines']);
-        $taxes = $result['lines'][0]['taxes'];
+        self::assertCount(1, $result->lines);
+        $taxes = $result->lines[0]->taxes;
         self::assertCount(2, $taxes);
-        self::assertSame('GST', $taxes[0]['name']);
-        self::assertSame('QST', $taxes[1]['name']);
-        self::assertFalse($taxes[0]['compound']);
-        self::assertTrue($taxes[1]['compound']);
+        self::assertSame('GST', $taxes[0]->name);
+        self::assertSame('QST', $taxes[1]->name);
+        self::assertFalse($taxes[0]->compound);
+        self::assertTrue($taxes[1]->compound);
 
-        $quote = self::getContainer()->get('doctrine')->getRepository(Quote::class)->find(Ulid::fromString($result['id']));
+        $quote = self::getContainer()->get('doctrine')->getRepository(Quote::class)->find(Ulid::fromString((string) $result->id));
         self::assertInstanceOf(Quote::class, $quote);
         $line = $quote->getLines()
             ->first();
@@ -173,14 +171,14 @@ final class MultiTaxLineTest extends KernelTestCase
 
         $result = $tool->createInvoice(
             $client->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             [
-                ['description' => 'Item', 'price' => 1000, 'qty' => 1, 'tax_id' => $vat->getId()->toRfc4122()],
+                ['description' => 'Item', 'price' => '10', 'qty' => 1, 'tax_id' => $vat->getId()->toBase58()],
             ],
         );
 
-        self::assertCount(1, $result['lines'][0]['taxes']);
-        self::assertSame('VAT', $result['lines'][0]['taxes'][0]['name']);
+        self::assertCount(1, $result->lines[0]->taxes);
+        self::assertSame('VAT', $result->lines[0]->taxes[0]->name);
     }
 
     public function testRejectsMissingTaxId(): void
@@ -197,9 +195,9 @@ final class MultiTaxLineTest extends KernelTestCase
 
         $tool->createInvoice(
             $client->getId()
-                ->toRfc4122(),
+                ->toBase58(),
             [
-                ['description' => 'Item', 'price' => 1000, 'qty' => 1, 'taxes' => [['sequence' => 0]]],
+                ['description' => 'Item', 'price' => '10', 'qty' => 1, 'taxes' => [['sequence' => 0]]],
             ],
         );
     }

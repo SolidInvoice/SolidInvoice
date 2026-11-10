@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f21f726bd5fcae4fad270157cc08e8b8",
+    "content-hash": "cb359a6b2750c0186cc1b09e0f189a0e",
     "packages": [
         {
             "name": "alcohol/iso4217",
@@ -5391,16 +5391,16 @@
         },
         {
             "name": "mcp/sdk",
-            "version": "v0.7.1",
+            "version": "v0.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/modelcontextprotocol/php-sdk.git",
-                "reference": "785fc3b9b7006ecc8a73322c939d96a4a7154345"
+                "reference": "be71c78bc3bce25f50d6a7e592017b8af6a2120f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/modelcontextprotocol/php-sdk/zipball/785fc3b9b7006ecc8a73322c939d96a4a7154345",
-                "reference": "785fc3b9b7006ecc8a73322c939d96a4a7154345",
+                "url": "https://api.github.com/repos/modelcontextprotocol/php-sdk/zipball/be71c78bc3bce25f50d6a7e592017b8af6a2120f",
+                "reference": "be71c78bc3bce25f50d6a7e592017b8af6a2120f",
                 "shasum": ""
             },
             "require": {
@@ -5418,7 +5418,11 @@
                 "psr/http-server-handler": "^1.0",
                 "psr/http-server-middleware": "^1.0",
                 "psr/log": "^1.0 || ^2.0 || ^3.0",
+                "symfony/deprecation-contracts": "^2.5 || ^3.0",
                 "symfony/uid": "^5.4 || ^6.4 || ^7.3 || ^8.0"
+            },
+            "conflict": {
+                "phpstan/phpstan": "2.3.0"
             },
             "require-dev": {
                 "composer/semver": "^3.0",
@@ -5432,15 +5436,20 @@
                 "phpdocumentor/shim": "^3",
                 "phpstan/phpstan": "^2.1",
                 "phpunit/phpunit": "^10.5",
+                "psr/cache": "^1.0 || ^2.0 || ^3.0",
                 "psr/simple-cache": "^2.0 || ^3.0",
                 "symfony/cache": "^5.4 || ^6.4 || ^7.3 || ^8.0",
                 "symfony/console": "^5.4 || ^6.4 || ^7.3 || ^8.0",
                 "symfony/finder": "^5.4 || ^6.4 || ^7.3 || ^8.0",
                 "symfony/http-client": "^5.4 || ^6.4 || ^7.3 || ^8.0",
+                "symfony/lock": "^5.4 || ^6.4 || ^7.3 || ^8.0",
                 "symfony/process": "^5.4 || ^6.4 || ^7.3 || ^8.0"
             },
             "suggest": {
-                "symfony/finder": "Required for file-based discovery."
+                "firebase/php-jwt": "Required for the JwtTokenValidator.",
+                "psr/cache-implementation": "Required for JwtTokenValidator::fromIssuer() to cache metadata and keys.",
+                "symfony/finder": "Required for file-based discovery.",
+                "symfony/lock": "Required for the SymfonyLockSessionLock."
             },
             "type": "library",
             "autoload": {
@@ -5469,10 +5478,10 @@
             "description": "Model Context Protocol SDK for Client and Server applications in PHP",
             "support": {
                 "issues": "https://github.com/modelcontextprotocol/php-sdk/issues",
-                "source": "https://github.com/modelcontextprotocol/php-sdk/tree/v0.7.1"
+                "source": "https://github.com/modelcontextprotocol/php-sdk/tree/v0.9.0"
             },
-            "time": "2026-08-10T20:09:23+00:00",
-            "published-time": "2026-08-14T06:19:17+00:00"
+            "time": "2026-10-18T14:29:29+00:00",
+            "published-time": "2026-10-18T14:45:02+00:00"
         },
         {
             "name": "meilisearch/meilisearch-php",
@@ -14258,20 +14267,20 @@
         },
         {
             "name": "symfony/mcp-bundle",
-            "version": "v0.12.0",
+            "version": "v1.0.0-BETA1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mcp-bundle.git",
-                "reference": "7ffd7bfab9d315a52a8224e35b32bd0db1765d44"
+                "reference": "0ab9d115aea774c93b8629c4a0ccc6751b8326f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mcp-bundle/zipball/7ffd7bfab9d315a52a8224e35b32bd0db1765d44",
-                "reference": "7ffd7bfab9d315a52a8224e35b32bd0db1765d44",
+                "url": "https://api.github.com/repos/symfony/mcp-bundle/zipball/0ab9d115aea774c93b8629c4a0ccc6751b8326f8",
+                "reference": "0ab9d115aea774c93b8629c4a0ccc6751b8326f8",
                 "shasum": ""
             },
             "require": {
-                "mcp/sdk": "^0.7",
+                "mcp/sdk": "^0.9",
                 "php-http/discovery": "^1.20",
                 "symfony/config": "^7.3|^8.0",
                 "symfony/console": "^7.3|^8.0",
@@ -14292,6 +14301,9 @@
                 "phpunit/phpunit": "^11.5.53",
                 "symfony/monolog-bundle": "^3.10 || ^4.0",
                 "symfony/twig-bundle": "^7.3|^8.0"
+            },
+            "suggest": {
+                "symfony/lock": "Required for a session lock with any store but \"file\"."
             },
             "type": "symfony-bundle",
             "extra": {
@@ -14321,7 +14333,7 @@
             ],
             "description": "Symfony integration bundle for Model Context Protocol (via official mcp/sdk)",
             "support": {
-                "source": "https://github.com/symfony/mcp-bundle/tree/v0.12.0"
+                "source": "https://github.com/symfony/mcp-bundle/tree/v1.0.0-BETA1"
             },
             "funding": [
                 {
@@ -14341,8 +14353,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-21T01:04:45+00:00",
-            "published-time": "2026-07-22T17:01:12+00:00"
+            "time": "2026-10-22T23:42:24+00:00",
+            "published-time": "2026-10-26T14:11:02+00:00"
         },
         {
             "name": "symfony/mercure",
@@ -28037,23 +28049,23 @@
         },
         {
             "name": "symfony/ai-mate",
-            "version": "v0.14.0",
+            "version": "v1.0.0-BETA1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ai-mate.git",
-                "reference": "8cbb03c1a8c3bc5ea02e4072c69c4c9ab3f67a85"
+                "reference": "ae7fe465397ba7efe5661751ec3a09fa914150c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ai-mate/zipball/8cbb03c1a8c3bc5ea02e4072c69c4c9ab3f67a85",
-                "reference": "8cbb03c1a8c3bc5ea02e4072c69c4c9ab3f67a85",
+                "url": "https://api.github.com/repos/symfony/ai-mate/zipball/ae7fe465397ba7efe5661751ec3a09fa914150c0",
+                "reference": "ae7fe465397ba7efe5661751ec3a09fa914150c0",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2",
                 "psr/container": "^1.1|^2.0",
                 "psr/log": "^2.0|^3.0",
-                "symfony/ai-mate-composer-plugin": "^0.14",
+                "symfony/ai-mate-composer-plugin": "^1.0",
                 "symfony/config": "^5.4|^6.4|^7.3|^8.0",
                 "symfony/console": "^5.4|^6.4|^7.3|^8.0",
                 "symfony/dependency-injection": "^5.4|^6.4|^7.3|^8.0",
@@ -28122,7 +28134,7 @@
                 "symfony"
             ],
             "support": {
-                "source": "https://github.com/symfony/ai-mate/tree/v0.14.0"
+                "source": "https://github.com/symfony/ai-mate/tree/v1.0.0-BETA1"
             },
             "funding": [
                 {
@@ -28142,21 +28154,21 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-09-25T00:21:15+00:00",
-            "published-time": "2026-09-25T07:08:05+00:00"
+            "time": "2026-10-26T14:03:07+00:00",
+            "published-time": "2026-10-26T14:11:03+00:00"
         },
         {
             "name": "symfony/ai-mate-composer-plugin",
-            "version": "v0.14.0",
+            "version": "v1.0.0-BETA1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ai-mate-composer-plugin.git",
-                "reference": "f7497d8a8d5b4dcaf790c88a37bf3ace2d34b817"
+                "reference": "291ff5fc6e47f9d72e217bc504efa29ae7c91f60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ai-mate-composer-plugin/zipball/f7497d8a8d5b4dcaf790c88a37bf3ace2d34b817",
-                "reference": "f7497d8a8d5b4dcaf790c88a37bf3ace2d34b817",
+                "url": "https://api.github.com/repos/symfony/ai-mate-composer-plugin/zipball/291ff5fc6e47f9d72e217bc504efa29ae7c91f60",
+                "reference": "291ff5fc6e47f9d72e217bc504efa29ae7c91f60",
                 "shasum": ""
             },
             "require": {
@@ -28169,7 +28181,7 @@
                 "phpstan/phpstan-phpunit": "^2.0",
                 "phpstan/phpstan-strict-rules": "^2.0",
                 "phpunit/phpunit": "^11.5.53",
-                "symfony/ai-mate": "^0.14"
+                "symfony/ai-mate": "^1.0"
             },
             "type": "composer-plugin",
             "extra": {
@@ -28211,7 +28223,7 @@
                 "mate"
             ],
             "support": {
-                "source": "https://github.com/symfony/ai-mate-composer-plugin/tree/v0.14.0"
+                "source": "https://github.com/symfony/ai-mate-composer-plugin/tree/v1.0.0-BETA1"
             },
             "funding": [
                 {
@@ -28231,27 +28243,27 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-09-24T22:33:15+00:00",
-            "published-time": "2026-09-25T07:07:08+00:00"
+            "time": "2026-10-26T14:03:07+00:00",
+            "published-time": "2026-10-26T14:09:56+00:00"
         },
         {
             "name": "symfony/ai-monolog-mate-extension",
-            "version": "v0.14.0",
+            "version": "v1.0.0-BETA1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ai-monolog-mate-extension.git",
-                "reference": "c4392e744f26c0a45000a40d7116673553046dc3"
+                "reference": "4359dcc302186a5897e01434dcf489dbfef385a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ai-monolog-mate-extension/zipball/c4392e744f26c0a45000a40d7116673553046dc3",
-                "reference": "c4392e744f26c0a45000a40d7116673553046dc3",
+                "url": "https://api.github.com/repos/symfony/ai-monolog-mate-extension/zipball/4359dcc302186a5897e01434dcf489dbfef385a2",
+                "reference": "4359dcc302186a5897e01434dcf489dbfef385a2",
                 "shasum": ""
             },
             "require": {
                 "monolog/monolog": "^2.0|^3.0",
                 "php": ">=8.2",
-                "symfony/ai-mate": "^0.14"
+                "symfony/ai-mate": "^1.0"
             },
             "require-dev": {
                 "helgesverre/toon": "^3.2.1",
@@ -28311,7 +28323,7 @@
                 "monolog"
             ],
             "support": {
-                "source": "https://github.com/symfony/ai-monolog-mate-extension/tree/v0.14.0"
+                "source": "https://github.com/symfony/ai-monolog-mate-extension/tree/v1.0.0-BETA1"
             },
             "funding": [
                 {
@@ -28331,26 +28343,26 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-09-25T00:21:15+00:00",
-            "published-time": "2026-09-25T07:06:59+00:00"
+            "time": "2026-10-26T14:03:07+00:00",
+            "published-time": "2026-10-26T14:10:57+00:00"
         },
         {
             "name": "symfony/ai-symfony-mate-extension",
-            "version": "v0.14.0",
+            "version": "v1.0.0-BETA1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ai-symfony-mate-extension.git",
-                "reference": "9fd6024206eb66b199b87b77ddddf58182470840"
+                "reference": "6d8aadc2dc76d4aa3ff23f6eb08550e52037883f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ai-symfony-mate-extension/zipball/9fd6024206eb66b199b87b77ddddf58182470840",
-                "reference": "9fd6024206eb66b199b87b77ddddf58182470840",
+                "url": "https://api.github.com/repos/symfony/ai-symfony-mate-extension/zipball/6d8aadc2dc76d4aa3ff23f6eb08550e52037883f",
+                "reference": "6d8aadc2dc76d4aa3ff23f6eb08550e52037883f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2",
-                "symfony/ai-mate": "^0.14",
+                "symfony/ai-mate": "^1.0",
                 "symfony/dependency-injection": "^7.3|^8.0"
             },
             "require-dev": {
@@ -28429,7 +28441,7 @@
                 "symfony"
             ],
             "support": {
-                "source": "https://github.com/symfony/ai-symfony-mate-extension/tree/v0.14.0"
+                "source": "https://github.com/symfony/ai-symfony-mate-extension/tree/v1.0.0-BETA1"
             },
             "funding": [
                 {
@@ -28449,8 +28461,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-09-24T22:33:15+00:00",
-            "published-time": "2026-09-25T07:06:43+00:00"
+            "time": "2026-10-26T14:03:07+00:00",
+            "published-time": "2026-10-26T14:09:10+00:00"
         },
         {
             "name": "symfony/browser-kit",
@@ -29413,7 +29425,12 @@
     "stability-flags": {
         "roave/security-advisories": 20,
         "solidworx/platform": 20,
-        "solidworx/toggler": 10
+        "solidworx/toggler": 10,
+        "symfony/ai-mate": 10,
+        "symfony/ai-mate-composer-plugin": 10,
+        "symfony/ai-monolog-mate-extension": 10,
+        "symfony/ai-symfony-mate-extension": 10,
+        "symfony/mcp-bundle": 10
     },
     "prefer-stable": false,
     "prefer-lowest": false,
