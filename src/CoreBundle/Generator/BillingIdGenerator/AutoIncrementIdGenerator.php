@@ -71,6 +71,9 @@ final readonly class AutoIncrementIdGenerator implements IdGeneratorInterface
                 ->getRepository($entity::class)
                 ->createQueryBuilder('e')
                 ->select(sprintf('MAX(ABS(TO_NUMBER(%s)))', $field))
+                // PostgreSQL's to_number() rejects an empty string (MySQL and SQLite read it
+                // as 0), and an unnumbered document has one.
+                ->where(sprintf("%s <> ''", $field))
                 ->getQuery()
                 ->getSingleScalarResult();
         } catch (NonUniqueResultException | NoResultException) {
