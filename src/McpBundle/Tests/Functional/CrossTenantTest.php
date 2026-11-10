@@ -162,7 +162,7 @@ final class CrossTenantTest extends KernelTestCase
         $em = self::getContainer()->get(EntityManagerInterface::class);
         $em->getFilters()->disable('company');
         $product = ProductFactory::createOne(['company' => $this->foreign['company']]);
-        $foreignId = $product->getId()?->toRfc4122();
+        $foreignId = $product->getId()?->toBase58();
         $em->clear();
         self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
         self::assertNotNull($foreignId);

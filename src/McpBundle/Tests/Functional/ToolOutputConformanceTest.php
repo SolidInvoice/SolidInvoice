@@ -49,6 +49,9 @@ use SolidInvoice\PaymentBundle\Mcp\PaymentReadTools;
 use SolidInvoice\PaymentBundle\Mcp\PaymentWriteTools;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentFactory;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentMethodFactory;
+use SolidInvoice\ProductBundle\Mcp\ProductReadTools;
+use SolidInvoice\ProductBundle\Mcp\ProductWriteTools;
+use SolidInvoice\ProductBundle\Test\Factory\ProductFactory;
 use SolidInvoice\QuoteBundle\Entity\Line as QuoteLine;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
@@ -231,6 +234,16 @@ final class ToolOutputConformanceTest extends KernelTestCase
                 [],
             ];
         }];
+        yield 'get_product' => ['get_product', static fn (self $t): array => [ProductReadTools::class, 'getProduct', ['product_id' => ProductFactory::createOne(['company' => $t->company])->getId()->toBase58()]]];
+        yield 'list_products' => ['list_products', static function (self $t): array {
+            ProductFactory::createOne(['company' => $t->company, 'tax' => TaxFactory::createOne(['company' => $t->company])]);
+
+            return [
+                ProductReadTools::class,
+                'listProducts',
+                [],
+            ];
+        }];
         yield 'list_workflow_transitions' => ['list_workflow_transitions', static fn (self $t): array => [WorkflowTools::class, 'listWorkflowTransitions', ['resource' => 'invoice', 'id' => $t->invoice()->getId()->toBase58()]]];
         yield 'get_dashboard_stats' => ['get_dashboard_stats', static function (self $t): array {
             $t->payment();
@@ -356,6 +369,10 @@ final class ToolOutputConformanceTest extends KernelTestCase
         yield 'create_tax_rate' => ['create_tax_rate', static fn (self $t): array => [TaxWriteTools::class, 'createTaxRate', ['name' => 'VAT', 'rate' => 20.0, 'type' => Tax::TYPE_EXCLUSIVE]]];
         yield 'update_tax_rate' => ['update_tax_rate', static fn (self $t): array => [TaxWriteTools::class, 'updateTaxRate', ['tax_id' => TaxFactory::createOne(['company' => $t->company])->getId()->toBase58(), 'name' => 'Renamed']]];
         yield 'delete_tax_rate' => ['delete_tax_rate', static fn (self $t): array => [TaxWriteTools::class, 'deleteTaxRate', ['id' => TaxFactory::createOne(['company' => $t->company])->getId()->toBase58()]]];
+        yield 'create_product' => ['create_product', static fn (self $t): array => [ProductWriteTools::class, 'createProduct', ['name' => 'Widget', 'price' => '49.99', 'tax_id' => TaxFactory::createOne(['company' => $t->company])->getId()->toBase58()]]];
+        yield 'create_product (no optional fields)' => ['create_product', static fn (self $t): array => [ProductWriteTools::class, 'createProduct', ['name' => 'Widget', 'price' => '49.99']]];
+        yield 'update_product' => ['update_product', static fn (self $t): array => [ProductWriteTools::class, 'updateProduct', ['product_id' => ProductFactory::createOne(['company' => $t->company])->getId()->toBase58(), 'name' => 'Renamed']]];
+        yield 'delete_product' => ['delete_product', static fn (self $t): array => [ProductWriteTools::class, 'deleteProduct', ['product_id' => ProductFactory::createOne(['company' => $t->company])->getId()->toBase58()]]];
     }
 
     private function client(): Client

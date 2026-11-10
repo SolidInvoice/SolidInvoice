@@ -20,7 +20,9 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\McpBundle\Mcp\McpScopeGuard;
+use SolidInvoice\McpBundle\Mcp\Output\DeletedOutput;
 use SolidInvoice\McpBundle\Mcp\Tool\EntityNormalizer;
+use SolidInvoice\McpBundle\Mcp\Tool\Paginator;
 use SolidInvoice\McpBundle\Security\McpOAuthAuthenticator;
 use SolidInvoice\McpBundle\Security\McpScope;
 use SolidInvoice\ProductBundle\Mcp\ProductReadTools;
@@ -51,30 +53,30 @@ final class ProductToolsTest extends KernelTestCase
 
         $tax = TaxFactory::createOne(['company' => $this->company, 'name' => 'VAT']);
 
-        $created = $write->createProduct('Widget', '12.5', 'A widget', '2', $tax->getId()->toRfc4122());
+        $created = $write->createProduct('Widget', '12.5', 'A widget', '2', $tax->getId()->toBase58());
 
-        self::assertSame('Widget', $created['name']);
-        self::assertSame('A widget', $created['description']);
-        self::assertSame('12.5', $created['price']);
-        self::assertSame('2', $created['quantity']);
-        self::assertSame('VAT', $created['tax']['name']);
-        self::assertSame($tax->getId()->toRfc4122(), $created['tax']['id']);
+        self::assertSame('Widget', $created->name);
+        self::assertSame('A widget', $created->description);
+        self::assertSame('12.5', $created->price);
+        self::assertSame('2', $created->quantity);
+        self::assertSame('VAT', $created->tax?->name);
+        self::assertSame($tax->getId()->toBase58(), $created->tax->id);
 
-        $id = $created['id'];
+        $id = $created->id;
 
-        self::assertSame(1, $read->listProducts()['count']);
-        self::assertSame(1, $read->listProducts('widg')['count']);
-        self::assertSame(0, $read->listProducts('nothing-like-this')['count']);
-        self::assertSame($id, $read->getProduct($id)['id']);
+        self::assertSame(1, $read->listProducts()->total);
+        self::assertSame(1, $read->listProducts('widg')->total);
+        self::assertSame(0, $read->listProducts('nothing-like-this')->total);
+        self::assertSame($id, $read->getProduct($id)->id);
 
         $updated = $write->updateProduct($id, name: 'Gadget', price: '99.99', tax_id: null);
-        self::assertSame('Gadget', $updated['name']);
-        self::assertSame('99.99', $updated['price']);
-        self::assertSame('2', $updated['quantity'], 'Untouched fields are kept.');
-        self::assertSame('A widget', $updated['description']);
+        self::assertSame('Gadget', $updated->name);
+        self::assertSame('99.99', $updated->price);
+        self::assertSame('2', $updated->quantity, 'Untouched fields are kept.');
+        self::assertSame('A widget', $updated->description);
 
-        self::assertSame(['deleted' => true, 'id' => $id], $write->deleteProduct($id));
-        self::assertSame(0, $read->listProducts()['count']);
+        self::assertEquals(new DeletedOutput(deleted: true, id: $id), $write->deleteProduct($id));
+        self::assertSame(0, $read->listProducts()->total);
     }
 
     public function testCreateWithForeignTaxFails(): void
@@ -138,7 +140,7 @@ final class ProductToolsTest extends KernelTestCase
         $this->setActiveScopes([McpScope::Write->value]);
 
         $write = self::getContainer()->get(ProductWriteTools::class);
-        $id = $write->createProduct('Widget', '5')['id'];
+        $id = $write->createProduct('Widget', '5')->id;
 
         try {
             $write->updateProduct($id, name: 'Changed', price: '-1');
@@ -166,7 +168,7 @@ final class ProductToolsTest extends KernelTestCase
         $gate = $this->createStub(FeatureGate::class);
         $gate->method('isEnabled')->willReturn(false);
 
-        $read = new ProductReadTools($container->get(ProductRepository::class), $container->get(EntityNormalizer::class), $container->get(McpScopeGuard::class), $gate);
+        $read = new ProductReadTools($container->get(ProductRepository::class), $container->get(EntityNormalizer::class), $container->get(Paginator::class), $container->get(McpScopeGuard::class), $gate);
         $write = new ProductWriteTools(
             $container->get(ProductRepository::class),
             $container->get(TaxRepository::class),
@@ -198,7 +200,7 @@ final class ProductToolsTest extends KernelTestCase
     private function foreignTax(): string
     {
         $tax = TaxFactory::createOne(['company' => CompanyFactory::createOne(['name' => 'Foreign Co'])]);
-        $id = $tax->getId()->toRfc4122();
+        $id = $tax->getId()->toBase58();
 
         // find() hits the identity map before the SQL filter, so drop it; creating the other
         // company also leaves the company filter unbound, so bind ours again.

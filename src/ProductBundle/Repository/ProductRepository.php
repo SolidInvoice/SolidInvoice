@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ProductBundle\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\ProductBundle\Entity\Product;
@@ -59,13 +60,21 @@ final class ProductRepository extends EntityRepository
      */
     public function search(string $term, int $limit = 10): array
     {
+        return $this->searchQueryBuilder($term)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Products whose name or description contains $term, by name.
+     */
+    public function searchQueryBuilder(string $term): QueryBuilder
+    {
         return $this->createQueryBuilder('p')
             // LOWER on both sides: LIKE is case-sensitive on PostgreSQL.
             ->where('LOWER(p.name) LIKE :term OR LOWER(p.description) LIKE :term')
             ->setParameter('term', '%' . mb_strtolower($term) . '%')
-            ->orderBy('p.name', 'ASC')
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
+            ->orderBy('p.name', 'ASC');
     }
 }

@@ -172,6 +172,7 @@ Every tool carries a title and hints that tell the agent how careful to be: whet
 | `list_payments` / `get_payment`   | List payments (optionally for an invoice and/or client), or fetch one by ID.                  |
 | `list_payment_methods` / `get_payment_method` | List configured payment methods, or fetch one by ID.                              |
 | `list_tax_rates` / `get_tax_rate` | List tax rates, or fetch one by ID.                                                           |
+| `list_products` / `get_product`   | List catalogue products (optionally matching a search term), or fetch one by ID. Needs a plan that includes products. |
 | `list_workflow_transitions`       | List the workflow transitions currently available on an invoice, quote, or recurring invoice. |
 | `get_company_info`                | Return id, name, and default currency for the active company.                                 |
 | `get_dashboard_stats`             | Outstanding and overdue totals per currency, invoice counts by status, and client count.      |
@@ -195,6 +196,9 @@ Every tool carries a title and hints that tell the agent how careful to be: whet
 | `create_tax_rate`              | Create a tax rate (name, rate, type, category, compound flag).                                |
 | `update_tax_rate`              | Update a tax rate. Pass only the fields you want to change.                                   |
 | `delete_tax_rate`              | Delete a tax rate. Destructive.                                                               |
+| `create_product`               | Create a catalogue product (name, price, description, default quantity, tax rate). Price and quantity are decimal strings. |
+| `update_product`               | Update a product. Pass only the fields you want to change.                                    |
+| `delete_product`               | Delete a product. Lines already created from it are unaffected. Destructive.                  |
 | `create_invoice`               | Create an invoice for a client with line items, optional discount, due date, and contacts.    |
 | `create_quote`                 | Create a quote for a client with line items, optional discount, due date, and contacts.       |
 | `create_recurring_invoice`     | Create a recurring invoice on a daily, weekly, monthly, or yearly cadence.                    |

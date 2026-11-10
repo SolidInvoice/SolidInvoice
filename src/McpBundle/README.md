@@ -4,8 +4,8 @@ Exposes SolidInvoice to AI agents (Claude Desktop, Cursor, Goose, mcp-inspector,
 
 ## What it gives AI agents
 
-- **Read tools** (scope `mcp:read`): list/get invoices, quotes, clients, contacts, payments, taxes, recurring invoices; dashboard analytics; payment-method and tax-rate lookups; workflow-state inspection.
-- **Write tools** (scope `mcp:write`): create/update/delete clients, contacts, tax rates and client tax identifiers; create invoices, quotes and recurring invoices; apply workflow transitions on invoices, quotes, and recurring invoices; record offline payments; clone invoices/quotes; convert a quote to an invoice; send a manual invoice reminder.
+- **Read tools** (scope `mcp:read`): list/get invoices, quotes, clients, contacts, payments, taxes, recurring invoices, products; dashboard analytics; payment-method and tax-rate lookups; workflow-state inspection.
+- **Write tools** (scope `mcp:write`): create/update/delete clients, contacts, tax rates, products and client tax identifiers; create invoices, quotes and recurring invoices; apply workflow transitions on invoices, quotes, and recurring invoices; record offline payments; clone invoices/quotes; convert a quote to an invoice; send a manual invoice reminder.
 
 Every tool call runs under **exactly one company** — bound at consent time, immutable afterwards, enforced by the Doctrine `CompanyFilter`. A token issued for company A cannot access company B's data, even if the agent requests it.
 
