@@ -37,7 +37,7 @@ use function strtoupper;
 final class CompanyCountryType extends AbstractType
 {
     // Set by Cloudflare when IP geolocation is on. Absent everywhere else (self-hosted).
-    private const string COUNTRY_HEADER = 'CF-IPCountry';
+    public const string COUNTRY_HEADER = 'CF-IPCountry';
 
     public function __construct(
         private readonly RequestStack $requestStack,
