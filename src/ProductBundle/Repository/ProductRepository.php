@@ -19,6 +19,7 @@ use SolidInvoice\ProductBundle\Entity\Product;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Uid\Ulid;
+use function mb_strtolower;
 
 /**
  * @extends EntityRepository<Product>
@@ -59,8 +60,9 @@ final class ProductRepository extends EntityRepository
     public function search(string $term, int $limit = 10): array
     {
         return $this->createQueryBuilder('p')
-            ->where('p.name LIKE :term OR p.description LIKE :term')
-            ->setParameter('term', '%' . $term . '%')
+            // LOWER on both sides: LIKE is case-sensitive on PostgreSQL.
+            ->where('LOWER(p.name) LIKE :term OR LOWER(p.description) LIKE :term')
+            ->setParameter('term', '%' . mb_strtolower($term) . '%')
             ->orderBy('p.name', 'ASC')
             ->setMaxResults($limit)
             ->getQuery()

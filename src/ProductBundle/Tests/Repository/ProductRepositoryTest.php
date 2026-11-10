@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ProductBundle\Tests\Repository;
 
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
@@ -21,8 +22,8 @@ use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\ProductBundle\Entity\Product;
 use SolidInvoice\ProductBundle\Repository\ProductRepository;
 use SolidInvoice\ProductBundle\Test\Factory\ProductFactory;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\Uid\Ulid;
 use function array_map;
 
 #[CoversClass(ProductRepository::class)]
@@ -54,9 +55,13 @@ final class ProductRepositoryTest extends KernelTestCase
         $em->clear();
 
         // Read raw: the company SQL filter would hide the other company's row from the ORM.
+        // Through the ulid type, since the column is binary on most platforms but a native uuid on PostgreSQL.
+        $connection = $em->getConnection();
+        $ulid = Type::getType(UlidType::NAME);
+
         self::assertSame(
             [$theirs->getId()->toRfc4122()],
-            array_map(static fn (string $id): string => Ulid::fromBinary($id)->toRfc4122(), $em->getConnection()->fetchFirstColumn('SELECT id FROM products')),
+            array_map(static fn (string $id): string => $ulid->convertToPHPValue($id, $connection->getDatabasePlatform())->toRfc4122(), $connection->fetchFirstColumn('SELECT id FROM products')),
         );
     }
 

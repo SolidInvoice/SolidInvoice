@@ -85,7 +85,8 @@ final class LineProductLinkTest extends KernelTestCase
     public function testClonedInvoiceKeepsProduct(): void
     {
         $product = ProductFactory::createOne(['company' => $this->company]);
-        $invoice = InvoiceFactory::createOne(['client' => ClientFactory::createOne(['company' => $this->company]), 'company' => $this->company]);
+        // Numbered, as every saved invoice is: PostgreSQL's TO_NUMBER rejects the empty default.
+        $invoice = InvoiceFactory::createOne(['client' => ClientFactory::createOne(['company' => $this->company]), 'company' => $this->company, 'invoiceId' => '1']);
         $invoice->addLine($this->invoiceLine($product));
 
         $clone = self::getContainer()->get(InvoiceCloner::class)->clone($invoice);
@@ -96,7 +97,7 @@ final class LineProductLinkTest extends KernelTestCase
     public function testClonedQuoteKeepsProduct(): void
     {
         $product = ProductFactory::createOne(['company' => $this->company]);
-        $quote = QuoteFactory::createOne(['client' => ClientFactory::createOne(['company' => $this->company]), 'company' => $this->company]);
+        $quote = QuoteFactory::createOne(['client' => ClientFactory::createOne(['company' => $this->company]), 'company' => $this->company, 'quoteId' => '1']);
         $quote->addLine($this->quoteLine($product));
 
         $clone = self::getContainer()->get(QuoteCloner::class)->clone($quote);
