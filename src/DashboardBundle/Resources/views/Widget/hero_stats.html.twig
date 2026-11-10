@@ -20,7 +20,7 @@
  # outstanding tile separated currencies with `<br>`, the overdue tile with `, `.
  #}
 {% macro statValue(values, defaultCurrency, modifiers = [], wrapper = 'stat-value') %}
-    {% import '@SolidInvoiceDashboard/money.html.twig' as money %}
+    {% import '@SolidInvoiceMoney/money.html.twig' as money %}
 
     {% if values|length > 1 %}
         <span class="{{ wrapper }} d-flex flex-column gap-1">
