@@ -184,7 +184,8 @@
                         }) }}
                         {# Separate from "+ Add Item" so it stays obvious that any custom item can be typed in. #}
                         {% if form.addProduct is defined %}
-                            <div class="add-product-picker">
+                            {# tom-select keeps its pick through a morph, so a new id per added line makes Live swap the picker for a fresh, empty one. #}
+                            <div class="add-product-picker" id="add-product-picker-{{ form.lines|length }}">
                                 {{ form_widget(form.addProduct) }}
                                 {{ form_errors(form.addProduct) }}
                                 <a href="{{ path('_products') }}" class="add-product-manage small text-muted">{{ 'product.picker.manage'|trans }}</a>
