@@ -110,9 +110,9 @@
                     </td>
                 </tr>
                 {% if quote.due %}
-                    {% set now = "now"|date("U") %}
-                    {% set dueTimestamp = quote.due|date("U") %}
-                    {% set daysDiff = ((dueTimestamp - now) / 86400)|round(0, 'floor') %}
+                    {% set now = "today"|date("U") %}
+                    {% set dueTimestamp = quote.due|date("Y-m-d")|date("U") %}
+                    {% set daysDiff = ((dueTimestamp - now) / 86400)|round %}
                     {% set isExpired = daysDiff < 0 %}
                     {% set daysExpired = (daysDiff * -1) %}
 

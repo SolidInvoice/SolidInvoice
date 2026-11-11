@@ -17,7 +17,7 @@ use ApiPlatform\Symfony\EventListener\EventPriorities;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -29,23 +29,14 @@ use Symfony\Component\Uid\Ulid;
  * PRE_VALIDATE rather than PRE_WRITE: the number has to exist before validation, so a
  * generated number goes through the same uniqueness check as a supplied one.
  */
-final readonly class AssignBillingNumberListener implements EventSubscriberInterface
+final readonly class AssignBillingNumberListener
 {
     public function __construct(
         private BillingIdGenerator $billingIdGenerator,
     ) {
     }
 
-    /**
-     * @return array<string, list<list<string|int>>>
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            KernelEvents::VIEW => [['assignNumber', EventPriorities::PRE_VALIDATE]],
-        ];
-    }
-
+    #[AsEventListener(event: KernelEvents::VIEW, priority: EventPriorities::PRE_VALIDATE)]
     public function assignNumber(ViewEvent $event): void
     {
         $document = $event->getControllerResult();

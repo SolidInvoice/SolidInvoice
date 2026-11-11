@@ -30,6 +30,8 @@ use Symfony\Component\Clock\MockClock;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Message;
+use Symfony\Component\Mime\MessageConverter;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\RateLimiter\Storage\InMemoryStorage;
 
@@ -50,7 +52,27 @@ final class HoldNewAccountClientEmailListenerTest extends TestCase
         self::assertCount(1, $this->held);
         self::assertSame(['victim@example.com'], $this->held[0]->getRecipients());
         self::assertSame('24/7 Support: +1 813 380 2097', $this->held[0]->getSubject());
-        self::assertStringContainsString('Pay now', $this->held[0]->getMessage());
+        self::assertStringContainsString('Pay now', (string) $this->held[0]->getMessage()?->toString());
+    }
+
+    // An API transport (Postmark, SendGrid, ...) can only send what MessageConverter turns back into an Email.
+    public function testHeldMessageCanBeSentThroughAnApiTransport(): void
+    {
+        $email = $this->email('2026-10-27', '24/7 Support: +1 813 380 2097');
+        $email->html('<p>Pay now</p>')->attach("%PDF-1.7\x00\xff binary", 'invoice.pdf', 'application/pdf');
+        $this->send($email);
+
+        $message = $this->held[0]->getMessage();
+
+        self::assertNotInstanceOf(Email::class, $message, 'An Email would be held again on release');
+        self::assertInstanceOf(Message::class, $message);
+
+        $converted = MessageConverter::toEmail($message);
+
+        self::assertSame('Pay now', $converted->getTextBody());
+        self::assertSame('<p>Pay now</p>', $converted->getHtmlBody());
+        self::assertCount(1, $converted->getAttachments());
+        self::assertSame("%PDF-1.7\x00\xff binary", $converted->getAttachments()[0]->getBody());
     }
 
     public function testSendsAnOrdinaryEmailFromANewAccount(): void

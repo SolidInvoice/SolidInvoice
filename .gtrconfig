@@ -1,0 +1,15 @@
+[copy]
+    include = .envrc
+    include = .env.local
+
+    excludeDirs = vendor
+
+[hooks]
+    postCreate = direnv allow
+    postCreate = symfony composer install
+    postCreate = bun install && bun run build
+
+[defaults]
+    editor = phpstorm
+    ai = claude
+    remote = origin

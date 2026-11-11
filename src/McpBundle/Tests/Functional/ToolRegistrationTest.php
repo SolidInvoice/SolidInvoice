@@ -21,6 +21,8 @@ use SolidInvoice\InvoiceBundle\Mcp\InvoiceReadTools;
 use SolidInvoice\McpBundle\Mcp\Tool\ResourceQueryTools;
 use SolidInvoice\McpBundle\Mcp\Tool\WorkflowTools;
 use SolidInvoice\PaymentBundle\Mcp\PaymentMethodReadTools;
+use SolidInvoice\ProductBundle\Mcp\ProductReadTools;
+use SolidInvoice\ProductBundle\Mcp\ProductWriteTools;
 use SolidInvoice\QuoteBundle\Mcp\QuoteReadTools;
 use SolidInvoice\SettingsBundle\Mcp\SettingsReadTools;
 use SolidInvoice\TaxBundle\Mcp\TaxReadTools;
@@ -45,6 +47,8 @@ final class ToolRegistrationTest extends KernelTestCase
             ClientReadTools::class,
             PaymentMethodReadTools::class,
             TaxReadTools::class,
+            ProductReadTools::class,
+            ProductWriteTools::class,
             AnalyticsTools::class,
             SettingsReadTools::class,
         ];

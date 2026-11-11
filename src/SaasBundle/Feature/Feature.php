@@ -39,6 +39,7 @@ enum Feature: string
     case CustomDomain = 'custom_domain';
     case CustomFields = 'custom_fields';
     case CustomTemplates = 'custom_templates';
+    case Products = 'products';
 
     public function getType(): FeatureType
     {
@@ -56,7 +57,8 @@ enum Feature: string
             self::McpAccess,
             self::CustomDomain,
             self::CustomFields,
-            self::CustomTemplates => FeatureType::BOOLEAN,
+            self::CustomTemplates,
+            self::Products => FeatureType::BOOLEAN,
         };
     }
 

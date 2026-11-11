@@ -762,6 +762,30 @@
     }
 }
 
+// "+ Add Item" and the "+ Add Product" picker share one row; the picker wraps below on narrow screens.
+
+.add-item-action-with-picker {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--tblr-space-3);
+
+    .add-item-btn {
+        flex: 1 1 12rem;
+        width: auto;
+    }
+
+    .add-product-picker {
+        flex: 0 1 18rem;
+        min-width: 12rem;
+    }
+
+    .add-product-manage {
+        display: inline-block;
+        margin-top: var(--tblr-space-1);
+    }
+}
+
 // ============================================================================
 // PER-LINE MULTI-TAX (Stacked rows in the Tax column)
 // Each .line-tax-row uses a single-row flex layout:

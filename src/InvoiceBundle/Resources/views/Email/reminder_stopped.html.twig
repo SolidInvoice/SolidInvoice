@@ -78,7 +78,7 @@
     {{ email.spacer('sm') }}
 
     {# View invoice button #}
-    {{ email.button('invoice.notification_overdue.view_invoice'|trans({}, 'email'), url("_view_invoice", {"id" : invoice.id}), 'primary', 'large') }}
+    {{ email.button('invoice.notification_overdue.view_invoice'|trans({}, 'email'), url("_invoices_view", {"id" : invoice.id}), 'primary', 'large') }}
 
     {{ email.spacer('md') }}
 

@@ -137,7 +137,7 @@
         "version": "v0.2.12"
     },
     "google/apiclient": {
-        "version": "2.19",
+        "version": "2.20",
         "recipe": {
             "repo": "github.com/symfony/recipes-contrib",
             "branch": "main",

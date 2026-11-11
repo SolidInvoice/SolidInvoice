@@ -19,7 +19,7 @@ use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvent;
 use SolidInvoice\InvoiceBundle\Event\InvoiceEvents;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -27,7 +27,7 @@ use Symfony\Component\Mailer\MailerInterface;
 /**
  * @see \SolidInvoice\InvoiceBundle\Tests\Listener\Mailer\InvoiceMailerListenerTest
  */
-class InvoiceMailerListener implements EventSubscriberInterface
+class InvoiceMailerListener
 {
     use FlashErrorTrait;
 
@@ -38,13 +38,7 @@ class InvoiceMailerListener implements EventSubscriberInterface
     ) {
     }
 
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            InvoiceEvents::INVOICE_POST_ACCEPT => 'onInvoiceAccepted',
-        ];
-    }
-
+    #[AsEventListener(event: InvoiceEvents::INVOICE_POST_ACCEPT)]
     public function onInvoiceAccepted(InvoiceEvent $event): void
     {
         $invoice = $event->getInvoice();

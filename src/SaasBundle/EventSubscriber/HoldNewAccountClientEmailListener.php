@@ -27,6 +27,7 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Message;
 use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use function array_keys;
 use function array_map;
@@ -107,7 +108,9 @@ final readonly class HoldNewAccountClientEmailListener
             $envelope->getSender()->toString(),
             array_map(static fn (Address $address): string => $address->toString(), $envelope->getRecipients()),
             (string) $message->getSubject(),
-            $message->toString(),
+            // A plain Message, not the InvoiceEmail itself: no entity is serialized with it, and no
+            // mail listener, the hold included, recognises it when it is released.
+            new Message($message->getHeaders(), $message->getBody()),
             $signals,
             $this->clock->now(),
         );

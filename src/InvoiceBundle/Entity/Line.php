@@ -39,6 +39,7 @@ use SolidInvoice\CoreBundle\Traits\Entity\LinePosition;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceLineType;
 use SolidInvoice\InvoiceBundle\Repository\LineRepository;
+use SolidInvoice\ProductBundle\Entity\Product;
 use SolidInvoice\TaxBundle\Entity\LineTax;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
@@ -203,6 +204,16 @@ class Line implements LineInterface, Stringable
     protected ?Invoice $invoice = null;
 
     /**
+     * Where this line's values were copied from. Informational only: nothing reads the
+     * product after the copy, and the link is cleared when the product is deleted.
+     */
+    #[ORM\ManyToOne(targetEntity: Product::class)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
+    #[ApiProperty(writable: false)]
+    protected ?Product $product = null;
+
+    /**
      * @var Collection<int, LineTax>
      */
     #[ORM\OneToMany(targetEntity: LineTax::class, mappedBy: 'invoiceLine', cascade: ['persist', 'remove'], orphanRemoval: true)]
@@ -348,6 +359,18 @@ class Line implements LineInterface, Stringable
     public function getQty(): BigNumber
     {
         return $this->qty;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): static
+    {
+        $this->product = $product;
+
+        return $this;
     }
 
     public function setInvoice(?Invoice $invoice): static

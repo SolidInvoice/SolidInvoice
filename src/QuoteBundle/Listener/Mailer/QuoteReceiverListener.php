@@ -15,7 +15,7 @@ namespace SolidInvoice\QuoteBundle\Listener\Mailer;
 
 use SolidInvoice\QuoteBundle\Email\QuoteEmail;
 use SolidInvoice\SettingsBundle\SystemConfig;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Address;
 use function array_map;
@@ -24,13 +24,14 @@ use function in_array;
 /**
  * @see \SolidInvoice\QuoteBundle\Tests\Listener\Mailer\QuoteReceiverListenerTest
  */
-class QuoteReceiverListener implements EventSubscriberInterface
+class QuoteReceiverListener
 {
     public function __construct(
         private readonly SystemConfig $config
     ) {
     }
 
+    #[AsEventListener(event: MessageEvent::class)]
     public function __invoke(MessageEvent $event): void
     {
         /** @var QuoteEmail $message */
@@ -53,12 +54,5 @@ class QuoteReceiverListener implements EventSubscriberInterface
         if ('' !== $bcc && ! in_array($bcc, array_map(static fn (Address $address): string => $address->getAddress(), $message->getBcc()), true)) {
             $message->addBcc($bcc);
         }
-    }
-
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            MessageEvent::class => '__invoke',
-        ];
     }
 }

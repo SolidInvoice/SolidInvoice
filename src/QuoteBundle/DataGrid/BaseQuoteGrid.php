@@ -26,6 +26,7 @@ use SolidInvoice\DataGridBundle\GridBuilder\Batch\BatchAction;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\Column;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\DateTimeColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\MoneyColumn;
+use SolidInvoice\DataGridBundle\GridBuilder\Column\RelativeDateColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Column\StringColumn;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\ChoiceFilter;
 use SolidInvoice\DataGridBundle\GridBuilder\Filter\DateRangeFilter;
@@ -83,7 +84,11 @@ abstract class BaseQuoteGrid extends Grid
             DateTimeColumn::new('created')
                 ->label('label.created')
                 ->format('d F Y')
-                ->filter(new DateRangeFilter('created'))
+                ->filter(new DateRangeFilter('created')),
+            RelativeDateColumn::new('due')
+                ->label('quote.valid_until')
+                ->format('d F Y')
+                ->filter(new DateRangeFilter('due')),
         ];
     }
 

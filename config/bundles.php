@@ -38,6 +38,7 @@ use SolidInvoice\McpBundle\SolidInvoiceMcpBundle;
 use SolidInvoice\MoneyBundle\SolidInvoiceMoneyBundle;
 use SolidInvoice\NotificationBundle\SolidInvoiceNotificationBundle;
 use SolidInvoice\PaymentBundle\SolidInvoicePaymentBundle;
+use SolidInvoice\ProductBundle\SolidInvoiceProductBundle;
 use SolidInvoice\QuoteBundle\SolidInvoiceQuoteBundle;
 use SolidInvoice\SettingsBundle\SolidInvoiceSettingsBundle;
 use SolidInvoice\TaxBundle\SolidInvoiceTaxBundle;
@@ -93,6 +94,7 @@ return [
     SolidInvoiceQuoteBundle::class => ['all' => true],
     SolidInvoiceSettingsBundle::class => ['all' => true],
     SolidInvoiceTaxBundle::class => ['all' => true],
+    SolidInvoiceProductBundle::class => ['all' => true],
     SolidInvoiceUserBundle::class => ['all' => true],
     DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
     LiipTestFixturesBundle::class => ['dev' => true, 'test' => true],

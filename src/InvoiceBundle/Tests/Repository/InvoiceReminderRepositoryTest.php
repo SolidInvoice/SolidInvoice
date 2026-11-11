@@ -146,6 +146,41 @@ final class InvoiceReminderRepositoryTest extends KernelTestCase
         self::assertSame($reminder1->getId()->toBase32(), $history[1]->getId()->toBase32());
     }
 
+    public function testGetReminderHistoryOrdersByIdWhenSentAtIsTied(): void
+    {
+        $company = CompanyFactory::createOne();
+        $invoice = InvoiceFactory::createOne(['company' => $company]);
+        $sentAt = CarbonImmutable::parse('2024-01-15');
+
+        $reminder1 = InvoiceReminderFactory::createOne([
+            'invoice' => $invoice,
+            'company' => $company,
+            'reminderType' => ReminderType::PreDue,
+            'sentAt' => $sentAt,
+        ]);
+
+        $reminder2 = InvoiceReminderFactory::createOne([
+            'invoice' => $invoice,
+            'company' => $company,
+            'reminderType' => ReminderType::Overdue1,
+            'sentAt' => $sentAt,
+        ]);
+
+        $reminder3 = InvoiceReminderFactory::createOne([
+            'invoice' => $invoice,
+            'company' => $company,
+            'reminderType' => ReminderType::Overdue7,
+            'sentAt' => $sentAt,
+        ]);
+
+        $history = $this->repository->getReminderHistory($invoice);
+
+        self::assertCount(3, $history);
+        self::assertSame($reminder1->getId()->toBase32(), $history[0]->getId()->toBase32());
+        self::assertSame($reminder2->getId()->toBase32(), $history[1]->getId()->toBase32());
+        self::assertSame($reminder3->getId()->toBase32(), $history[2]->getId()->toBase32());
+    }
+
     public function testGetReminderHistoryDoesNotReturnRemindersFromOtherInvoices(): void
     {
         $company = CompanyFactory::createOne();

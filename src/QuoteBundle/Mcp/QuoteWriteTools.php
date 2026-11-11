@@ -69,7 +69,7 @@ final readonly class QuoteWriteTools
      * @param list<array<string, mixed>>      $lines          Line items: [{name, description?, price, qty, tax_id?, taxes?: [{tax_id, sequence?, compound?}]}, ...].
      *                                                        Provide `taxes[]` for multi-tax lines (India GST, Quebec compound, etc.);
      *                                                        `tax_id` is the legacy single-tax shorthand.
-     * @param string|null                     $due            ISO-8601 due date (optional)
+     * @param string|null                     $due            ISO-8601 date the quote is valid until (optional); it expires after that day
      * @param string|null                     $discount_type  "percentage" or "money" (optional)
      * @param int|float|null                  $discount_value Numeric discount value; required if discount_type is set
      * @param string|null                     $terms          Optional terms text

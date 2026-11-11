@@ -210,6 +210,7 @@ client:
             invoices: Invoices
             payments: Payments
             quotes: Quotes
+            receipts: Receipts
 company:
     country:
         help: 'Where your business is based.'
@@ -337,12 +338,14 @@ dashboard:
     attention:
         draft_invoices: 'Draft Invoices'
         draft_label: Draft
+        expiring_quotes: 'Expiring Quotes'
         no_items: 'All caught up! Nothing needs your attention.'
         overdue_invoices: 'Overdue Invoices'
         pending_quotes: 'Pending Quotes'
         showing: '%shown% of %total%'
         title: 'Attention Required'
         upcoming_recurring: 'Upcoming Recurring'
+        valid_until: 'Until %date%'
         view_all: 'View all'
     charts:
         distribution_title: 'Invoice Status'
@@ -355,6 +358,9 @@ dashboard:
         activate_subscription:
             description: 'Pick a plan to keep your account active'
             name: 'Activate Your Subscription'
+        add_product:
+            description: 'Add a product or service you can reuse on invoices and quotes'
+            name: 'Add a Product'
         add_tax_rate:
             description: 'Configure tax rates for your invoices'
             name: 'Add a Tax Rate'
@@ -444,6 +450,9 @@ datagrid:
             create: 'Create an invoice'
             description: 'Payments land here once a client pays an invoice. Send an invoice to start getting paid.'
             title: 'No payments yet'
+        product:
+            description: 'Save the things you sell once, then add them to invoices and quotes in one click.'
+            title: 'No products yet'
         quote:
             description: 'Send a polished quote to win the work. When a client accepts, it becomes an invoice in one click.'
             title: 'No quotes yet'
@@ -500,6 +509,7 @@ email_verification:
     flash:
         send_invoice: 'Please verify your email address before sending invoices. Check your inbox for the verification link.'
         send_quote: 'Please verify your email address before sending quotes. Check your inbox for the verification link.'
+        send_receipt: 'Please verify your email address before sending receipts. Check your inbox for the verification link.'
         send_reminder: 'Please verify your email address before sending payment reminders. Check your inbox for the verification link.'
     tooltip:
         send_invoice: 'Please verify your email address before sending this invoice.'
@@ -610,6 +620,13 @@ feature:
             3: 'Auto-marks invoices paid on settlement'
         description: 'Add a Pay Now button to every invoice using your own Stripe or PayPal keys — you keep the merchant relationship.'
         headline: 'Get paid online'
+    products:
+        bullets:
+            1: 'Save names, descriptions and prices once'
+            2: 'Add them to invoices and quotes in one click'
+            3: 'Edit a product without touching past documents'
+        description: 'Save the things you sell and add them to invoices and quotes in one click, instead of retyping the same lines every time.'
+        headline: 'Bill faster with saved products'
     quotes:
         bullets:
             1: 'Custom-branded PDF quotes'
@@ -1228,8 +1245,8 @@ mcp:
         revoke_hint: 'You can revoke this app at any time from your'
         revoke_hint_link: 'connected apps'
         scope:
-            read: 'Read your invoices, quotes, clients, payments, taxes and analytics'
-            write: 'Create and modify invoices, quotes, clients, payments and taxes'
+            read: 'Read your invoices, quotes, clients, payments, taxes, products and analytics'
+            write: 'Create and modify invoices, quotes, clients, payments, taxes and products'
         title: 'Authorize application'
     error:
         title: 'Authorization error'
@@ -1238,6 +1255,7 @@ mcp:
         description: 'Your current plan does not include MCP access. Upgrade your subscription to authorize AI agents and tools.'
         title: 'MCP access not available'
 menu:
+    products: Products
     top:
         api: 'API Tokens'
         custom_fields: 'Custom Fields'
@@ -1341,6 +1359,9 @@ notifications:
         quote_status_changed:
             description: 'When a quote status changes (draft, sent, accepted, etc.)'
             title: 'Quote Status Changed'
+        recurring_invoice_created:
+            description: 'When an invoice is created automatically from a recurring invoice'
+            title: 'Recurring Invoice Created'
     flash:
         saved: 'Notification saved!'
     manage_integrations: 'Manage Integrations'
@@ -1592,6 +1613,7 @@ payment:
     menu:
         main: Payments
         methods: 'Payment Methods'
+        receipts: Receipts
     method:
         add: 'Add Payment Method'
         credit: Credit
@@ -1614,6 +1636,39 @@ payment:
         help: 'These notes are for internal use only'
         label: Notes
         placeholder: 'Add any additional notes about this payment...'
+    receipt:
+        action:
+            download: 'Download receipt'
+            send: 'Send receipt'
+            view: 'View receipt'
+        amount_paid: 'Amount paid'
+        balance: 'Balance remaining'
+        confirm_send: 'Email the receipt for each selected payment to the contacts on its invoice?'
+        description: 'Payment for invoice #%invoice%'
+        empty:
+            description: 'A receipt is available for every payment that has been received.'
+            title: 'No receipts yet'
+        flash:
+            no_contacts: 'The invoice has no contacts to send the receipt to.'
+            send_failed: 'The receipt could not be sent. Please try again.'
+            sent: 'The receipt has been sent.'
+        form:
+            send:
+                help: 'Email a receipt for this payment to the contacts on the invoice'
+                label: 'Send a digital receipt'
+        invoice_total: 'Invoice total'
+        list:
+            title: Receipts
+        modal:
+            recipients: 'The receipt will be emailed, with a PDF copy attached, to:'
+        never_sent: 'Not sent yet'
+        number: 'Receipt #'
+        payment_date: 'Payment date'
+        pdf:
+            title: Receipt
+        received_from: 'Received from'
+        sent_at: 'Receipt last sent'
+        thank_you: 'Thank you for your payment.'
     record:
         error:
             amount_invalid: 'The amount must be a decimal number, such as "150.00".'
@@ -1646,6 +1701,8 @@ payment:
         pending: Pending
         this_month: 'This Month'
         total_received: 'Total Received'
+    view:
+        title: 'Payment of %amount%'
     void:
         error:
             credit_spent: 'The client has already used the credit this payment added, so it cannot be voided.'
@@ -1668,6 +1725,31 @@ pdf:
     additional_information: 'Additional information'
     of: of
     page: Page
+product:
+    add: 'Add Product'
+    details: 'Product Details'
+    edit: 'Edit Product'
+    flash:
+        saved: 'Product successfully saved'
+    form:
+        description: 'Set the name, description, price and default tax for this product'
+        no_tax: 'No Tax'
+        price: Price
+        quantity: Quantity
+        subtitle: 'Save a product to add it to invoices and quotes in one click'
+        tax: Tax
+    grid:
+        create: 'Add Product'
+        delete_confirm: 'Are you sure you want to delete the selected products? Invoices and quotes that already use them are not affected.'
+        price: Price
+        quantity: Quantity
+        tax: Tax
+    picker:
+        manage: 'Manage products'
+        no_results: 'No products found'
+        placeholder: '+ Add Product…'
+        upgrade: '+ Add Product'
+    title: Products
 profile:
     api:
         create: 'Create Token'
@@ -1891,6 +1973,7 @@ quote:
             archive: 'Quote has been archived'
             cancel: 'Quote has been cancelled'
             decline: 'Quote has been declined'
+            expire: 'Quote has expired'
             new: 'Quote is now a draft'
             publish: 'Quote has been published'
             reopen: 'Quote has been re-opened'
@@ -1899,6 +1982,18 @@ quote:
         exception:
             accept: 'Quote cannot be accepted'
             archive: 'Quote cannot be archived'
+    valid_until: 'Valid until'
+    validity:
+        date_help: 'Set from the validity period. Choose Custom date to pick your own.'
+        label: 'Valid for'
+        period:
+            14_days: '14 days'
+            30_days: '30 days'
+            60_days: '60 days'
+            7_days: '7 days'
+            90_days: '90 days'
+            custom: 'Custom date'
+            none: 'No expiry'
     view:
         related_invoice: 'Related Invoice'
         toolbar:
@@ -2293,6 +2388,9 @@ settings:
                 pre_due_days: 'Days before due date to send pre-due reminder (0 to disable)'
                 pre_due_enabled: 'Send reminder before invoice is due'
             watermark: 'Display a watermark on the invoice with the status'
+        payment:
+            receipt:
+                auto_send: 'Email a receipt to the client whenever a payment is received'
         quote:
             bcc_address: 'Send BCC copy of quote to this address'
             email_subject: 'To include the id of the quote in the subject, add the placeholder {id} where you want the id'
@@ -2394,6 +2492,10 @@ settings:
             help: 'New invoices start with these terms. A client can have its own terms instead. Custom leaves the due date for you to fill in.'
             label: 'Default payment terms'
             title: 'Payment Terms'
+        receipt:
+            auto_send: 'Send receipts automatically'
+            auto_send_help: 'Email a receipt, with a PDF copy, to the invoice contacts whenever a payment is received: online, recorded in the app, or through the API. When recording a payment yourself you can still choose otherwise.'
+            title: 'Payment Receipts'
         reminder:
             enable: 'Enable Automatic Reminders'
             enable_help: 'When enabled, payment reminders will be sent automatically based on the schedule below.'
@@ -2417,6 +2519,7 @@ settings:
             design: Design
             email: Email
             invoice: Invoices
+            payment: Payments
             quote: Quotes
             system: Company
     save: Save

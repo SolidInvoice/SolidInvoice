@@ -20,7 +20,7 @@ Versions below are the constraints in `composer.json` / `package.json` as of thi
 
 | Thing | Constraint | Source |
 |---|---|---|
-| PHP | `>=8.4.1`, `config.platform.php = 8.4.1` | `composer.json` |
+| PHP | `>=8.4.27`, `config.platform.php = 8.4.27` | `composer.json` |
 | Symfony | `^8.1` | `composer.json`, `extra.symfony.require` |
 | Doctrine ORM / DBAL | `^3.6` / `^4.4` | `composer.json` |
 | API Platform | `^4.3` | `composer.json` |

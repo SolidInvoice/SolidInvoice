@@ -94,7 +94,7 @@ class InvoiceReminderNotification extends NotificationMessage
 
             $email->textTemplate(self::TEXT_TEMPLATE);
             $email->htmlTemplate(self::HTML_TEMPLATE);
-            $email->context($normalizedParameters);
+            $email->context($this->notificationEmailContext($normalizedParameters));
 
             $reminderType = $normalizedParameters['reminder_type'] ?? '';
             $importance = $reminderType == 'overdue_14'

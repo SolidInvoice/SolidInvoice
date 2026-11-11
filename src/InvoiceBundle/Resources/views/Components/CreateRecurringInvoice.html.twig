@@ -104,6 +104,7 @@
                                         <span class="mobile-label">{{ 'invoice.item.heading.name'|trans }}</span>
                                         {{ form_widget(item.name, {attr: {placeholder: 'invoice.item.name.placeholder'|trans, 'aria-label': 'invoice.item.name.label'|trans}}) }}
                                         {{ form_errors(item.name) }}
+                                        {{ form_widget(item.product) }}
                                         <details class="line-description"{{ item.description.vars.value is not empty ? ' open' }}>
                                             <summary class="line-description-toggle">{{ 'invoice.item.description.add'|trans }}</summary>
                                             {{ form_widget(item.description, {attr: {placeholder: 'invoice.item.description.placeholder'|trans, rows: 2, 'aria-label': 'invoice.item.description.label'|trans}}) }}
@@ -176,12 +177,28 @@
                     {% endif %}
 
                     {# Add Item Button #}
-                    <div class="add-item-action">
+                    <div class="add-item-action add-item-action-with-picker">
                         {{ form_widget(form.lines.vars.button_add, {
                             label: 'invoice.item.add'|trans,
                             attr: {class: 'add-item-btn btn-sm'}
                         }) }}
+                        {# Separate from "+ Add Item" so it stays obvious that any custom item can be typed in. #}
+                        {% if form.addProduct is defined %}
+                            {# tom-select keeps its pick through a morph, so a new id per added line makes Live swap the picker for a fresh, empty one. #}
+                            <div class="add-product-picker" id="add-product-picker-{{ form.lines|length }}">
+                                {{ form_widget(form.addProduct) }}
+                                {{ form_errors(form.addProduct) }}
+                                <a href="{{ path('_products') }}" class="add-product-manage small text-muted">{{ 'product.picker.manage'|trans }}</a>
+                            </div>
+                        {% else %}
+                            <div class="add-product-picker">
+                                <button type="button" class="btn btn-outline-secondary btn-sm w-100" disabled>{{ 'product.picker.upgrade'|trans }}</button>
+                            </div>
+                        {% endif %}
                     </div>
+                    {% if form.addProduct is not defined %}
+                        {{ upgrade_prompt('products') }}
+                    {% endif %}
                 </div>
             </div>
 

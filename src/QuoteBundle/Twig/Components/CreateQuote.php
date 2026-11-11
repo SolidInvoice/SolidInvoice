@@ -16,6 +16,7 @@ namespace SolidInvoice\QuoteBundle\Twig\Components;
 use Brick\Math\Exception\MathException;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
+use Psr\Clock\ClockInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
@@ -24,9 +25,12 @@ use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Service\CustomField\CustomFieldFormWriter;
 use SolidInvoice\CoreBundle\Twig\Components\ReordersLines;
 use SolidInvoice\MoneyBundle\Calculator;
+use SolidInvoice\ProductBundle\Repository\ProductRepository;
+use SolidInvoice\ProductBundle\Twig\Components\AddsProductLines;
 use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteClientMode;
+use SolidInvoice\QuoteBundle\Enum\QuoteValidity;
 use SolidInvoice\QuoteBundle\Form\Type\QuoteType;
 use SolidInvoice\QuoteBundle\Mailer\QuoteMailer;
 use SolidInvoice\QuoteBundle\Manager\QuoteFormManager;
@@ -58,6 +62,7 @@ final class CreateQuote extends AbstractController
 {
     use DefaultActionTrait;
     use LiveCollectionTrait;
+    use AddsProductLines;
     use ReordersLines;
 
     public QuoteFormDTO $dto;
@@ -75,6 +80,7 @@ final class CreateQuote extends AbstractController
         private readonly ClientRepository $clientRepository,
         private readonly TotalCalculator $totalCalculator,
         private readonly TaxRepository $taxRepository,
+        private readonly ProductRepository $productRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly WorkflowInterface $quoteStateMachine,
         private readonly RouterInterface $router,
@@ -84,6 +90,7 @@ final class CreateQuote extends AbstractController
         private readonly CustomFieldFormWriter $customFieldFormWriter,
         private readonly FeatureGate $featureGate,
         private readonly QuoteMailer $quoteMailer,
+        private readonly ClockInterface $clock,
     ) {
         $this->dto = new QuoteFormDTO();
     }
@@ -118,6 +125,7 @@ final class CreateQuote extends AbstractController
     public function autoSelectContactsOnClientChange(): void
     {
         $this->maybeAutoSelectContacts();
+        $this->applyValidity();
     }
 
     /**
@@ -355,6 +363,21 @@ final class CreateQuote extends AbstractController
 
         // NewClient mode - need inline data
         return $this->dto->hasInlineClientData();
+    }
+
+    /**
+     * Fill in the date from the validity period, so the user sees it before saving.
+     * QuoteFormManager applies the same rule again when the quote is saved.
+     */
+    private function applyValidity(): void
+    {
+        $validity = QuoteValidity::tryFrom((string) ($this->formValues['validity'] ?? ''));
+
+        if (! $validity instanceof QuoteValidity || $validity === QuoteValidity::Custom) {
+            return;
+        }
+
+        $this->formValues['due'] = $validity->validUntil($this->clock->now())?->format('Y-m-d') ?? '';
     }
 
     /**

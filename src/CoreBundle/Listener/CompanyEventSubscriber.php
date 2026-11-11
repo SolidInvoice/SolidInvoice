@@ -19,7 +19,7 @@ use SolidInvoice\CoreBundle\Company\ResolvedHost;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\UserBundle\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -36,7 +36,7 @@ use function in_array;
 /**
  * @see \SolidInvoice\CoreBundle\Tests\Listener\CompanyEventSubscriberTest
  */
-final readonly class CompanyEventSubscriber implements EventSubscriberInterface
+final readonly class CompanyEventSubscriber
 {
     public function __construct(
         private RouterInterface $router,
@@ -46,13 +46,7 @@ final readonly class CompanyEventSubscriber implements EventSubscriberInterface
     ) {
     }
 
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            KernelEvents::REQUEST => ['onKernelRequest', 7],
-        ];
-    }
-
+    #[AsEventListener(event: KernelEvents::REQUEST, priority: 7)]
     public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();

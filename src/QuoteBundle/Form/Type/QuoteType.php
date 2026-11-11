@@ -27,9 +27,11 @@ use SolidInvoice\CoreBundle\Form\Type\CustomFieldValueCollectionType;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
+use SolidInvoice\ProductBundle\Form\Type\ProductAutocompleteType;
 use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteClientMode;
+use SolidInvoice\QuoteBundle\Enum\QuoteValidity;
 use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Form\Type\InvoiceTaxType;
@@ -37,6 +39,7 @@ use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -169,6 +172,15 @@ class QuoteType extends AbstractType
             ]
         );
 
+        if ($this->featureGate->isEnabled(Feature::Products->value)) {
+            // Not part of the document: choosing a product adds a line (see AddsProductLines), then clears itself.
+            $builder->add('addProduct', ProductAutocompleteType::class, [
+                'mapped' => false,
+                'label' => false,
+                'attr' => ['data-action' => 'change->live#action', 'data-live-action-param' => 'addProductLine'],
+            ]);
+        }
+
         $builder->add(
             'invoiceTaxes',
             LiveCollectionType::class,
@@ -191,6 +203,19 @@ class QuoteType extends AbstractType
         $data = $dto->quoteId !== '' ? $dto->quoteId : $this->billingIdGenerator->generate(new Quote(), ['field' => 'quoteId']);
 
         $builder->add('quoteId', null, ['data' => $data]);
+
+        $builder->add('validity', EnumType::class, [
+            'class' => QuoteValidity::class,
+            'choice_label' => static fn (QuoteValidity $validity): string => $validity->getLabel(),
+            'label' => 'quote.validity.label',
+            'empty_data' => QuoteValidity::None->value,
+        ]);
+        $builder->add('due', DateType::class, [
+            'widget' => 'single_text',
+            'label' => 'quote.valid_until',
+            'required' => false,
+            'input' => 'datetime_immutable',
+        ]);
 
         $builder->add('terms');
         $builder->add('notes', null, ['help' => 'billing.notes_help']);
@@ -241,6 +266,10 @@ class QuoteType extends AbstractType
                             $groups[] = 'new_client';
                         } else {
                             $groups[] = 'existing_client';
+                        }
+
+                        if ($data->validity === QuoteValidity::Custom) {
+                            $groups[] = 'custom_validity';
                         }
                     }
 

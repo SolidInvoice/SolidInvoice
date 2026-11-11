@@ -14,12 +14,14 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Manager;
 
 use InvalidArgumentException;
+use Psr\Clock\ClockInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Contact;
 use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteClientMode;
+use SolidInvoice\QuoteBundle\Enum\QuoteValidity;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use SolidInvoice\TaxBundle\Entity\Tax;
@@ -31,6 +33,7 @@ final readonly class QuoteFormManager
 {
     public function __construct(
         private SystemConfig $systemConfig,
+        private ClockInterface $clock,
     ) {
     }
 
@@ -49,7 +52,8 @@ final readonly class QuoteFormManager
 
         // Map DTO fields to entity
         $quote->setQuoteId($dto->quoteId);
-        $quote->setDue($dto->due);
+        // A period counts from the day it is picked, on edit as well as on create.
+        $quote->setDue($dto->validity->resolve($this->clock->now(), $dto->due));
         $quote->setDiscount($dto->discount);
         $quote->setTerms($dto->terms);
         $quote->setNotes($dto->notes);
@@ -94,7 +98,8 @@ final readonly class QuoteFormManager
         $quote->setClient($client);
 
         $quote->setQuoteId($dto->quoteId);
-        $quote->setDue($dto->due);
+        // A period counts from the day it is picked, on edit as well as on create.
+        $quote->setDue($dto->validity->resolve($this->clock->now(), $dto->due));
         $quote->setDiscount($dto->discount);
         $quote->setTerms($dto->terms);
         $quote->setNotes($dto->notes);
@@ -156,6 +161,7 @@ final readonly class QuoteFormManager
         // Map entity fields to DTO
         $dto->quoteId = $quote->getQuoteId();
         $dto->due = $quote->getDue();
+        $dto->validity = QuoteValidity::forDate($quote->getDue());
         $dto->discount = $quote->getDiscount();
         $dto->terms = $quote->getTerms();
         $dto->notes = $quote->getNotes();

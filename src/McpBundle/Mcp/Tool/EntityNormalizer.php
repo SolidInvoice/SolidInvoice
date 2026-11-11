@@ -25,6 +25,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Entity\PaymentMethod;
+use SolidInvoice\ProductBundle\Entity\Product;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use SolidInvoice\TaxBundle\Entity\LineTax;
@@ -51,6 +52,7 @@ final class EntityNormalizer
             $entity instanceof Payment => $this->payment($entity),
             $entity instanceof PaymentMethod => $this->paymentMethod($entity),
             $entity instanceof Tax => $this->tax($entity),
+            $entity instanceof Product => $this->product($entity),
             $entity instanceof TaxIdentifier => $this->taxIdentifier($entity),
             default => throw new ToolCallException(sprintf(
                 'Unsupported entity type "%s". Add a dedicated serializer before exposing it via MCP.',
@@ -357,6 +359,25 @@ final class EntityNormalizer
             'type' => $tax->getType(),
             'category' => $tax->getCategory()->value,
             'compound' => $tax->isCompound(),
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function product(Product $product): array
+    {
+        $tax = $product->getTax();
+
+        return [
+            'id' => $product->getId()?->toRfc4122(),
+            'name' => $product->getName(),
+            'description' => $product->getDescription(),
+            'price' => $this->bigNumber($product->getPrice()),
+            'quantity' => $this->bigNumber($product->getQuantity()),
+            'tax' => $tax instanceof Tax ? ['id' => $tax->getId()->toRfc4122(), 'name' => $tax->getName()] : null,
+            'created' => $this->date($product->getCreated()),
+            'updated' => $this->date($product->getUpdated()),
         ];
     }
 

@@ -80,6 +80,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: Quote::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: QuoteRepository::class)]
+#[ORM\Index(name: 'idx_quote_expiry_scan', columns: ['due', 'status'])]
 #[ORM\HasLifecycleCallbacks]
 #[ApiFilter(SearchFilter::class, properties: ['status' => 'exact', 'client' => 'exact', 'quoteId' => 'partial', 'client.name' => 'partial'])]
 #[ApiFilter(DateFilter::class, properties: ['due', 'created', 'updated'])]

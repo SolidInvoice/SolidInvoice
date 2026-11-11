@@ -35,3 +35,4 @@
 
 {{ '-'|repeat(60) }}
 {{ 'client.create.view_client'|trans({}, 'email') }}: {{ url('_clients_view', {'id': client.id}) }}
+{{ include('@SolidInvoiceCore/Layout/Email/_notification_footer.txt.twig') }}

@@ -65,6 +65,14 @@ notification:
 payment:
     amount:
         greater_than_zero: 'This value should be greater than {{ compared_value }}.'
+product:
+    price:
+        negative: 'The price cannot be negative.'
+        too_large: 'The price is too large. It can have at most 13 digits before the decimal point.'
+        too_many_decimals: 'The price can have at most 6 decimal places.'
+    quantity:
+        not_positive: 'The quantity should be greater than zero.'
+        too_large: 'The quantity is too large. It can have at most 14 digits before the decimal point.'
 quote:
     lines:
         min: 'You need to add at least 1 line to the Quote'
@@ -72,6 +80,8 @@ quote:
         unique: 'This quote number is already in use.'
     users:
         min: 'Choose who gets this quote. If the client has no contacts yet, add one with an email address.'
+    validity:
+        date_required: 'Choose the date this quote is valid until.'
 recurring_invoice:
     end_date:
         future: 'End date must be in the future'

@@ -185,6 +185,7 @@ return App::config([
                         QuoteStatus::Archived->value,
                         QuoteStatus::Accepted->value,
                         QuoteStatus::Declined->value,
+                        QuoteStatus::Expired->value,
                     ],
                     'transitions' => [
                         [
@@ -219,13 +220,19 @@ return App::config([
                         ],
                         [
                             'name' => QuoteGraph::TRANSITION_REOPEN,
-                            'from' => [QuoteStatus::Declined->value, QuoteStatus::Cancelled->value],
+                            'from' => [QuoteStatus::Declined->value, QuoteStatus::Cancelled->value, QuoteStatus::Expired->value],
                             'to' => [QuoteStatus::Draft->value],
                         ],
                         [
                             'name' => QuoteGraph::TRANSITION_ARCHIVE,
-                            'from' => [QuoteStatus::New->value, QuoteStatus::Draft->value, QuoteStatus::Cancelled->value, QuoteStatus::Accepted->value, QuoteStatus::Declined->value, QuoteStatus::Pending->value],
+                            'from' => [QuoteStatus::New->value, QuoteStatus::Draft->value, QuoteStatus::Cancelled->value, QuoteStatus::Accepted->value, QuoteStatus::Declined->value, QuoteStatus::Pending->value, QuoteStatus::Expired->value],
                             'to' => [QuoteStatus::Archived->value],
+                        ],
+                        [
+                            // Applied by ExpireQuotesCommand once the validity date has passed.
+                            'name' => QuoteGraph::TRANSITION_EXPIRE,
+                            'from' => [QuoteStatus::Pending->value],
+                            'to' => [QuoteStatus::Expired->value],
                         ],
                     ],
                 ],

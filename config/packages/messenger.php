@@ -17,6 +17,7 @@ use SolidInvoice\CoreBundle\Export\Message\RequestCompanyExport;
 use SolidInvoice\CoreBundle\Telemetry\Message\SendTelemetryMessage;
 use SolidInvoice\CronBundle\Messenger\SentrySchedulerMiddleware;
 use SolidInvoice\InvoiceBundle\Message\SendInvoiceReminderMessage;
+use SolidInvoice\QuoteBundle\Message\ExpireQuotes;
 use SolidInvoice\SaasBundle\Message\SendOnboardingEmailMessage;
 use SolidInvoice\SaasBundle\Message\SendTrialDowngradedEmailMessage;
 
@@ -54,6 +55,8 @@ return App::config([
                 // the handler runs synchronously and a slow/unreachable mail server causes
                 // the cron to exceed Sentry's max_runtime → perpetual "timeout" alerts.
                 SendInvoiceReminderMessage::class => ['async'],
+                // Quote expiry runs one message per company, so the daily cron only lists companies.
+                ExpireQuotes::class => ['async'],
                 // Full company data exports are long-running and email the user on completion,
                 // so they must run out-of-band from the HTTP request that triggered them.
                 RequestCompanyExport::class => ['async'],

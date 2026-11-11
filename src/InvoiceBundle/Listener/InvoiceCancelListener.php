@@ -25,21 +25,11 @@ use SolidInvoice\InvoiceBundle\Repository\CreditNoteRepository;
 use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use function assert;
 
-class InvoiceCancelListener implements EventSubscriberInterface
+class InvoiceCancelListener
 {
-    /**
-     * @return array<string, string>
-     */
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            InvoiceEvents::INVOICE_POST_CANCEL => 'onInvoiceCancelled',
-        ];
-    }
-
     public function __construct(
         private readonly ManagerRegistry $registry,
         private readonly CreditNoteRepository $creditNoteRepository,
@@ -49,6 +39,7 @@ class InvoiceCancelListener implements EventSubscriberInterface
     /**
      * @throws MathException
      */
+    #[AsEventListener(event: InvoiceEvents::INVOICE_POST_CANCEL)]
     public function onInvoiceCancelled(InvoiceEvent $event): void
     {
         $invoice = $event->getInvoice();

@@ -15,7 +15,7 @@ namespace SolidInvoice\UserBundle\Onboarding\EventSubscriber;
 
 use SolidInvoice\UserBundle\Entity\User;
 use SolidInvoice\UserBundle\Onboarding\Manager\OnboardingManager;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
@@ -30,7 +30,7 @@ use function count;
  * This listener runs only once per login, avoiding the performance overhead of checking
  * onboarding status on every request.
  */
-final readonly class OnboardingLoginListener implements EventSubscriberInterface
+final readonly class OnboardingLoginListener
 {
     public function __construct(
         private OnboardingManager $onboardingManager,
@@ -38,13 +38,7 @@ final readonly class OnboardingLoginListener implements EventSubscriberInterface
     ) {
     }
 
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            LoginSuccessEvent::class => ['onLoginSuccess', -10], // Run after default handlers
-        ];
-    }
-
+    #[AsEventListener(event: LoginSuccessEvent::class, priority: -10)]
     public function onLoginSuccess(LoginSuccessEvent $event): void
     {
         // Onboarding is a web page. A token login on a stateless firewall (API, MCP) must get its API

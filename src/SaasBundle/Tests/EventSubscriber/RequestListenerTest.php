@@ -24,6 +24,7 @@ use PHPUnit\Framework\Attributes\Group;
 use Psr\Clock\ClockInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
+use SolidInvoice\CoreBundle\Test\Traits\EventListenerAttributeTrait;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\SaasBundle\EventSubscriber\RequestListener;
 use SolidInvoice\SaasBundle\Message\SendTrialDowngradedEmailMessage;
@@ -59,6 +60,8 @@ use Twig\Environment;
 #[Group('functional')]
 final class RequestListenerTest extends KernelTestCase
 {
+    use EventListenerAttributeTrait;
+
     use M\Adapter\Phpunit\MockeryPHPUnitIntegration;
     use EnsureApplicationInstalled;
 
@@ -73,9 +76,9 @@ final class RequestListenerTest extends KernelTestCase
     public function testGetSubscribedEvents(): void
     {
         self::assertSame([
-            RequestEvent::class => 'onRequest',
-            ResponseEvent::class => 'onResponse',
-        ], RequestListener::getSubscribedEvents());
+            RequestEvent::class => ['onRequest', 0],
+            ResponseEvent::class => ['onResponse', 0],
+        ], self::listenedEvents(RequestListener::class));
     }
 
     public function testOnRequestWithNoUser(): void
