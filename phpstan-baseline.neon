@@ -282,7 +282,6 @@ parameters:
 			count: 1
 			path: src/CoreBundle/Tests/FormTestCase.php
 
-
 		-
 			message: '#^Call to function is_a\(\) with arguments ''SolidInvoice\\\\CoreBundle\\\\Search\\\\QualifiedResultFormatterInterface'', ''SolidInvoice\\\\CoreBundle\\\\Search\\\\ResultFormatterInterface'' and true will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
