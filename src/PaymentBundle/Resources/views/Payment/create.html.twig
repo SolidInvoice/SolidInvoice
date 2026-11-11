@@ -92,7 +92,7 @@
                                     {% if invoice.due is not empty %}
                                         <div class="detail-item">
                                             <span class="detail-label">{{ 'billing.due_date'|trans }}</span>
-                                            <span class="detail-value{% if invoice.due < date() %} text-danger{% endif %}">
+                                            <span class="detail-value{% if days_until_due(invoice.due) < 0 %} text-danger{% endif %}">
                                                 {{ invoice.due|date('d M Y') }}
                                             </span>
                                         </div>
