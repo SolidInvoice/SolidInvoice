@@ -13,15 +13,14 @@ declare(strict_types=1);
 
 namespace SolidInvoice\ClientBundle\Repository;
 
-use Brick\Math\BigDecimal;
-use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
+use Brick\Math\RoundingMode;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Credit;
+use SolidInvoice\ClientBundle\Exception\InsufficientCreditException;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
-use function assert;
 
 /**
  * @extends EntityRepository<Credit>
@@ -36,34 +35,56 @@ class CreditRepository extends EntityRepository
     /**
      * @throws MathException
      */
-    public function addCredit(Client $client, BigNumber | float | int | string $amount): Credit
+    public function addCredit(Client $client, BigNumber | float | int | string $amount): void
     {
+        $amountInt = BigNumber::of(is_float($amount) ? (string) $amount : $amount)
+            ->toScale(0, RoundingMode::HalfEven)
+            ->toInt();
+
+        $this->createQueryBuilder('c')
+            ->update()
+            ->set('c.value', 'c.value + :amount')
+            ->where('c.client = :client')
+            ->setParameter('amount', $amountInt)
+            ->setParameter('client', $client)
+            ->getQuery()
+            ->execute();
+
         $credit = $client->getCredit();
 
-        $value = $credit->getValue();
-        assert($value instanceof BigInteger || $value instanceof BigDecimal);
-
-        $credit->setValue($value->plus($amount));
-
-        $this->save($credit);
-
-        return $credit;
+        if ($this->getEntityManager()->contains($credit)) {
+            $this->getEntityManager()->refresh($credit);
+        }
     }
 
     /**
      * @throws MathException
+     * @throws InsufficientCreditException
      */
-    public function deductCredit(Client $client, BigNumber | float | int | string $amount): Credit
+    public function deductCredit(Client $client, BigNumber | float | int | string $amount): void
     {
+        $amountInt = BigNumber::of(is_float($amount) ? (string) $amount : $amount)
+            ->toScale(0, RoundingMode::HalfEven)
+            ->toInt();
+
+        $updated = $this->createQueryBuilder('c')
+            ->update()
+            ->set('c.value', 'c.value - :amount')
+            ->where('c.client = :client')
+            ->andWhere('c.value >= :amount')
+            ->setParameter('amount', $amountInt)
+            ->setParameter('client', $client)
+            ->getQuery()
+            ->execute();
+
+        if ($updated === 0) {
+            throw new InsufficientCreditException();
+        }
+
         $credit = $client->getCredit();
 
-        $value = $credit->getValue();
-        assert($value instanceof BigInteger || $value instanceof BigDecimal);
-
-        $credit->setValue($value->minus($amount));
-
-        $this->save($credit);
-
-        return $credit;
+        if ($this->getEntityManager()->contains($credit)) {
+            $this->getEntityManager()->refresh($credit);
+        }
     }
 }
