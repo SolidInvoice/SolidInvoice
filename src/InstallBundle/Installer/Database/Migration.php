@@ -68,17 +68,47 @@ final readonly class Migration
         // ORM 3's SchemaTool::getUpdateSchemaSql() no longer has a "save mode" (the
         // boolean second argument was removed in ORM 3), so it now emits DROP TABLE
         // statements for any table present in the database but absent from the ORM
-        // metadata. The migrations metadata table (created by ensureInitialized()
-        // above) is exactly such a table, so without excluding it the generated SQL
-        // would try to drop it. Filter it out of the schema introspection while the
-        // update SQL is computed.
+        // metadata. Two categories of tables must be excluded from the schema
+        // introspection while the update SQL is computed:
+        //
+        // 1. The migrations metadata table (created by ensureInitialized() above) —
+        //    it is not an ORM entity, so without excluding it the generated SQL would
+        //    try to drop it.
+        //
+        // 2. Any other table that exists in the database but is not managed by the
+        //    current ORM configuration. The most common case is the `saas_plan` table
+        //    (and other SaaS-bundle tables) which are present in the database when the
+        //    app was previously run in SaaS mode, but are absent from ORM metadata
+        //    when the app is running in non-SaaS mode. Without filtering these out,
+        //    getUpdateSchemaSql() would generate DROP TABLE statements for them, which
+        //    then fail on SQLite with "no such table" because the table is either
+        //    physically absent or has already been removed mid-sequence.
         $dbalConfiguration = $conn->getConfiguration();
         $previousFilter = $dbalConfiguration->getSchemaAssetsFilter();
         $migrationsTable = $this->migrationsTableName();
 
+        // Build the complete set of table names managed by the current ORM: entity
+        // primary tables plus join tables from ManyToMany associations.
+        $ormTableNames = [];
+        foreach ($tables as $classMetadata) {
+            $ormTableNames[$classMetadata->getTableName()] = true;
+            foreach ($classMetadata->getAssociationMappings() as $mapping) {
+                if (isset($mapping['joinTable']['name'])) {
+                    $ormTableNames[$mapping['joinTable']['name']] = true;
+                }
+            }
+        }
+
         $dbalConfiguration->setSchemaAssetsFilter(
-            static function (string $assetName) use ($previousFilter, $migrationsTable): bool {
+            static function (string $assetName) use ($previousFilter, $migrationsTable, $ormTableNames): bool {
                 if ($migrationsTable !== null && $assetName === $migrationsTable) {
+                    return false;
+                }
+
+                // Exclude any DB table not managed by the current ORM configuration.
+                // This prevents DROP TABLE from being generated for tables that belong
+                // to conditionally-loaded bundles (e.g. SaaS tables in non-SaaS mode).
+                if (! isset($ormTableNames[$assetName])) {
                     return false;
                 }
 
