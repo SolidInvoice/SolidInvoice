@@ -41,7 +41,44 @@
 {% endblock user_menu_items %}
 
 {% block footer %}
-    <small>{{ "layout.powered_by"|trans }} <a href="https://solidinvoice.co">{{ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}</a>{% if app_version %} - {{ app_version }}{% endif %} &middot; <a href="{{ feedback_form_url }}" target="_blank" rel="noopener">{{ 'layout.feedback'|trans }}</a>{% if affiliate_program().enabled %} &middot; <a href="{{ path('_profile_affiliate', {source: 'footer'}) }}" class="text-secondary">{{ 'affiliate.footer_link'|trans }}</a>{% endif %}</small>
+    <footer class="footer footer-transparent d-print-none bg-white">
+        <div class="container-xl">
+            <div class="row text-center align-items-center flex-row-reverse">
+                <div class="col-lg-auto ms-lg-auto">
+                    <nav>
+                        <ul class="list-inline list-inline-dots mb-0">
+                            <li class="list-inline-item">
+                                <a href="{{ feedback_form_url }}" class="link-secondary" target="_blank" rel="noopener">{{ 'layout.feedback'|trans }}</a>
+                            </li>
+                            {% if affiliate_program().enabled %}
+                                <li class="list-inline-item">
+                                    <a href="{{ path('_profile_affiliate', {source: 'footer'}) }}" class="text-secondary">{{ 'affiliate.footer_link'|trans }}</a>
+                                </li>
+                            {% endif %}
+                            <li class="list-inline-item">
+                                <a href="https://solidinvoice.co/docs" target="_blank" class="link-secondary" rel="noopener">{{ 'layout.documentation'|trans }}</a>
+                            </li>
+                            {% if not toggle('saas_enabled') %}
+                                <li class="list-inline-item">
+                                    <a href="https://github.com/sponsors/solidinvoice" target="_blank" class="link-secondary" rel="noopener">
+                                        {{ ux_icon('tabler:heart', {width: 16, height: 16, class: 'icon text-pink icon-inline'}) }}
+                                        {{ 'layout.sponsor'|trans }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-12 col-lg-auto mt-3 mt-lg-0">
+                    <ul class="list-inline list-inline-dots mb-0">
+                        <li class="list-inline-item">
+                            {{ "layout.powered_by"|trans }} <a href="https://solidinvoice.co">{{ constant('SolidInvoice\\CoreBundle\\SolidInvoiceCoreBundle::APP_NAME') }}</a>{% if app_version %} - {{ app_version }}{% endif %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
 {% endblock footer %}
 
 {% block sidebar_brand %}

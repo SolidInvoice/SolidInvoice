@@ -1223,9 +1223,11 @@ layout:
         open_create_menu: 'Open create menu'
         open_user_menu: 'Open user menu'
     data_export: 'Data Export'
+    documentation: 'Documentation'
     feedback: 'Share feedback'
     powered_by: 'Powered by'
     profile: Profile
+    sponsor: 'Powered by'
     unsplash_credit: 'Download free do whatever you want high-resolution photos from Julian Zett'
 mcp:
     connected_apps:
