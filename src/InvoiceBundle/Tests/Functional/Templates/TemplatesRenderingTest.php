@@ -349,7 +349,7 @@ final class TemplatesRenderingTest extends KernelTestCase
     public function testStandaloneDocumentUsesTheLightPalette(int $days, string $label, string $expected): void
     {
         $invoice = $this->createFixtureInvoice(
-            due: CarbonImmutable::now()->addDays($days)->addHours(6)
+            due: CarbonImmutable::today()->addDays($days)->addHours(6)
         );
 
         $twig = self::getContainer()->get('twig');
