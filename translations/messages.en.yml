@@ -1227,7 +1227,7 @@ layout:
     feedback: 'Share feedback'
     powered_by: 'Powered by'
     profile: Profile
-    sponsor: 'Powered by'
+    sponsor: 'Sponsor'
     unsplash_credit: 'Download free do whatever you want high-resolution photos from Julian Zett'
 mcp:
     connected_apps:
