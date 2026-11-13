@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euxo pipefail
+set -euo pipefail
 
 # SolidInvoice Binary Builder Wrapper
 #
@@ -30,7 +30,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # static-php-cli overrides PATH to use its own installed xcaddy
 # We need to replace their xcaddy binary with ours
-# Location: dist/static-php-cli/pkgroot/{arch}-{os}/go-xcaddy/bin/xcaddy
+# Location: dist/pkgroot/{arch}-{os}/go-xcaddy/bin/xcaddy
 
 # Detect arch and os using static-php-cli's naming convention
 spc_arch="$(uname -m)"
@@ -44,8 +44,10 @@ esac
 # static-php-cli uses "darwin" not "mac"
 
 FAKE_XCADDY="${SCRIPT_DIR}/bin/xcaddy"
-SPC_XCADDY_DIR="${SCRIPT_DIR}/dist/static-php-cli/pkgroot/${spc_arch}-${spc_os}/go-xcaddy/bin"
+SPC_XCADDY_DIR="${SCRIPT_DIR}/dist/pkgroot/${spc_arch}-${spc_os}/go-xcaddy/bin"
 SPC_XCADDY="${SPC_XCADDY_DIR}/xcaddy"
+
+export PHP_EXTENSIONS="excimer,amqp,apcu,ast,bcmath,brotli,bz2,calendar,ctype,curl,dba,deepclone,dom,exif,fileinfo,filter,gd,gmp,gettext,iconv,igbinary,imagick,intl,lz4,mbregex,mbstring,memcached,mysqli,mysqlnd,opcache,openssl,password-argon2,parallel,pcntl,pdo,pdo_mysql,pdo_pgsql,pdo_sqlite,pgsql,phar,posix,readline,redis,session,shmop,simplexml,soap,sockets,sodium,sqlite3,sysvmsg,sysvsem,sysvshm,tidy,tokenizer,xlswriter,xml,xmlreader,xmlwriter,xsl,xz,zip,zlib,yaml,zstd"
 
 if [ ! -f "${FAKE_XCADDY}" ]; then
 	echo "Error: Fake xcaddy script not found at ${FAKE_XCADDY}"
@@ -96,33 +98,10 @@ if [ -z "${PHP_VERSION:-}" ]; then
 	export PHP_VERSION="8.5"
 fi
 
-# SolidInvoice-specific extensions (removed problematic/unnecessary ones)
-
-if [ -z "${PHP_EXTENSIONS:-}" ]; then
-    # brotli: ext-brotli's bundled libbrotli is newer than spc's pre-built one, whose headers
-    # win, so a cold build fails (BROTLI_DECODER_ERROR_FORMAT_BLOCK_SWITCH undeclared).
-    # Nothing calls brotli_*; caddy-cbrotli only needs the library, which build-static.sh keeps.
-    export PHP_EXTENSIONS=$(cat ./build-static.sh | grep 'defaultExtensions="' | head -n 1 | sed 's/.*defaultExtensions="//' | sed 's/".*//' | tr ',' '\n' | grep -v -E 'ssh2|gmp|pdo_sqlsrv|memcache|memcached|brotli' | tr '\n' ',' | sed 's/,$//')
-    # excimer is required for Sentry profiling (profiles_sample_rate > 0).
-    # It is not in the upstream default set so we add it here.
-    export PHP_EXTENSIONS="${PHP_EXTENSIONS},excimer"
-fi
-
-if [ -z "${PHP_EXTENSION_LIBS:-}" ]; then
-	export PHP_EXTENSION_LIBS="libavif,nghttp2,nghttp3,ngtcp2"
-	# On the macos-26 runners, libngtcp2_crypto_ossl.a comes out of static-php-cli without its
-	# symbols, so linking libcurl fails with undefined _ngtcp2_crypto_* symbols. Leave out
-	# HTTP/3 for libcurl (PHP's outbound curl) on macOS. Caddy's HTTP/3 is pure Go and is unaffected.
-	# ponytail: re-add nghttp3,ngtcp2 on macOS once static-php-cli's ngtcp2 archive links on Xcode 26.
-	if [ "$(uname -s)" = "Darwin" ]; then
-		export PHP_EXTENSION_LIBS="libavif,nghttp2"
-	fi
-fi
-
 echo "PHP Configuration:"
 echo "  Version: ${PHP_VERSION}"
 echo "  Extensions: ${PHP_EXTENSIONS}"
-echo "  Libraries: ${PHP_EXTENSION_LIBS}"
+#echo "  Libraries: ${PHP_EXTENSION_LIBS}"
 echo ""
 
 # ============================================================================
@@ -183,7 +162,7 @@ fi
 # In a static build with empty --prefix, phpincludedir is unset so the check fails even
 # though the APCu source is bundled at source/php-src/ext/apcu/apc_serializer.h.
 # Pointing phpincludedir to the PHP source tree fixes the check without modifying spc internals.
-export phpincludedir="${SCRIPT_DIR}/dist/static-php-cli/source/php-src"
+export phpincludedir="${SCRIPT_DIR}/dist/source/php-src"
 
 # Run the upstream build script.
 # We unset RELEASE so build-static.sh does not attempt to upload to dunglas/frankenphp.

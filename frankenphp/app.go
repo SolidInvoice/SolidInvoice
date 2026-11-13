@@ -14,6 +14,8 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
+	"runtime/debug"
 	"strconv"
 	"strings"
 	"syscall"
@@ -44,6 +46,10 @@ import (
 )
 
 const appName = "SolidInvoice"
+
+// version is set at build time with -ldflags "-X main.version=..." (see bin/xcaddy).
+var version = "dev"
+
 const appDescription = "Simple and elegant invoicing solution"
 const defaultPort = "8765"
 
@@ -714,14 +720,18 @@ func setupCommands() {
 	workerCmd.PersistentFlags().StringVar(&logFormat, "log-format", "console", "Log output format: 'json' for structured JSON logs, or 'console' (default) for human-readable output")
 
 	rootCmd.AddCommand(&cobra.Command{
-		Use:                "version",
-		Short:              "Display application version",
-		DisableFlagParsing: true,
-		RunE:               runCaddyCommand("version"),
+		Use:   "version",
+		Short: "Display application version",
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Printf("%s %s\n", appName, version)
+			fmt.Printf("PHP %s, FrankenPHP %s, Caddy %s, %s %s/%s\n",
+				frankenphp.Version().Version, moduleVersion("github.com/dunglas/frankenphp"),
+				moduleVersion("github.com/caddyserver/caddy/v2"), runtime.Version(), runtime.GOOS, runtime.GOARCH)
+		},
 	})
 	rootCmd.AddCommand(&cobra.Command{
 		Use:                "build-info",
-		Short:              "Display application version",
+		Short:              "Display build information and module versions",
 		DisableFlagParsing: true,
 		RunE:               runCaddyCommand("build-info"),
 	})
@@ -730,10 +740,30 @@ func setupCommands() {
 		Short:              "Run the embedded console commands",
 		DisableFlagParsing: true,
 		Run: func(cmd *cobra.Command, args []string) {
-			appPath := os.Getenv("APP_PATH")
-			frankenphp.ExecuteScriptCLI(appPath+"/bin/console", append([]string{"console"}, args...))
+			script := os.Getenv("APP_PATH") + "/bin/console"
+			// On PHP < 8.6 FrankenPHP ignores the script argument and parses argv
+			// like php-cli: argv[0] is the binary, the first non-flag arg the script.
+			os.Exit(frankenphp.ExecuteScriptCLI(script, append([]string{os.Args[0], script}, args...)))
 		},
 	})
+}
+
+// resolveEmbeddedScript resolves relative scripts missing from the working directory,
+// including extension-less ones such as bin/console, against the embedded app.
+func resolveEmbeddedScript(script string) string {
+	if os.Getenv("APP_PATH") == "" || strings.HasPrefix(script, "-") || !filepath.IsLocal(script) {
+		return script
+	}
+	if _, err := os.Stat(script); err == nil {
+		return script
+	}
+
+	embedded := filepath.Join(os.Getenv("APP_PATH"), script)
+	if _, err := os.Stat(embedded); err != nil {
+		return script
+	}
+
+	return embedded
 }
 
 func wrapInternalCmd(args ...string) lu.Process {
@@ -788,6 +818,19 @@ func extractEmbeddedApp(appDir string) (string, error) {
 		}
 	}
 	return appPath, nil
+}
+
+// moduleVersion returns the version of a dependency compiled into the binary.
+func moduleVersion(path string) string {
+	if info, ok := debug.ReadBuildInfo(); ok {
+		for _, dep := range info.Deps {
+			if dep.Path == path {
+				return dep.Version
+			}
+		}
+	}
+
+	return "unknown"
 }
 
 func runCaddyCommand(command ...string) func(cmd *cobra.Command, args []string) error {

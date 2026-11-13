@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euxo pipefail
+set -euo pipefail
 
 # This script is used to build the distribution archives for SolidInvoice.
 #
@@ -64,8 +64,6 @@ for arg in "$@"; do
     fi
 done
 
-set -euxo pipefail
-
 export SOLIDINVOICE_ENV=prod
 export SOLIDINVOICE_DEBUG=0
 export NODE_ENV=production
@@ -116,7 +114,7 @@ fi
 
 ROOT_DIR=$( dirname "$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)")
 BUILD_DIR="$ROOT_DIR/build"
-DIST_DIR="$BUILD_DIR/dist/"
+DIST_DIR="$BUILD_DIR/dist"
 
 rm -Rf build/*
 
@@ -169,7 +167,10 @@ echo "SOLIDINVOICE_DEBUG=$SOLIDINVOICE_DEBUG" >> .env
 
 chmod a+w config
 
-zip -qr "${DIST_DIR}/SolidInvoice-$VERSION".zip ./
+if [ $USE_LOCAL -ne 1 ]; then
+    # Local builds doesn't need the ZIP, only the tar.gz archive, so skip this step when building locally
+    zip -qr "${DIST_DIR}/SolidInvoice-$VERSION".zip ./
+fi
 tar -czf "${DIST_DIR}/SolidInvoice-$VERSION".tar.gz ./
 
 if [ "${RELEASE:-}" = "1" ]; then
