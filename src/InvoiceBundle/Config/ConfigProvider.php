@@ -24,6 +24,9 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
+/**
+ * @see \SolidInvoice\InvoiceBundle\Tests\Config\ConfigProviderTest
+ */
 final class ConfigProvider implements ProviderInterface
 {
     /**
@@ -39,6 +42,9 @@ final class ConfigProvider implements ProviderInterface
             new Config('invoice/id_generation/strategy', 'auto_increment', '', BillingIdConfigurationType::class),
             new Config('invoice/id_generation/id_prefix', '', 'settings.description.invoice.id_generation.id_prefix', TextType::class),
             new Config('invoice/id_generation/id_suffix', '', 'settings.description.invoice.id_generation.id_suffix', TextType::class),
+            new Config('credit_note/id_generation/strategy', 'auto_increment', '', BillingIdConfigurationType::class),
+            new Config('credit_note/id_generation/id_prefix', 'CN-', 'settings.description.credit_note.id_generation.id_prefix', TextType::class),
+            new Config('credit_note/id_generation/id_suffix', '', 'settings.description.credit_note.id_generation.id_suffix', TextType::class),
             new Config(
                 'invoice/reminder/enabled',
                 '1',

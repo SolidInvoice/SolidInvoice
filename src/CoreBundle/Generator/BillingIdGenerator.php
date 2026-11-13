@@ -16,6 +16,7 @@ namespace SolidInvoice\CoreBundle\Generator;
 use InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
+use SolidInvoice\InvoiceBundle\Entity\CreditNote;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\SettingsBundle\SystemConfig;
@@ -47,6 +48,7 @@ final readonly class BillingIdGenerator
         $settingSection = match (true) {
             $entity instanceof Invoice => 'invoice',
             $entity instanceof Quote => 'quote',
+            $entity instanceof CreditNote => 'credit_note',
             default => throw new InvalidArgumentException('Invalid entity type'),
         };
 

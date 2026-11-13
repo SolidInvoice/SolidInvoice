@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SolidInvoice\SaasBundle\EventSubscriber;
 
-use DateTimeImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Clock\ClockInterface;
 use Psr\Log\LoggerInterface;
@@ -88,7 +87,7 @@ final readonly class HoldNewAccountClientEmailListener
         $company = $document->getCompany();
         $created = $company->getCreated();
 
-        if (! $created instanceof DateTimeImmutable || $created < $this->clock->now()->modify(self::NEW_ACCOUNT)) {
+        if ($created < $this->clock->now()->modify(self::NEW_ACCOUNT)) {
             return;
         }
 

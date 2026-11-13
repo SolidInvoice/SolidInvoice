@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Validator\Constraints;
 
+use SolidInvoice\InvoiceBundle\Entity\CreditNote;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\QuoteBundle\Entity\Quote;
@@ -43,6 +44,7 @@ final class ExactlyOneDocumentValidator extends ConstraintValidator
             $value->getInvoice() instanceof Invoice,
             $value->getQuote() instanceof Quote,
             $value->getRecurringInvoice() instanceof RecurringInvoice,
+            $value->getCreditNote() instanceof CreditNote,
         ];
 
         $ownerCount = count(array_filter($owners));
