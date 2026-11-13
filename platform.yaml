@@ -93,6 +93,10 @@ saas:
             type: boolean
             default: true
             description: 'Choose a custom design template for invoices and quotes across PDFs, emails and the client portal.'
+        products:
+            type: boolean
+            default: true
+            description: 'Save the products and services you sell and add them to invoices and quotes in one click.'
 
 ui:
     icon_pack: tabler

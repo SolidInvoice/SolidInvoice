@@ -883,6 +883,18 @@ parameters:
 			path: src/QuoteBundle/DataGrid/QuoteGrid.php
 
 		-
+			message: '#^Property SolidInvoice\\ProductBundle\\Entity\\Product\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/CoreBundle/Traits/Entity/TimeStampable.php
+
+		-
+			message: '#^Property SolidInvoice\\ProductBundle\\Entity\\Product\:\:\$updated type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
+			identifier: doctrine.columnType
+			count: 1
+			path: src/CoreBundle/Traits/Entity/TimeStampable.php
+
+		-
 			message: '#^Property SolidInvoice\\QuoteBundle\\Entity\\Line\:\:\$created type mapping mismatch\: property can contain DateTimeImmutable\|null but database expects DateTimeImmutable\.$#'
 			identifier: doctrine.columnType
 			count: 1

@@ -32,6 +32,7 @@ use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceClientMode;
 use SolidInvoice\InvoiceBundle\Form\Type\InvoiceType;
 use SolidInvoice\InvoiceBundle\Form\Type\ItemType;
+use SolidInvoice\ProductBundle\Form\Type\ProductAutocompleteType;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\DependencyInjection\ServiceLocator;
@@ -39,6 +40,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\UX\Autocomplete\Checksum\ChecksumCalculator;
 use Symfony\UX\Autocomplete\Form\AutocompleteChoiceTypeExtension;
 use Symfony\UX\Autocomplete\Form\BaseEntityAutocompleteType;
@@ -184,7 +186,8 @@ final class InvoiceTypeTest extends FormTestCase
                 $itemType,
                 new DiscountType($systemConfig),
                 $customFieldsType,
-                new BaseEntityAutocompleteType($this->createStub(UrlGeneratorInterface::class))
+                new BaseEntityAutocompleteType($this->createStub(UrlGeneratorInterface::class)),
+                new ProductAutocompleteType($featureGate, $this->createStub(TranslatorInterface::class)),
             ], [
                 ChoiceType::class => [
                     new AutocompleteChoiceTypeExtension(new ChecksumCalculator($_SERVER['SOLIDINVOICE_APP_SECRET'])),

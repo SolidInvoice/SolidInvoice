@@ -2,6 +2,8 @@ name: Security Checker
 
 on: [ pull_request ]
 
+permissions: {}
+
 jobs:
   security-checker:
     name: Symfony Security Checker

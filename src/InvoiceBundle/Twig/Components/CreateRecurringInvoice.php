@@ -20,8 +20,11 @@ use SolidInvoice\CoreBundle\Twig\Components\ReordersLines;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use SolidInvoice\InvoiceBundle\Form\Type\RecurringInvoiceType;
+use SolidInvoice\ProductBundle\Repository\ProductRepository;
+use SolidInvoice\ProductBundle\Twig\Components\AddsProductLines;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Repository\TaxRepository;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -41,6 +44,7 @@ final class CreateRecurringInvoice extends AbstractController
 {
     use DefaultActionTrait;
     use LiveCollectionTrait;
+    use AddsProductLines;
     use ReordersLines;
 
     #[LiveProp(writable: true, fieldName: 'formData')]
@@ -56,6 +60,8 @@ final class CreateRecurringInvoice extends AbstractController
         private readonly ClientRepository $clientRepository,
         private readonly TotalCalculator $totalCalculator,
         private readonly TaxRepository $taxRepository,
+        private readonly ProductRepository $productRepository,
+        private readonly FeatureGate $featureGate,
         private readonly SystemConfig $systemConfig,
     ) {
     }

@@ -19,6 +19,7 @@ use SolidInvoice\ApiBundle\Security\ApiTokenAuthenticator;
 use SolidInvoice\ApiBundle\Security\Provider\ApiTokenUserProvider;
 use SolidInvoice\McpBundle\Security\McpOAuthAuthenticator;
 use SolidInvoice\McpBundle\Security\McpOAuthUserProvider;
+use SolidInvoice\McpBundle\Security\PublicMcpRequestMatcher;
 use SolidInvoice\UserBundle\Security\LoginLinkSuccessHandler;
 use SolidInvoice\UserBundle\Security\OAuth\OAuthAuthenticator;
 use SolidInvoice\UserBundle\Security\UserChecker;
@@ -133,6 +134,12 @@ $config = LoginExtension::defaultFormLoginConfig([
         ],
     ],
     'access_control' => [
+        // MCP handshake + tools/list are public so tools can be browsed
+        // without an account; tools/call still requires a token.
+        [
+            'request_matcher' => PublicMcpRequestMatcher::class,
+            'roles' => ['PUBLIC_ACCESS'],
+        ],
         [
             'path' => '^(?:' .
                 '/_components/SystemInstallation|' .

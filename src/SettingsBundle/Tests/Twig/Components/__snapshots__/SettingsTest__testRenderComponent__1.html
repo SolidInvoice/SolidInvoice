@@ -64,18 +64,19 @@
                                                     <div class="mb-3">                
             <label class="control-label form-label" for="settings_company_logo">Logo</label>        <div class="logo-upload-card d-flex align-items-start gap-4 p-3 bg-light rounded-3 border">
                 <div class="flex-grow-1">
-            <div class="dropzone-container" data-controller="symfony--ux-dropzone--dropzone">
-        <input type="file" id="settings_company_logo" name="settings[company][logo]" placeholder="Drag and drop or browse" data-controller="" class="dropzone-input" data-symfony--ux-dropzone--dropzone-target="input">
+            <div class="dropzone-container" data-controller="symfony--ux-dropzone--dropzone" data-symfony--ux-dropzone--dropzone-remove-label-value="Remove">
+        <input type="file" id="settings_company_logo" name="settings[company][logo]" data-controller="" class="dropzone-input" data-symfony--ux-dropzone--dropzone-target="input">
 
         <div class="dropzone-placeholder" data-symfony--ux-dropzone--dropzone-target="placeholder">Drag and drop or browse</div>
 
-        <div class="dropzone-preview" data-symfony--ux-dropzone--dropzone-target="preview" style="display: none">
+        <div class="dropzone-preview" data-symfony--ux-dropzone--dropzone-target="preview" hidden>
             <button class="dropzone-preview-button" type="button" data-symfony--ux-dropzone--dropzone-target="previewClearButton"></button>
 
-            <div class="dropzone-preview-image" style="display: none" data-symfony--ux-dropzone--dropzone-target="previewImage"></div>
+            <div class="dropzone-preview-image" hidden data-symfony--ux-dropzone--dropzone-target="previewImage"></div>
 
             <div data-symfony--ux-dropzone--dropzone-target="previewFilename" class="dropzone-preview-filename"></div>
         </div>
+
     </div>
             <p class="text-muted small mt-2 mb-0">
                 Recommended: Square image, at least 200x200px. PNG or JPG format.
@@ -619,7 +620,7 @@
                 <div class="card settings-content-card mt-4">
             <div class="card-body">
                 
-<div class="company-tax-identifiers" data-controller="live" data-live-name-value="CompanyTaxIdentifiers" data-live-url-value="/_components/CompanyTaxIdentifiers" id="live-4194689986-0" data-live-props-value="{&quot;formName&quot;:&quot;company_tax_identifiers&quot;,&quot;company_tax_identifiers&quot;:{&quot;identifiers&quot;:[],&quot;_token&quot;:&quot;&quot;},&quot;isValidated&quot;:false,&quot;validatedFields&quot;:[],&quot;@attributes&quot;:{&quot;id&quot;:&quot;live-4194689986-0&quot;},&quot;@checksum&quot;:&quot;REPLACED_CHECKSUM&quot;}">
+<div class="company-tax-identifiers" data-controller="live" data-live-name-value="CompanyTaxIdentifiers" data-live-url-value="/_components/CompanyTaxIdentifiers" id="live-4194689986-0" data-live-props-value="{&quot;liveCollectionRemovedKeys&quot;:[],&quot;formName&quot;:&quot;company_tax_identifiers&quot;,&quot;company_tax_identifiers&quot;:{&quot;identifiers&quot;:[],&quot;_token&quot;:&quot;&quot;},&quot;isValidated&quot;:false,&quot;validatedFields&quot;:[],&quot;@attributes&quot;:{&quot;id&quot;:&quot;live-4194689986-0&quot;},&quot;@checksum&quot;:&quot;REPLACED_CHECKSUM&quot;}">
     <h3 class="d-flex align-items-center gap-2 mb-2">
         <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" width="22" height="22" class="text-primary" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m9 14l6-6"></path><path fill="currentColor" d="M9 8.5a.5.5 0 1 0 1 0a.5.5 0 1 0-1 0m5 5a.5.5 0 1 0 1 0a.5.5 0 1 0-1 0"></path><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16l-3-2l-2 2l-2-2l-2 2l-2-2z"></path></g></svg>
         Company Tax Identifiers

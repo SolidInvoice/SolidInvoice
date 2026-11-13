@@ -177,6 +177,16 @@ final readonly class FeatureCopyRegistry
                     'feature.custom_templates.bullets.3',
                 ],
             ),
+            Feature::Products => new FeatureCopy(
+                icon: 'tabler:package',
+                headline: 'feature.products.headline',
+                description: 'feature.products.description',
+                bullets: [
+                    'feature.products.bullets.1',
+                    'feature.products.bullets.2',
+                    'feature.products.bullets.3',
+                ],
+            ),
         };
     }
 }

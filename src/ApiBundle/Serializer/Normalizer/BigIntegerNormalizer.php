@@ -17,6 +17,7 @@ use Brick\Math\BigDecimal;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use Brick\Math\NumberSyntax;
 use Brick\Math\RoundingMode;
 use Money\Currency;
 use SolidInvoice\ApiBundle\Versioning\ApiVersion;
@@ -45,6 +46,12 @@ final readonly class BigIntegerNormalizer implements NormalizerInterface, Denorm
      */
     public const string MONETARY = 'monetary_amount';
 
+    /**
+     * Far above any amount or quantity a column can hold (DECIMAL(20, 6) at most), so no
+     * legitimate value is refused.
+     */
+    private const int MAX_DIGITS = 64;
+
     public function __construct(
         private CurrencyScale $currencyScale = new CurrencyScale(),
     ) {
@@ -64,11 +71,13 @@ final readonly class BigIntegerNormalizer implements NormalizerInterface, Denorm
             return $this->denormalizeDecimal($data, $context);
         }
 
+        $number = $this->parse($data);
+
         if (($context['api_denormalize'] ?? false) && ($context[self::MONETARY] ?? true)) {
-            return BigNumber::of($data)->toBigDecimal()->multipliedBy(100);
+            return $number->toBigDecimal()->multipliedBy(100);
         }
 
-        return BigNumber::of($data);
+        return $number;
     }
 
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
@@ -101,6 +110,24 @@ final readonly class BigIntegerNormalizer implements NormalizerInterface, Denorm
     }
 
     /**
+     * The input is untrusted: BigNumber::of() would allocate whatever a huge digit string, or an
+     * exponent such as `1e1000000000`, expands to before any validator gets a say. parse() counts
+     * digits as written and expanded, so both are refused up front.
+     */
+    private function parse(mixed $data): BigNumber
+    {
+        if (! is_string($data)) {
+            return BigNumber::of($data);
+        }
+
+        try {
+            return BigNumber::parse($data, NumberSyntax::SCIENTIFIC, self::MAX_DIGITS);
+        } catch (MathException) {
+            throw new UnexpectedValueException(sprintf('"%s" is not a valid number of at most %d digits.', mb_strimwidth($data, 0, 32, '...'), self::MAX_DIGITS));
+        }
+    }
+
+    /**
      * Decimal money arrives in major units, as a number or a numeric string, and is stored in the
      * currency's minor unit. More precision than the currency has is rejected rather than rounded.
      * UnexpectedValueException, not NotNormalizableValueException: the serializer would treat the
@@ -118,7 +145,7 @@ final readonly class BigIntegerNormalizer implements NormalizerInterface, Denorm
         }
 
         try {
-            $value = BigDecimal::of($data);
+            $value = is_string($data) ? BigDecimal::parse($data, NumberSyntax::SCIENTIFIC, self::MAX_DIGITS) : BigDecimal::of($data);
 
             if (! ($context['api_denormalize'] ?? false) || ! ($context[self::MONETARY] ?? true)) {
                 return $value;

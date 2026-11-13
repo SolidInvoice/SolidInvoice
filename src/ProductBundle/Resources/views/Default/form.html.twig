@@ -1,0 +1,91 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% extends "@SolidInvoiceCore/Layout/default.html.twig" %}
+
+{% block content %}
+<div class="form-page">
+    {{ form_start(form) }}
+
+    {{ form_errors(form) }}
+
+    <div class="form-page-container form-page-container--narrow">
+        <div class="form-page-header">
+            <div class="form-page-header-content">
+                <div class="form-page-icon">
+                    {{ ux_icon('tabler:package', {width: 28, height: 28}) }}
+                </div>
+                <div>
+                    {% if form.vars.data.name is not empty %}
+                        <h1 class="form-page-title">{{ 'product.edit'|trans }}</h1>
+                    {% else %}
+                        <h1 class="form-page-title">{{ 'product.add'|trans }}</h1>
+                        <p class="form-page-subtitle">{{ 'product.form.subtitle'|trans }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-page-sections">
+            <section class="form-page-section" id="product-details">
+                <div class="section-header">
+                    <div class="section-icon">
+                        {{ ux_icon('tabler:settings', {width: 20, height: 20}) }}
+                    </div>
+                    <div class="section-header-text">
+                        <h2 class="section-title">{{ 'product.details'|trans }}</h2>
+                        <p class="section-description">{{ 'product.form.description'|trans }}</p>
+                    </div>
+                </div>
+
+                <div class="section-content">
+                    <div class="form-grid">
+                        <div class="form-field form-field-wide">
+                            {{ form_row(form.name) }}
+                        </div>
+
+                        <div class="form-field form-field-wide">
+                            {{ form_row(form.description) }}
+                        </div>
+
+                        <div class="form-field">
+                            {{ form_row(form.price) }}
+                        </div>
+
+                        <div class="form-field">
+                            {{ form_row(form.quantity) }}
+                        </div>
+
+                        <div class="form-field form-field-wide">
+                            {{ form_row(form.tax) }}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        {{ form_rest(form) }}
+
+        <div class="form-page-actions">
+            <div class="form-page-actions-inner">
+                <a href="{{ path('_products') }}" class="btn btn-ghost">
+                    {{ ux_icon('tabler:arrow-left', {width: 18, height: 18}) }}
+                    {{ 'action.cancel'|trans }}
+                </a>
+                <button type="submit" class="btn btn-primary btn-save">
+                    {{ ux_icon('tabler:device-floppy', {width: 18, height: 18}) }}
+                    {{ 'action.save'|trans }}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+</div>
+{% endblock %}
