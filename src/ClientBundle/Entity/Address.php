@@ -23,6 +23,7 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use SolidInvoice\ClientBundle\Repository\AddressRepository;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
 use Stringable;
@@ -32,10 +33,11 @@ use Symfony\Component\Intl\Countries;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
+use Symfony\Component\Validator\Constraints as Assert;
 use function array_filter;
 
 #[ORM\Table(name: Address::TABLE_NAME)]
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: AddressRepository::class)]
 #[ApiResource(
     operations: [
         // No operation-level (de)normalizationContext: API Platform replaces the
@@ -151,6 +153,7 @@ class Address implements Stringable
     #[ORM\Column(name: 'country', type: Types::STRING, nullable: true)]
     #[Groups(['address_api:read', 'address_api:write'])]
     #[ApiProperty(iris: ['https://schema.org/Country'])]
+    #[Assert\Country]
     private ?string $country = null;
 
     #[Groups(['address_api:read'])]
