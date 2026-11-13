@@ -119,8 +119,13 @@ jobs:
         id: restore-static-php
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
-          path: frankenphp/dist/static-php-cli
-          key: linux-${{ matrix.arch }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh') }}
+          path: |
+            frankenphp/dist/spc
+            frankenphp/dist/downloads
+            frankenphp/dist/source
+            frankenphp/dist/buildroot
+            frankenphp/dist/pkgroot
+          key: linux-${{ matrix.arch }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh', 'frankenphp/craft.yml') }}
           restore-keys: |
               linux-${{ matrix.arch }}-static-php-${{ env.PHP_VERSION }}-
               linux-${{ matrix.arch }}-static-php-
@@ -137,9 +142,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE: 0
-          # Unset CI so build-static.sh preserves downloads/ and source/ for caching
-          CI: ""
-          SPC_OPT_DOWNLOAD_ARGS: "--ignore-cache-sources=php-src --retry 5 --prefer-pre-built"
+          PREFER_BINARY: "1"
 
       - name: Upload spc logs on failure
         if: failure()
@@ -147,7 +150,7 @@ jobs:
         with:
           name: spc-logs-${{ matrix.arch }}
           path: |
-            frankenphp/dist/static-php-cli/log/
+            frankenphp/dist/log/
           if-no-files-found: warn
           retention-days: 7
 
@@ -155,8 +158,13 @@ jobs:
         if: steps.restore-static-php.outputs.cache-hit != 'true'
         uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
-          path: frankenphp/dist/static-php-cli
-          key: linux-${{ matrix.arch }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh') }}
+          path: |
+            frankenphp/dist/spc
+            frankenphp/dist/downloads
+            frankenphp/dist/source
+            frankenphp/dist/buildroot
+            frankenphp/dist/pkgroot
+          key: linux-${{ matrix.arch }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh', 'frankenphp/craft.yml') }}
 
       - name: Login to DockerHub
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
