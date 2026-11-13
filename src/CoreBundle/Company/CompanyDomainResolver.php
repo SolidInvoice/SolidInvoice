@@ -16,6 +16,7 @@ namespace SolidInvoice\CoreBundle\Company;
 use League\Uri\Uri;
 use SolidInvoice\CoreBundle\Entity\Company;
 use SolidInvoice\CoreBundle\Repository\CompanyRepository;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\Service\ResetInterface;
 use Throwable;
 use function in_array;
@@ -46,6 +47,8 @@ final class CompanyDomainResolver implements ResetInterface
     public function __construct(
         private readonly CompanyRepository $companyRepository,
         private readonly string $applicationUrl = '',
+        #[Autowire(env: 'SOLIDINVOICE_MESSENGER_MONINTOR_HOST')]
+        private readonly string $messengerMonitorHost = '',
     ) {
     }
 
@@ -59,7 +62,12 @@ final class CompanyDomainResolver implements ResetInterface
 
         $this->parseDefaultHost();
 
-        if ($this->defaultHost === null || $host === $this->defaultHost || $this->isLoopbackHost($host)) {
+        if (
+            $this->defaultHost === null ||
+            $host === $this->defaultHost ||
+            ($this->messengerMonitorHost !== '' && $host === $this->messengerMonitorHost) ||
+            $this->isLoopbackHost($host)
+        ) {
             return $this->cache[$host] = new ResolvedHost(
                 HostType::DefaultHost,
                 $this->defaultHost ?? $host,

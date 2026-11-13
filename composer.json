@@ -193,7 +193,8 @@
         "twig/twig": "^3.28",
         "webmozart/assert": "^2.4",
         "webonyx/graphql-php": "^15.34",
-        "willdurand/negotiation": "^3.1"
+        "willdurand/negotiation": "^3.1",
+        "zenstruck/messenger-monitor-bundle": "1.x-dev"
     },
     "require-dev": {
         "brianium/paratest": "^7.23",
