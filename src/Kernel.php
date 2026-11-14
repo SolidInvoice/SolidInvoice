@@ -77,7 +77,7 @@ class Kernel extends BaseKernel
             yield new SolidInvoiceSaasBundle();
         }
 
-        if ('' !== ($_SERVER['SOLIDINVOICE_MESSENGER_MONINTOR_HOST'] ?? $ENV['SOLIDINVOICE_MESSENGER_MONINTOR_HOST'] ?? '')) {
+        if (null !== ($_SERVER['SOLIDINVOICE_MESSENGER_MONINTOR_HOST'] ?? $ENV['SOLIDINVOICE_MESSENGER_MONINTOR_HOST'] ?? null)) {
             yield new ZenstruckMessengerMonitorBundle();
         }
     }
