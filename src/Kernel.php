@@ -24,6 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+use Zenstruck\Messenger\Monitor\ZenstruckMessengerMonitorBundle;
 use function preg_replace;
 
 class Kernel extends BaseKernel
@@ -74,6 +75,10 @@ class Kernel extends BaseKernel
         if ($this->mode === AppMode::SAAS) {
             yield new SolidWorxPlatformSaasBundle();
             yield new SolidInvoiceSaasBundle();
+        }
+
+        if (null !== ($_SERVER['SOLIDINVOICE_MESSENGER_MONINTOR_HOST'] ?? $ENV['SOLIDINVOICE_MESSENGER_MONINTOR_HOST'] ?? null)) {
+            yield new ZenstruckMessengerMonitorBundle();
         }
     }
 

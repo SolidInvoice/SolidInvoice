@@ -23,6 +23,7 @@ use SolidInvoice\ClientBundle\Validator\Constraints\WithinPlanClientLimit;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Enum\QuoteClientMode;
+use SolidInvoice\QuoteBundle\Enum\QuoteValidity;
 use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -59,7 +60,10 @@ final class QuoteFormDTO
     #[Assert\NotBlank]
     public string $quoteId = '';
 
+    public QuoteValidity $validity = QuoteValidity::None;
+
     #[Assert\Type(DateTimeInterface::class)]
+    #[Assert\NotBlank(message: 'quote.validity.date_required', groups: ['custom_validity'])]
     public ?DateTimeInterface $due = null;
 
     public ?Discount $discount = null;

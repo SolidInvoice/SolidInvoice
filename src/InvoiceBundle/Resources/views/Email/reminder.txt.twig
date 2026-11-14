@@ -50,3 +50,4 @@
 {{ 'invoice.reminder.view_and_pay'|trans({}, 'email') }}: {{ url("_view_invoice_external", {"uuid" : invoice.uuid}) }}
 
 {{ 'invoice.reminder.contact'|trans({}, 'email') }}
+{{ include('@SolidInvoiceCore/Layout/Email/_notification_footer.txt.twig') }}

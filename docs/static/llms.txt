@@ -1,6 +1,6 @@
 # SolidInvoice Documentation
 
-> SolidInvoice is open-source invoicing software for freelancers and small businesses. Built on Symfony 7 and PHP 8.4. Self-hostable with full data ownership, or available as a hosted SaaS at $8/month flat — no per-client limits. Features include quotes, invoices (recurring and one-off), client management, payments via Payum (Stripe, PayPal), multi-currency, tax/discount handling, and a REST API.
+> SolidInvoice is open-source invoicing software for freelancers and small businesses. Built on Symfony 8.1 and PHP 8.4. Self-hostable with full data ownership, or available as a hosted SaaS with a Free plan and paid plans from $9/month (Solo $9, Pro $19, Business $39; see https://solidinvoice.co/pricing). Features include quotes, invoices (recurring and one-off), client management, payments via Payum (Stripe, PayPal), multi-currency, tax/discount handling, and a REST API.
 
 ## Getting Started
 

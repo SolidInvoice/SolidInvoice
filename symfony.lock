@@ -137,7 +137,7 @@
         "version": "v0.2.12"
     },
     "google/apiclient": {
-        "version": "2.19",
+        "version": "2.20",
         "recipe": {
             "repo": "github.com/symfony/recipes-contrib",
             "branch": "main",
@@ -1372,5 +1372,19 @@
     },
     "zenstruck/mailer-test": {
         "version": "v1.4.2"
+    },
+    "zenstruck/messenger-monitor-bundle": {
+        "version": "0.7",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "0.5",
+            "ref": "e830a96e19aef36b23c63a4f8884fe51815f06d8"
+        },
+        "files": [
+            "config/packages/zenstruck_messenger_monitor.yaml",
+            "src/Controller/Admin/MessengerMonitorController.php",
+            "src/Entity/ProcessedMessage.php"
+        ]
     }
 }

@@ -338,12 +338,14 @@ dashboard:
     attention:
         draft_invoices: 'Draft Invoices'
         draft_label: Draft
+        expiring_quotes: 'Expiring Quotes'
         no_items: 'All caught up! Nothing needs your attention.'
         overdue_invoices: 'Overdue Invoices'
         pending_quotes: 'Pending Quotes'
         showing: '%shown% of %total%'
         title: 'Attention Required'
         upcoming_recurring: 'Upcoming Recurring'
+        valid_until: 'Until %date%'
         view_all: 'View all'
     charts:
         distribution_title: 'Invoice Status'
@@ -356,6 +358,9 @@ dashboard:
         activate_subscription:
             description: 'Pick a plan to keep your account active'
             name: 'Activate Your Subscription'
+        add_product:
+            description: 'Add a product or service you can reuse on invoices and quotes'
+            name: 'Add a Product'
         add_tax_rate:
             description: 'Configure tax rates for your invoices'
             name: 'Add a Tax Rate'
@@ -445,6 +450,9 @@ datagrid:
             create: 'Create an invoice'
             description: 'Payments land here once a client pays an invoice. Send an invoice to start getting paid.'
             title: 'No payments yet'
+        product:
+            description: 'Save the things you sell once, then add them to invoices and quotes in one click.'
+            title: 'No products yet'
         quote:
             description: 'Send a polished quote to win the work. When a client accepts, it becomes an invoice in one click.'
             title: 'No quotes yet'
@@ -612,6 +620,13 @@ feature:
             3: 'Auto-marks invoices paid on settlement'
         description: 'Add a Pay Now button to every invoice using your own Stripe or PayPal keys — you keep the merchant relationship.'
         headline: 'Get paid online'
+    products:
+        bullets:
+            1: 'Save names, descriptions and prices once'
+            2: 'Add them to invoices and quotes in one click'
+            3: 'Edit a product without touching past documents'
+        description: 'Save the things you sell and add them to invoices and quotes in one click, instead of retyping the same lines every time.'
+        headline: 'Bill faster with saved products'
     quotes:
         bullets:
             1: 'Custom-branded PDF quotes'
@@ -1209,9 +1224,11 @@ layout:
         open_create_menu: 'Open create menu'
         open_user_menu: 'Open user menu'
     data_export: 'Data Export'
+    documentation: 'Documentation'
     feedback: 'Share feedback'
     powered_by: 'Powered by'
     profile: Profile
+    sponsor: 'Sponsor'
     unsplash_credit: 'Download free do whatever you want high-resolution photos from Julian Zett'
 mcp:
     connected_apps:
@@ -1231,8 +1248,8 @@ mcp:
         revoke_hint: 'You can revoke this app at any time from your'
         revoke_hint_link: 'connected apps'
         scope:
-            read: 'Read your invoices, quotes, clients, payments, taxes and analytics'
-            write: 'Create and modify invoices, quotes, clients, payments and taxes'
+            read: 'Read your invoices, quotes, clients, payments, taxes, products and analytics'
+            write: 'Create and modify invoices, quotes, clients, payments, taxes and products'
         title: 'Authorize application'
     error:
         title: 'Authorization error'
@@ -1241,6 +1258,7 @@ mcp:
         description: 'Your current plan does not include MCP access. Upgrade your subscription to authorize AI agents and tools.'
         title: 'MCP access not available'
 menu:
+    products: Products
     top:
         api: 'API Tokens'
         custom_fields: 'Custom Fields'
@@ -1344,6 +1362,9 @@ notifications:
         quote_status_changed:
             description: 'When a quote status changes (draft, sent, accepted, etc.)'
             title: 'Quote Status Changed'
+        recurring_invoice_created:
+            description: 'When an invoice is created automatically from a recurring invoice'
+            title: 'Recurring Invoice Created'
     flash:
         saved: 'Notification saved!'
     manage_integrations: 'Manage Integrations'
@@ -1707,6 +1728,31 @@ pdf:
     additional_information: 'Additional information'
     of: of
     page: Page
+product:
+    add: 'Add Product'
+    details: 'Product Details'
+    edit: 'Edit Product'
+    flash:
+        saved: 'Product successfully saved'
+    form:
+        description: 'Set the name, description, price and default tax for this product'
+        no_tax: 'No Tax'
+        price: Price
+        quantity: Quantity
+        subtitle: 'Save a product to add it to invoices and quotes in one click'
+        tax: Tax
+    grid:
+        create: 'Add Product'
+        delete_confirm: 'Are you sure you want to delete the selected products? Invoices and quotes that already use them are not affected.'
+        price: Price
+        quantity: Quantity
+        tax: Tax
+    picker:
+        manage: 'Manage products'
+        no_results: 'No products found'
+        placeholder: '+ Add Product…'
+        upgrade: '+ Add Product'
+    title: Products
 profile:
     api:
         create: 'Create Token'
@@ -1931,6 +1977,7 @@ quote:
             archive: 'Quote has been archived'
             cancel: 'Quote has been cancelled'
             decline: 'Quote has been declined'
+            expire: 'Quote has expired'
             new: 'Quote is now a draft'
             publish: 'Quote has been published'
             reopen: 'Quote has been re-opened'
@@ -1939,6 +1986,18 @@ quote:
         exception:
             accept: 'Quote cannot be accepted'
             archive: 'Quote cannot be archived'
+    valid_until: 'Valid until'
+    validity:
+        date_help: 'Set from the validity period. Choose Custom date to pick your own.'
+        label: 'Valid for'
+        period:
+            14_days: '14 days'
+            30_days: '30 days'
+            60_days: '60 days'
+            7_days: '7 days'
+            90_days: '90 days'
+            custom: 'Custom date'
+            none: 'No expiry'
     view:
         related_invoice: 'Related Invoice'
         toolbar:

@@ -34,6 +34,12 @@
                         {{ ux_icon('tabler:calendar', {width: 14, height: 14}) }}
                         {{ 'label.created'|trans }}: {{ quote.created|format_date('medium') }}
                     </span>
+                    {% if quote.due is not empty %}
+                        <span class="doc-view-meta-item">
+                            {{ ux_icon('tabler:calendar-x', {width: 14, height: 14}) }}
+                            {{ 'quote.valid_until'|trans }}: {{ quote.due|format_date('medium') }}
+                        </span>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -427,6 +433,12 @@
                             <span class="summary-label">{{ 'label.created'|trans }}</span>
                             <span class="summary-value">{{ quote.created|format_date('medium') }}</span>
                         </div>
+                        {% if quote.due is not empty %}
+                            <div class="summary-item {{ quote.expired ? 'summary-item-overdue' : '' }}">
+                                <span class="summary-label">{{ 'quote.valid_until'|trans }}</span>
+                                <span class="summary-value">{{ quote.due|format_date('medium') }}</span>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

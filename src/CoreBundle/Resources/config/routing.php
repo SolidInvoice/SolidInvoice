@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 use SolidInvoice\CoreBundle\Action\CreateCompany;
 use SolidInvoice\CoreBundle\Action\DeleteCompany;
+use SolidInvoice\CoreBundle\Action\MessengerMonitorController;
 use SolidInvoice\CoreBundle\Action\Search;
 use SolidInvoice\CoreBundle\Action\SearchSuggestions;
 use SolidInvoice\CoreBundle\Action\SelectCompany;
@@ -23,7 +24,9 @@ use SolidInvoice\CoreBundle\Export\Action\RequestExport;
 use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
-return static function (RoutingConfigurator $routingConfigurator): void {
+$env = static fn (string $name, string | int $default): string | int => $_ENV[$name] ?? $_SERVER[$name] ?? $default;
+
+return static function (RoutingConfigurator $routingConfigurator) use ($env): void {
     $routingConfigurator
         ->add('_home', '/')
         ->controller([RedirectController::class, 'redirectAction'])
@@ -88,4 +91,12 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         ->add('_export_download', '/profile/exports/{id}/download')
         ->controller(DownloadExport::class)
         ->methods(['GET']);
+
+    if ($host = $env('SOLIDINVOICE_MESSENGER_MONINTOR_HOST', '')) {
+        $routingConfigurator
+            ->import(MessengerMonitorController::class)
+            ->prefix('/messenger')
+            ->host($host)
+        ;
+    }
 };

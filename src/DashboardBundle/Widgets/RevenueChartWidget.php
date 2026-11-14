@@ -60,7 +60,9 @@ final readonly class RevenueChartWidget implements WidgetInterface
         /** @var PaymentRepository $paymentRepository */
         $paymentRepository = $this->manager->getRepository(Payment::class);
 
-        $now = CarbonImmutable::now();
+        // Step back from the 1st: on the 29th-31st, "-1 months" overflows into the current month
+        // (31 Oct - 1 month = 1 Oct), which charted that month twice and skipped the one before.
+        $now = CarbonImmutable::now()->startOfMonth();
 
         try {
             $revenueData = $paymentRepository->getRevenueByMonthGrouped(self::MONTHS);

@@ -14,11 +14,15 @@ declare(strict_types=1);
 namespace SolidInvoice\PaymentBundle\Listener;
 
 use SolidInvoice\NotificationBundle\Notification\NotificationManager;
+use SolidInvoice\PaymentBundle\Enum\PaymentStatus;
 use SolidInvoice\PaymentBundle\Event\PaymentCompleteEvent;
 use SolidInvoice\PaymentBundle\Event\PaymentEvents;
 use SolidInvoice\PaymentBundle\Notification\PaymentReceivedNotification;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
+/**
+ * @see \SolidInvoice\PaymentBundle\Tests\Listener\PaymentReceivedListenerTest
+ */
 class PaymentReceivedListener
 {
     public function __construct(
@@ -29,6 +33,11 @@ class PaymentReceivedListener
     #[AsEventListener(event: PaymentEvents::PAYMENT_COMPLETE)]
     public function onPaymentCapture(PaymentCompleteEvent $event): void
     {
+        // PAYMENT_COMPLETE also fires for failed, cancelled and pending gateway returns.
+        if ($event->getPayment()->getStatus() !== PaymentStatus::Captured) {
+            return;
+        }
+
         $this->notification->sendNotification(new PaymentReceivedNotification(['payment' => $event->getPayment()]));
     }
 }

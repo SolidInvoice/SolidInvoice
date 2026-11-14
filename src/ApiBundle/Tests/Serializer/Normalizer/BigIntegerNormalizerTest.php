@@ -17,8 +17,11 @@ use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\ApiBundle\Serializer\Normalizer\BigIntegerNormalizer;
+use SolidInvoice\ApiBundle\Versioning\ApiVersion;
+use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class BigIntegerNormalizerTest extends TestCase
@@ -64,5 +67,38 @@ final class BigIntegerNormalizerTest extends TestCase
     {
         self::assertEquals(BigInteger::of(10000), $this->normalizer->denormalize(10000, BigNumber::class));
         self::assertEquals(BigNumber::of('10000.1'), $this->normalizer->denormalize(10000.1, BigNumber::class));
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function oversizedInputProvider(): iterable
+    {
+        yield 'long digit string' => [str_repeat('9', 65)];
+        yield 'huge exponent' => ['1e1000000000'];
+        yield 'not a number' => ['abc'];
+        yield 'fraction' => ['1/3'];
+    }
+
+    #[DataProvider('oversizedInputProvider')]
+    public function testDenormalizationRejectsUnboundedInput(string $input): void
+    {
+        $this->expectException(UnexpectedValueException::class);
+
+        $this->normalizer->denormalize($input, BigNumber::class);
+    }
+
+    #[DataProvider('oversizedInputProvider')]
+    public function testDecimalDenormalizationRejectsUnboundedInput(string $input): void
+    {
+        $this->expectException(UnexpectedValueException::class);
+
+        $this->normalizer->denormalize($input, BigNumber::class, null, [ApiVersion::DECIMAL_MONEY => true, 'api_denormalize' => true]);
+    }
+
+    public function testDenormalizationAcceptsLargeLegitimateValues(): void
+    {
+        self::assertEquals(BigNumber::of('9999999999999.999999'), $this->normalizer->denormalize('9999999999999.999999', BigNumber::class));
+        self::assertEquals(BigDecimal::of('1E+15'), $this->normalizer->denormalize(1.0E+15, BigNumber::class));
     }
 }

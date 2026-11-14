@@ -105,6 +105,47 @@ final class RevenueChartWidgetTest extends WidgetTestCase
         self::assertCount(12, $chartData['data']['labels']);
     }
 
+    public function testMonthEndChartsEveryMonthOnce(): void
+    {
+        Carbon::setTestNow('2026-10-31 12:00:00');
+
+        try {
+            $client = ClientFactory::createOne([
+                'company' => $this->company,
+                'currencyCode' => 'USD',
+            ]);
+
+            $invoice = InvoiceFactory::createOne([
+                'client' => $client,
+                'status' => InvoiceStatus::Paid,
+                'total' => BigInteger::of(100000),
+                'balance' => BigInteger::zero(),
+                'baseTotal' => BigInteger::of(100000),
+                'tax' => BigInteger::zero(),
+                'discount' => $this->createZeroDiscount(),
+            ]);
+
+            PaymentFactory::createOne([
+                'client' => $client,
+                'invoice' => $invoice,
+                'method' => PaymentMethodFactory::createOne(['company' => $this->company]),
+                'totalAmount' => 100000,
+                'currencyCode' => 'USD',
+                'status' => PaymentStatus::Captured,
+                'created' => Carbon::now(),
+            ]);
+
+            $chartData = self::getContainer()->get(RevenueChartWidget::class)->getData()['chart']->createView()['data'];
+
+            self::assertSame('Nov 2025', $chartData['labels'][0]);
+            self::assertSame(['Sep 2026', 'Oct 2026'], array_slice($chartData['labels'], -2));
+            self::assertCount(12, array_unique($chartData['labels']));
+            self::assertEquals([0, 1000], array_slice($chartData['datasets'][0]['data'], -2));
+        } finally {
+            Carbon::setTestNow();
+        }
+    }
+
     public function testChartContainsDatasets(): void
     {
         $client = ClientFactory::createOne([

@@ -196,7 +196,7 @@ final class PaymentReceiptTest extends WebTestCase
     {
         $this->capture(false);
 
-        $this->mailer()->assertNoEmailSent();
+        $this->mailer()->sentEmails()->whereTo('jane@example.com')->assertNone();
     }
 
     public function testARecordedPaymentSendsAReceiptAutomatically(): void
@@ -214,7 +214,7 @@ final class PaymentReceiptTest extends WebTestCase
 
         self::getContainer()->get(ManualPaymentManager::class)->record($this->invoice, BigInteger::of(10000), method: 'receipt_test');
 
-        $this->mailer()->assertNoEmailSent();
+        $this->mailer()->sentEmails()->whereTo('jane@example.com')->assertNone();
 
         $crawler = $this->browser->request(Request::METHOD_GET, '/payments/create/' . $this->invoice->getUuid());
         self::assertCount(0, $crawler->filter('#payment_send_receipt[checked]'), 'The capture form follows the setting.');

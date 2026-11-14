@@ -25,6 +25,7 @@ use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\InvoiceBundle\Test\Factory\RecurringInvoiceFactory;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
+use function array_map;
 
 final class AttentionRequiredWidgetTest extends WidgetTestCase
 {
@@ -108,6 +109,37 @@ final class AttentionRequiredWidgetTest extends WidgetTestCase
         $data = $widget->getData();
 
         self::assertCount(2, $data['draftInvoices']);
+        self::assertTrue($data['hasItems']);
+    }
+
+    public function testGetDataWithQuotesExpiringWithinAWeek(): void
+    {
+        $client = ClientFactory::createOne([
+            'company' => $this->company,
+            'currencyCode' => 'USD',
+        ]);
+
+        $quote = fn (QuoteStatus $status, ?CarbonImmutable $due) => QuoteFactory::createOne([
+            'client' => $client,
+            'status' => $status,
+            'due' => $due,
+            'discount' => $this->createZeroDiscount(),
+        ]);
+
+        $inAWeek = $quote(QuoteStatus::Pending, CarbonImmutable::today()->addDays(7));
+        $today = $quote(QuoteStatus::Pending, CarbonImmutable::today());
+        $quote(QuoteStatus::Pending, CarbonImmutable::today()->addDays(8));
+        $quote(QuoteStatus::Pending, CarbonImmutable::yesterday());
+        $quote(QuoteStatus::Pending, null);
+        $quote(QuoteStatus::Accepted, CarbonImmutable::tomorrow());
+
+        $data = self::getContainer()->get(AttentionRequiredWidget::class)->getData();
+
+        self::assertSame(
+            [$today->getId()->toString(), $inAWeek->getId()->toString()],
+            array_map(static fn ($q): string => $q->getId()->toString(), $data['expiringQuotes']),
+        );
+        self::assertSame(2, $data['expiringQuotesTotal']);
         self::assertTrue($data['hasItems']);
     }
 

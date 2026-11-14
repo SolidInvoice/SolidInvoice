@@ -16,12 +16,14 @@ set -euxo pipefail
 # print all arguments passed:
 echo "xcaddy called with arguments: $@"
 
-# Parse xcaddy arguments to find output location
-OUTPUT="dist/static-php-cli/buildroot/bin/frankenphp"
+# Parse xcaddy arguments to find output location.
+# static-php-cli v3 runs `xcaddy build --output frankenphp` from buildroot/lib and
+# then moves that file into buildroot/bin, so --output is relative to our cwd.
+OUTPUT="frankenphp"
 while [[ $# -gt 0 ]]; do
 	case $1 in
 		--output)
-			#OUTPUT="$2"
+			OUTPUT="$2"
 			shift 2
 			;;
 		--with)
@@ -38,6 +40,7 @@ while [[ $# -gt 0 ]]; do
 			;;
 	esac
 done
+[[ "${OUTPUT}" = /* ]] || OUTPUT="$(pwd)/${OUTPUT}"
 
 # Detect OS for platform-specific linker flags
 CURRENT_OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
@@ -67,7 +70,7 @@ fi
 cd "${SOLIDINVOICE_SOURCE_DIR}"
 
 # Get version from environment or use git
-VERSION="${FRANKENPHP_VERSION:-dev}"
+VERSION="${SOLIDINVOICE_VERSION:-dev}"
 
 echo "Building from: ${SOLIDINVOICE_SOURCE_DIR}"
 echo "Version: ${VERSION}"
@@ -81,28 +84,31 @@ fi
 
 # Build with the same flags that xcaddy would use, but with our app.go.
 # Linker flags differ between macOS and Linux (musl static builds).
-DYNSYM="$(pwd)/dist/static-php-cli/buildroot/lib/libphp.a.dynsym"
+DYNSYM="$(pwd)/dist/buildroot/lib/libphp.a.dynsym"
+
+# Reuse static-php-cli's -extldflags: the symbol-list flag depends on its toolchain
+# (Zig on Linux takes -exported_symbols_list, GNU ld takes --dynamic-list).
+EXTLDFLAGS="$(sed -n "s/.*-extldflags '\([^']*\)'.*/\1/p" <<<"${XCADDY_GO_BUILD_FLAGS:-}")"
 
 if [ "${CURRENT_OS}" = "linux" ]; then
-	# Linux musl static build: use -static-pie and GNU ld --dynamic-list
-	EXTLDFLAGS="-static-pie -Wl,-z,stack-size=0x80000 -Wl,--dynamic-list=${DYNSYM}"
+	: "${EXTLDFLAGS:=-static-pie -Wl,-z,stack-size=0x80000 -Wl,--dynamic-list=${DYNSYM}}"
 	BUILD_TAGS="static_build,nobadger,nomysql,nopgx,nowatcher"
 else
-	# macOS: use -pie and -exported_symbols_list
-	EXTLDFLAGS="-pie -Wl,-exported_symbols_list,${DYNSYM}"
+	: "${EXTLDFLAGS:=-pie -Wl,-exported_symbols_list,${DYNSYM}}"
 	BUILD_TAGS="nobadger,nomysql,nopgx,nowatcher"
 fi
+echo "EXTLDFLAGS: ${EXTLDFLAGS}"
 
 # Tee the go build output to a log file so failures are diagnosable
 # even when the parent (static-php-cli) suppresses our stdout/stderr.
-GO_BUILD_LOG="$(pwd)/dist/static-php-cli/log/go-build.log"
+GO_BUILD_LOG="$(pwd)/dist/log/go-build.log"
 mkdir -p "$(dirname "${GO_BUILD_LOG}")"
 
 set +e
 go build \
   -v \
   -buildmode=pie \
-  -ldflags "-linkmode=external -extldflags '${EXTLDFLAGS} ' -X 'github.com/caddyserver/caddy/v2.CustomVersion=${VERSION}'" \
+  -ldflags "-linkmode=external -extldflags '${EXTLDFLAGS} ' -X 'main.version=${VERSION}' -X 'github.com/caddyserver/caddy/v2.CustomVersion=${VERSION}'" \
   -tags="${BUILD_TAGS}" \
 	-o "${OUTPUT}" \
 	. 2>&1 | tee "${GO_BUILD_LOG}"

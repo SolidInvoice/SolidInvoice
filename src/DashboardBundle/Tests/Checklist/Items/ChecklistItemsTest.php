@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\DashboardBundle\Tests\Checklist\Items;
 
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
+use SolidInvoice\DashboardBundle\Checklist\Items\AddProductItem;
 use SolidInvoice\DashboardBundle\Checklist\Items\AddTaxRateItem;
 use SolidInvoice\DashboardBundle\Checklist\Items\ConfigurePaymentGatewayItem;
 use SolidInvoice\DashboardBundle\Checklist\Items\CreateClientItem;
@@ -25,7 +26,11 @@ use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use SolidInvoice\PaymentBundle\Test\Factory\PaymentMethodFactory;
+use SolidInvoice\ProductBundle\Repository\ProductRepository;
+use SolidInvoice\ProductBundle\Test\Factory\ProductFactory;
+use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 final class ChecklistItemsTest extends KernelTestCase
@@ -189,6 +194,51 @@ final class ChecklistItemsTest extends KernelTestCase
         $item = self::getContainer()->get(AddTaxRateItem::class);
 
         self::assertFalse($item->isComplete());
+    }
+
+    // ============================================================================
+    // AddProductItem Tests
+    // ============================================================================
+
+    public function testAddProductItemReturnsCorrectMetadata(): void
+    {
+        $item = $this->productItem(true);
+
+        self::assertSame('dashboard.checklist.add_product.name', $item->getName());
+        self::assertSame('dashboard.checklist.add_product.description', $item->getDescription());
+        self::assertSame('tabler:package', $item->getIcon());
+        self::assertSame('_products_add', $item->getRoute());
+        self::assertSame(-450, $item->getPriority());
+    }
+
+    public function testAddProductItemIsInactiveWhenFeatureIsDisabled(): void
+    {
+        self::assertFalse($this->productItem(false)->active());
+    }
+
+    public function testAddProductItemIsActiveWhenFeatureIsEnabled(): void
+    {
+        self::assertTrue($this->productItem(true)->active());
+    }
+
+    public function testAddProductItemIsNotCompleteWhenNoProductsExist(): void
+    {
+        self::assertFalse($this->productItem(true)->isComplete());
+    }
+
+    public function testAddProductItemIsCompleteWhenProductExists(): void
+    {
+        ProductFactory::createOne();
+
+        self::assertTrue($this->productItem(true)->isComplete());
+    }
+
+    private function productItem(bool $enabled): AddProductItem
+    {
+        $gate = $this->createStub(FeatureGate::class);
+        $gate->method('isEnabled')->willReturnCallback(static fn (string $key): bool => $enabled && Feature::Products->value === $key);
+
+        return new AddProductItem(self::getContainer()->get(ProductRepository::class), $gate);
     }
 
     // ============================================================================

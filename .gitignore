@@ -32,9 +32,11 @@ package-lock.json
 /vendor-bin/**/vendor
 /drivers
 /frankenphp/dist
+/frankenphp/log
 /frankenphp/app.tar
 /frankenphp/app.tar.gz
 /frankenphp/app_checksum.txt
+/frankenphp/.spc.cache.php
 /helm/solidinvoice/charts
 /docs/superpowers
 

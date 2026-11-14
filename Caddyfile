@@ -22,7 +22,7 @@
 	}
 }
 
-{$CADDY_EXTRA_CONFIG} 
+{$CADDY_EXTRA_CONFIG}
 
 {$SERVER_NAME} {
 	bind {$SERVER_IP:0.0.0.0}

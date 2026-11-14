@@ -22,7 +22,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
-use Symfony\Component\Mime\RawMessage;
+use Symfony\Component\Mime\Message;
 use Symfony\Component\Uid\Ulid;
 use function array_keys;
 use function array_map;
@@ -108,9 +108,15 @@ final class HeldEmailsCommand extends Command
             return $this->fail('No held email with that id.');
         }
 
-        // A RawMessage is not an Email, so no mail listener touches it again, the hold included.
+        $message = $held->getMessage();
+
+        if (! $message instanceof Message) {
+            return $this->fail('This email was held as raw MIME, before held emails were stored as messages, so it cannot be released. Reject it, or ask the sender to send it again.');
+        }
+
+        // A plain Message is not an Email, so no mail listener touches it again, the hold included.
         $this->mailer->send(
-            new RawMessage($held->getMessage()),
+            $message,
             new Envelope(Address::create($held->getSender()), array_map(Address::create(...), $held->getRecipients())),
         );
 

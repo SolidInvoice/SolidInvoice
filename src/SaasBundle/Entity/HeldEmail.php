@@ -19,13 +19,19 @@ use Doctrine\ORM\Mapping as ORM;
 use SolidInvoice\CoreBundle\Entity\Company;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Mime\Message;
 use Symfony\Component\Uid\Ulid;
+use function base64_decode;
+use function base64_encode;
 use function mb_substr;
+use function serialize;
+use function unserialize;
 
 /**
  * A client email from a new account that was not delivered, waiting for the operator to release
- * or reject it. The message is kept fully rendered (MIME, attachments included), so releasing it
- * sends exactly what was held.
+ * or reject it. The message is kept fully rendered (headers and body, attachments included) as a
+ * plain Message, so releasing it sends exactly what was held through whichever transport is
+ * configured then: API transports build their payload from a Message, never from raw MIME.
  */
 #[ORM\Table(name: HeldEmail::TABLE_NAME)]
 #[ORM\Entity]
@@ -42,6 +48,11 @@ class HeldEmail
     #[ORM\Column(name: 'subject', type: Types::STRING, length: 255)]
     private string $subject;
 
+    // Base64, because the serialized parts hold the attachments' raw bytes.
+    // TEXT without a length is LONGTEXT on MySQL; an attached PDF does not fit in 64KB.
+    #[ORM\Column(name: 'message', type: Types::TEXT)]
+    private string $message;
+
     /**
      * @param list<string> $recipients
      * @param array<string, int> $reasons signal => points
@@ -55,9 +66,7 @@ class HeldEmail
         #[ORM\Column(name: 'recipients', type: Types::JSON)]
         private array $recipients,
         string $subject,
-        // TEXT without a length is LONGTEXT on MySQL; an attached PDF does not fit in 64KB.
-        #[ORM\Column(name: 'message', type: Types::TEXT)]
-        private string $message,
+        Message $message,
         #[ORM\Column(name: 'reasons', type: Types::JSON)]
         private array $reasons,
         #[ORM\Column(name: 'created', type: Types::DATETIME_IMMUTABLE)]
@@ -65,6 +74,7 @@ class HeldEmail
     ) {
         $this->id = new Ulid();
         $this->subject = mb_substr($subject, 0, 255);
+        $this->message = base64_encode(serialize($message));
     }
 
     public function getId(): Ulid
@@ -95,9 +105,15 @@ class HeldEmail
         return $this->subject;
     }
 
-    public function getMessage(): string
+    /**
+     * Null for an email held before messages were stored this way: that is raw MIME, and can only be rejected.
+     */
+    public function getMessage(): ?Message
     {
-        return $this->message;
+        $serialized = base64_decode($this->message, true);
+        $message = false === $serialized ? false : unserialize($serialized);
+
+        return $message instanceof Message ? $message : null;
     }
 
     /**

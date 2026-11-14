@@ -12,7 +12,7 @@ Send beautiful quotes and invoices, accept online payments, automate recurring b
   <a href="https://github.com/SolidInvoice/SolidInvoice/blob/3.0.x/LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" /></a>
   <a href="https://github.com/SolidInvoice/SolidInvoice/releases"><img alt="Latest Release" src="https://img.shields.io/github/v/release/SolidInvoice/SolidInvoice?include_prereleases&style=flat-square" /></a>
   <a href="https://www.php.net/"><img alt="PHP 8.4+" src="https://img.shields.io/badge/php-8.4%2B-777BB4?style=flat-square&logo=php&logoColor=white" /></a>
-  <a href="https://symfony.com/"><img alt="Symfony 7" src="https://img.shields.io/badge/symfony-7.1-000000?style=flat-square&logo=symfony" /></a>
+  <a href="https://symfony.com/"><img alt="Symfony 8.1" src="https://img.shields.io/badge/symfony-8.1-000000?style=flat-square&logo=symfony" /></a>
   <a href="https://hub.docker.com/r/solidinvoice/solidinvoice"><img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/solidinvoice/solidinvoice?style=flat-square&logo=docker&logoColor=white" /></a>
   <a href="https://github.com/SolidInvoice/SolidInvoice/stargazers"><img alt="GitHub Stars" src="https://img.shields.io/github/stars/SolidInvoice/SolidInvoice?style=flat-square" /></a>
 </p>
@@ -40,7 +40,7 @@ Send beautiful quotes and invoices, accept online payments, automate recurring b
 
 ## Why SolidInvoice?
 
-Most invoicing tools force a trade-off: easy to use *or* respectful of your data. SolidInvoice gives you both. It's a mature, production-ready billing platform you can run on your own server for free, or let us host for a flat **$8/month** — no per-client limits, no surprise tiers, no lock-in. Built on Symfony 7 and PHP 8.4, it's designed to be extended, integrated, and trusted.
+Most invoicing tools force a trade-off: easy to use *or* respectful of your data. SolidInvoice gives you both. It's a mature, production-ready billing platform you can run on your own server for free, or let us host it: start on the **Free plan**, with paid plans from **$9/month** — no lock-in. Built on Symfony 8.1 and PHP 8.4, it's designed to be extended, integrated, and trusted.
 
 ---
 
@@ -90,7 +90,7 @@ Most invoicing tools force a trade-off: easy to use *or* respectful of your data
 - MIT licensed — fork it, modify it, ship it
 
 ### 🚀 Modern Stack
-- Symfony 7.1, PHP 8.4, Doctrine ORM, API Platform 4
+- Symfony 8.1, PHP 8.4, Doctrine ORM, API Platform 4
 - Tabler UI on Bootstrap 5.3 — fully responsive, mobile-friendly
 - Stimulus, Webpack Encore, Bun, Sass
 - Helm charts for Kubernetes, opt-in Prometheus metrics
@@ -101,15 +101,15 @@ Most invoicing tools force a trade-off: easy to use *or* respectful of your data
 
 ## 🏠 Self-Hosted vs. ☁️ Hosted
 
-Both versions ship the same codebase and feature set. Pick whichever fits your workflow.
+Both versions run the same codebase. Self-hosted has no limits; hosted features depend on your plan. Pick whichever fits your workflow.
 
-|                              | 🏠 **Self-Hosted** (Free, MIT) | ☁️ **Hosted** ($8/month)         |
+|                              | 🏠 **Self-Hosted** (Free, MIT) | ☁️ **Hosted** (Free, paid from $9/month) |
 | ---------------------------- | ------------------------------ | --------------------------------- |
-| Price                        | Free forever                   | Flat $8/mo — no per-client fees   |
+| Price                        | Free forever                   | Free plan, or Solo $9 · Pro $19 · Business $39 per month ([pricing](https://solidinvoice.co/pricing)) |
 | Setup                        | You install & maintain         | Zero setup — sign up and send     |
 | Updates                      | Manual                         | Automatic                         |
 | Backups                      | You manage                     | Daily, managed for you            |
-| Branding                     | Yours                          | SolidInvoice branding removed     |
+| Branding                     | Yours                          | SolidInvoice branding removed on Pro and Business |
 | Early access to new features | —                              | ✅                                |
 | Data ownership               | Full                           | Full — export anytime             |
 | Best for                     | Tinkerers, privacy-first teams | Anyone who wants to invoice today |
@@ -134,7 +134,7 @@ Both versions ship the same codebase and feature set. Pick whichever fits your w
 
 ### Option 1 — Hosted (recommended)
 
-The fastest way to start sending invoices. Sign up at **[solidinvoice.co](https://solidinvoice.co)** — no install, no server, automatic updates and backups for $8/month.
+The fastest way to start sending invoices. Sign up at **[solidinvoice.co](https://solidinvoice.co)** — no install, no server, automatic updates and backups. Start on the Free plan; paid plans start at $9/month.
 
 ### Option 2 — Docker
 
@@ -187,7 +187,7 @@ bun run build
 
 ## 🛠 Tech Stack
 
-**Backend:** Symfony 7.1 · PHP 8.4 · Doctrine ORM · API Platform 4 · Payum · MoneyPHP
+**Backend:** Symfony 8.1 · PHP 8.4 · Doctrine ORM · API Platform 4 · Payum · MoneyPHP
 **Frontend:** Tabler · Bootstrap 5.3 · Stimulus · Webpack Encore · Bun · Sass
 **Quality:** PHPStan (level 6) · ECS · Rector · PHPUnit · Foundry · GitHub Actions
 

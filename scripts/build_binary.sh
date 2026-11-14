@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euxo pipefail
+set -euo pipefail
 
 # This script is used to build the binary files for SolidInvoice.
 #
@@ -84,8 +84,6 @@ for arg in "$@"; do
         show_help
     fi
 done
-
-set -euxo pipefail
 
 USE_LOCAL=0
 SKIP_DIST=0
@@ -180,7 +178,6 @@ if [ $NEED_BUILD_DIST -eq 1 ]; then
 fi
 
 cd "${ROOT_DIR}/frankenphp"
-
 
 cp "${DIST_DIR}"/SolidInvoice-"$SOLIDINVOICE_VERSION".tar.gz ./app.tar.gz
 

@@ -30,3 +30,4 @@
 {{ '-'|repeat(60) }}
 {{ 'payment.view_invoice'|trans({}, 'email') }}: {{ url('_invoices_view', {'id': payment.invoice.id}) }}
 {% endif %}
+{{ include('@SolidInvoiceCore/Layout/Email/_notification_footer.txt.twig') }}

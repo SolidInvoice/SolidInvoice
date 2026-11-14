@@ -48,4 +48,9 @@ trait QuoteStatusTrait
     {
         return QuoteStatus::Declined === $this->getStatus();
     }
+
+    public function isExpired(): bool
+    {
+        return QuoteStatus::Expired === $this->getStatus();
+    }
 }

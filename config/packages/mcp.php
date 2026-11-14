@@ -39,6 +39,7 @@ return App::config([
         ],
         'http' => [
             'path' => '/_mcp',
+            'allowed_hosts' => ['*'],
             'session' => [
                 'store' => (string) $env('SOLIDINVOICE_MCP_SESSION_STORE', 'file'),
                 'cache_pool' => (string) $env('SOLIDINVOICE_MCP_SESSION_CACHE_POOL', 'cache.mcp.sessions'),

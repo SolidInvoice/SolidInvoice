@@ -156,14 +156,19 @@ jobs:
           go-version-file: frankenphp/go.mod
           cache-dependency-path: frankenphp/go.sum
 
-      # Cache key is based on the build scripts (which determine PHP version and
-      # extensions) so the cache is invalidated automatically when they change.
+      # Cache key is based on the build scripts and craft.yml (which determine the PHP
+      # version and extensions) so the cache is invalidated automatically when they change.
       - name: Restore static-php cache
         id: restore-static-php
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
-          path: frankenphp/dist/static-php-cli
-          key: ${{ matrix.os }}-${{ matrix.platform }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh') }}
+          path: |
+            frankenphp/dist/spc
+            frankenphp/dist/downloads
+            frankenphp/dist/source
+            frankenphp/dist/buildroot
+            frankenphp/dist/pkgroot
+          key: ${{ matrix.os }}-${{ matrix.platform }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh', 'frankenphp/craft.yml') }}
           restore-keys: |
               ${{ matrix.os }}-${{ matrix.platform }}-static-php-${{ env.PHP_VERSION }}-
               ${{ matrix.os }}-${{ matrix.platform }}-static-php-
@@ -177,9 +182,9 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
           RELEASE: ${{ needs.prepare.outputs.release }}
-          # Use pre-built extension binaries where available to avoid compiling
-          # PHP and all extensions from source (~50 min → a few minutes).
-          SPC_OPT_DOWNLOAD_ARGS: "--ignore-cache-sources=php-src --retry 5 --prefer-pre-built"
+          # Use pre-built library binaries where available instead of compiling
+          # everything from source (~50 min → a few minutes).
+          PREFER_BINARY: "1"
 
       - name: Upload static-php-cli build logs on failure
         if: failure()
@@ -187,9 +192,7 @@ jobs:
         with:
           name: static-php-build-logs-${{ matrix.os }}-${{ matrix.platform }}
           path: |
-            frankenphp/dist/static-php-cli/log/spc.output.log
-            frankenphp/dist/static-php-cli/log/spc.shell.log
-            frankenphp/dist/static-php-cli/log/php-src.config.log
+            frankenphp/dist/log/
           if-no-files-found: ignore
           retention-days: 7
 
@@ -197,8 +200,13 @@ jobs:
         if: steps.restore-static-php.outputs.cache-hit != 'true'
         uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
-          path: frankenphp/dist/static-php-cli
-          key: ${{ matrix.os }}-${{ matrix.platform }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh') }}
+          path: |
+            frankenphp/dist/spc
+            frankenphp/dist/downloads
+            frankenphp/dist/source
+            frankenphp/dist/buildroot
+            frankenphp/dist/pkgroot
+          key: ${{ matrix.os }}-${{ matrix.platform }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh', 'frankenphp/craft.yml') }}
 
   build-linux:
     name: Build Linux ${{ matrix.arch }} binary
@@ -249,8 +257,13 @@ jobs:
         id: restore-static-php
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
-          path: frankenphp/dist/static-php-cli
-          key: linux-${{ matrix.arch }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh') }}
+          path: |
+            frankenphp/dist/spc
+            frankenphp/dist/downloads
+            frankenphp/dist/source
+            frankenphp/dist/buildroot
+            frankenphp/dist/pkgroot
+          key: linux-${{ matrix.arch }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh', 'frankenphp/craft.yml') }}
           restore-keys: |
               linux-${{ matrix.arch }}-static-php-${{ env.PHP_VERSION }}-
               linux-${{ matrix.arch }}-static-php-
@@ -267,9 +280,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
           RELEASE: ${{ needs.prepare.outputs.release }}
-          # Unset CI so build-static.sh preserves downloads/ and source/ for caching
-          CI: ""
-          SPC_OPT_DOWNLOAD_ARGS: "--ignore-cache-sources=php-src --retry 5 --prefer-pre-built"
+          PREFER_BINARY: "1"
 
       - name: Upload static-php-cli build logs on failure
         if: failure()
@@ -277,9 +288,7 @@ jobs:
         with:
           name: static-php-build-logs-linux-${{ matrix.arch }}
           path: |
-            frankenphp/dist/static-php-cli/log/spc.output.log
-            frankenphp/dist/static-php-cli/log/spc.shell.log
-            frankenphp/dist/static-php-cli/log/php-src.config.log
+            frankenphp/dist/log/
           if-no-files-found: ignore
           retention-days: 7
 
@@ -287,8 +296,13 @@ jobs:
         if: steps.restore-static-php.outputs.cache-hit != 'true'
         uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
-          path: frankenphp/dist/static-php-cli
-          key: linux-${{ matrix.arch }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh') }}
+          path: |
+            frankenphp/dist/spc
+            frankenphp/dist/downloads
+            frankenphp/dist/source
+            frankenphp/dist/buildroot
+            frankenphp/dist/pkgroot
+          key: linux-${{ matrix.arch }}-static-php-${{ env.PHP_VERSION }}-${{ hashFiles('frankenphp/build-static.sh', 'frankenphp/build-solidinvoice.sh', 'frankenphp/craft.yml') }}
 
       - name: Login to DockerHub
         if: needs.prepare.outputs.release == '1'

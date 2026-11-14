@@ -6,6 +6,8 @@ Changelog
 
 ### Changes
 
+* Products: keep a list of the things you sell, each with a name, price, optional description, default quantity and optional tax rate, under Products in the menu. On an invoice, quote or recurring invoice, "+ Add Product" next to "+ Add Item" adds a product as a new line in the document's currency; the line is a copy, so editing the product later does not change it. Products can also be managed through the REST and GraphQL API (`/api/products`) and the MCP tools `list_products`, `get_product`, `create_product`, `update_product` and `delete_product`
+* Quotes can have an expiry date. When creating or editing a quote, choose "Valid for" 7, 14, 30, 60 or 90 days, or a custom date, or leave it with no expiry. A sent quote that is still pending expires automatically once its last valid day has passed, and gets the new Expired status (an expired quote can be re-opened or archived). The quote list shows a "Valid until" column that can be filtered by date range, and the Expired status can be filtered on; quote pages show the date; and the dashboard's Attention Required card lists quotes expiring in the next 7 days
 * Payment receipts: every received payment has a receipt that can be viewed, downloaded as a PDF or emailed (PDF attached) to the invoice's contacts. Payments have their own page, a Receipts list sits under Payments in the menu and on each client, and every received payment (online, recorded in the app, or through the API or MCP) emails a receipt automatically. This can be turned off under Settings > Payments, and someone recording a payment can choose otherwise with "Send a digital receipt"
 * API: clients, contacts, invoices, quotes, recurring invoices and payments include their `created` and `updated` times (UTC), and can be sorted by them (`order[updated]=desc`) and filtered to what changed since a time (`updated[after]=...`); invoices, quotes and recurring invoices include their `currencyCode`; invoices and quotes can be searched by number (`invoiceId`, `quoteId`) and client name (`client.name`); `itemsPerPage` sets the page size, up to 100
 * API: invoices and quotes created without a number are numbered the same way as in the app, numbers must be unique within a company, `GET /api/next-number` previews the next number, and `POST /api/invoices/{id}/clone` and `POST /api/quotes/{id}/clone` copy a document into a new draft
@@ -23,6 +25,10 @@ Changelog
 * New companies get Cheque and Card terminal payment methods, and existing companies get them on upgrade
 * Creating a company now asks for its country, with a searchable list that shows each country's flag. Companies in the EU, the UK, Switzerland, Monaco, the Isle of Man, South Africa and Australia start with their country's VAT or GST rates already set up
 * AI agents can discover SolidInvoice on their own: the app now serves `/auth.md` with sign-in steps for agents, an agent skill for connecting over MCP, and an `/.well-known/ai-catalog.json` listing the MCP server and REST API
+* You can now be notified when SolidInvoice creates an invoice from a recurring invoice. The email shows the invoice details and links to the invoice
+* Notifications are now sent by email by default, including to new users, new companies and for notifications added later. Turn one off under Profile → Notifications. Users who have never saved their notification preferences will start receiving these emails
+* Notification emails now show which company they were sent for and link to your notification preferences
+* Notifications are never sent to disabled users, to users who have not verified their email address, or to anyone in a disabled company
 
 ### Fixes
 
@@ -42,6 +48,7 @@ Changelog
 * Trimmed internal payment method fields from API payment responses
 * Recording a payment through the API or the MCP tools no longer marks the invoice as paid when the payment does not cover the full balance. The invoice stays pending with its balance reduced, and is marked paid once the payments settle it. Before, a second payment against the same invoice was rejected
 * Recording a second payment against an invoice through the API no longer fails with a "circular reference" error
+* The dashboard revenue chart no longer shows the current month twice, and drops the previous month, on the 29th to 31st of a month
 
 3.1.2 / 2026-10-21
 -------------------
