@@ -29,6 +29,17 @@ Changelog
 * Notifications are now sent by email by default, including to new users, new companies and for notifications added later. Turn one off under Profile → Notifications. Users who have never saved their notification preferences will start receiving these emails
 * Notification emails now show which company they were sent for and link to your notification preferences
 * Notifications are never sent to disabled users, to users who have not verified their email address, or to anyone in a disabled company
+* Getting started is now a single step. New users enter their company name and currency, then go straight to the invoice editor to add their first client and send their first invoice. The separate client, invoice and "you're all set" screens are gone; the first invoice used to be saved without a recipient, so it could not be sent
+* The dashboard setup checklist now starts with "Create Your Company" already ticked off
+* "Send to client" is now the main button when creating or editing an invoice, and on a draft invoice's page. "Save as Draft" and "Publish without sending" are still one click away
+* Until you confirm your email address, the Send button stays visible but disabled, with the reason next to it and a link to get a new confirmation email
+* Invoice, quote and reminder emails now carry a Reply-To of your company's email address (or your own, if the company has none), so a client's reply reaches you instead of the no-reply sender
+* A published invoice now has a "Copy client link" button that copies the link to the invoice's public page
+* Saving an invoice or quote with no contact selected now says to choose a contact or add one with an email address
+* Before you confirm your email address, an invoice's page offers "Email me a test copy". It sends the invoice, with its PDF, to your own inbox only, along with a link that confirms your address and brings you back to the invoice, ready to send. Limited to 3 per account
+* SolidInvoice Cloud trial emails now follow what you do instead of arriving every day and a half. The welcome is sent at signup; a "your first invoice takes 2 minutes" nudge goes out after a day with nothing sent; sending your first invoice brings the "now let them pay by card" email; and four days before the trial ends you get a recap of your usage with what you keep on Free. The logo, recurring billing, feedback, add-a-client and last-chance offer emails have been dropped
+* Trial users who have not confirmed their email get a reminder after one day and again after three, and those reminders carry the confirmation link. Other trial emails are not sent to an unconfirmed address, so they cannot bounce
+* With a card on file, the trial-ending email now goes out too, and says on which date the card will be charged
 
 ### Fixes
 
@@ -37,9 +48,11 @@ Changelog
 * Deleting a custom field whose name contains an apostrophe now shows its confirmation prompt
 * Apostrophes in plain-text emails no longer show up as `&#039;`
 * Adding a new client while creating an invoice or quote now respects the plan's client limit
+* Invoices generated from a recurring invoice are now emailed to their recipients. They were created and published, but no email went out
+* A draft invoice, such as the one the onboarding wizard creates, no longer stops the "send your first invoice" email
 
 
-3.1.3 / Unreleased
+3.1.3 / 2026-11-10
 ------------------
 
 ### Fixes
@@ -99,46 +112,6 @@ Changelog
 * Invoice, recurring invoice and quote lines can now be named separately from their description, and keep an explicit order
 * Invoices, recurring invoices and clients can have payment terms (Net 15, Net 30, Net 60, due on receipt, or a custom date), with a configurable company-wide default
 * Issued invoices and quotes now freeze their currency going forward, so changing a client's or company's default currency no longer retroactively restates documents issued *after* upgrading. Documents issued before the upgrade are not covered yet — see "Known issues" below
-
-### Changes
-
-* Getting started is now a single step. New users enter their company name and currency, then go straight to the invoice editor to add their first client and send their first invoice. The separate client, invoice and "you're all set" screens are gone; the first invoice used to be saved without a recipient, so it could not be sent
-* The dashboard setup checklist now starts with "Create Your Company" already ticked off
-* "Send to client" is now the main button when creating or editing an invoice, and on a draft invoice's page. "Save as Draft" and "Publish without sending" are still one click away
-* Until you confirm your email address, the Send button stays visible but disabled, with the reason next to it and a link to get a new confirmation email
-* Invoice, quote and reminder emails now carry a Reply-To of your company's email address (or your own, if the company has none), so a client's reply reaches you instead of the no-reply sender
-* A published invoice now has a "Copy client link" button that copies the link to the invoice's public page
-* Saving an invoice or quote with no contact selected now says to choose a contact or add one with an email address
-* Before you confirm your email address, an invoice's page offers "Email me a test copy". It sends the invoice, with its PDF, to your own inbox only, along with a link that confirms your address and brings you back to the invoice, ready to send. Limited to 3 per account
-* SolidInvoice Cloud trial emails now follow what you do instead of arriving every day and a half. The welcome is sent at signup; a "your first invoice takes 2 minutes" nudge goes out after a day with nothing sent; sending your first invoice brings the "now let them pay by card" email; and four days before the trial ends you get a recap of your usage with what you keep on Free. The logo, recurring billing, feedback, add-a-client and last-chance offer emails have been dropped
-* Trial users who have not confirmed their email get a reminder after one day and again after three, and those reminders carry the confirmation link. Other trial emails are not sent to an unconfirmed address, so they cannot bounce
-* With a card on file, the trial-ending email now goes out too, and says on which date the card will be charged
-
-### Fixes
-
-* Invoices generated from a recurring invoice are now emailed to their recipients. They were created and published, but no email went out
-* A draft invoice, such as the one the onboarding wizard creates, no longer stops the "send your first invoice" email
-
-3.1.1 / 2026-10-15
--------------------
-
-### Changes
-
-* Application logs now show up in the server output. Production logs everything from `info` up (set `SOLIDINVOICE_LOG_LEVEL`, e.g. to `warning`, to change that), web requests log through the web server's own logger, and log lines from background workers and console commands keep their level instead of all showing as `info`
-
-### Fixes
-
-* A company's own mail delivery settings now apply only to that company's emails. Emails sent before a company was selected (such as the two-factor login code) could go out through another company's mail provider, and long-running workers kept using the first company's provider for every company
-* "Resend code" on the two-factor login page works again. Users with more than one company were redirected to company selection and back without a new code being sent
-* The two-factor login code email is now sent from `SOLIDINVOICE_MAILER_SENDER`. It used to pick up another company's sender address, or the user's own address, so mail providers often rejected it and the code never arrived
-* `SOLIDINVOICE_APP_SECRET` is used again. 3.1.0 ignored it and used a value that changed every time the cache was rebuilt, so API tokens, "remember me" logins and signed links stopped working after each deploy or restart. API tokens created while running 3.1.0 need to be regenerated
-* The built-in web server now caches only content-hashed static files for a year. Other static files are revalidated after an hour, so a release can no longer be hidden behind a long-cached copy of a file whose name did not change
-* Setting up an authenticator app no longer fails when the code it shows starts with 0
-* Authenticator app codes now use the standard 30-second period instead of 20 seconds, so Google Authenticator and Microsoft Authenticator codes are accepted reliably. If you set up 2FA with an app that honours the period from the QR code (such as 1Password, Authy or Bitwarden), remove the entry and scan the QR code again under **Profile → Two-Factor Authentication**
-* Release builds ship production assets again, with content-hashed file names. 3.1.0 shipped a development build whose file names never change between releases, so browsers and CDNs kept serving the old 3.0 CSS and JavaScript: buttons showed the default blue instead of the brand green and the user menu dropdown stopped opening. If you put a CDN in front of SolidInvoice, purge its cache once after upgrading
-
-3.1.0 / 2026-10-15
--------------------
 
 ### Changes
 
