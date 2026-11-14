@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace SolidInvoice\MoneyBundle\Twig\Extension;
 
 use Brick\Math\BigNumber;
-use Brick\Math\RoundingMode;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency;
 use Money\Money;
 use NumberFormatter;
 use Override;
 use RuntimeException;
+use SolidInvoice\MoneyBundle\Currency\CurrencyScale;
 use SolidInvoice\MoneyBundle\Formatter\MoneyFormatterInterface;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Twig\Extension\AbstractExtension;
@@ -54,6 +54,7 @@ class MoneyFormatterExtension extends AbstractExtension
     public function __construct(
         private readonly MoneyFormatterInterface $formatter,
         private readonly SystemConfig $systemConfig,
+        private readonly CurrencyScale $currencyScale = new CurrencyScale(),
         string $locale = 'en'
     ) {
         $this->currencies = new ISOCurrencies();
@@ -81,11 +82,7 @@ class MoneyFormatterExtension extends AbstractExtension
             new TwigFilter('formatCurrency', function (BigNumber | int | float | string $value, Currency | string | null $currency = null): string {
                 $currency = $this->resolveCurrency($currency);
 
-                $value = BigNumber::of(is_float($value) ? (string) $value : $value)->toBigDecimal();
-
-                if ($value->getScale() > 0) {
-                    $value = $value->toScale(0, RoundingMode::HalfEven);
-                }
+                $value = $this->currencyScale->toWholeMinorUnits($value);
 
                 return $this
                     ->formatter
@@ -107,19 +104,14 @@ class MoneyFormatterExtension extends AbstractExtension
             new TwigFilter('formatCurrencyAmount', function (BigNumber | int | float | string $value, Currency | string | null $currency = null): string {
                 $currency = $this->resolveCurrency($currency) ?? $this->systemConfig->getCurrency();
 
-                $value = BigNumber::of(is_float($value) ? (string) $value : $value)->toBigDecimal();
-
                 /*
                  * Mirrors `formatCurrency` deliberately. The incoming value is a count of
                  * minor units, and `Money` accepts only a whole number of them - which is
-                 * why the rounding is to scale 0 rather than to 2 decimal places. Half-even
-                 * is the same banker's rounding the other filter applies. The two filters
-                 * describe the same amount and must never disagree about it, so this
-                 * mirrors rather than diverges.
+                 * why the rounding is to scale 0 rather than to 2 decimal places. The two
+                 * filters describe the same amount and must never disagree about it, so
+                 * this shares `CurrencyScale::toWholeMinorUnits()` rather than diverging.
                  */
-                if ($value->getScale() > 0) {
-                    $value = $value->toScale(0, RoundingMode::HalfEven);
-                }
+                $value = $this->currencyScale->toWholeMinorUnits($value);
 
                 $fractionDigits = $this->currencies->subunitFor($currency);
 
