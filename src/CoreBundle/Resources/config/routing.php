@@ -92,7 +92,7 @@ return static function (RoutingConfigurator $routingConfigurator) use ($env): vo
         ->controller(DownloadExport::class)
         ->methods(['GET']);
 
-    if ($host = $env('SOLIDINVOICE_MESSENGER_MONINTOR_HOST', '')) {
+    if ($host = $env('SOLIDINVOICE_MESSENGER_MONITOR_HOST', '')) {
         $routingConfigurator
             ->import(MessengerMonitorController::class)
             ->prefix('/messenger')

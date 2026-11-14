@@ -18,7 +18,7 @@ use SolidInvoice\CoreBundle\Entity\ProcessedMessage;
 $env = static fn (string $name, string $default): string => $_ENV[$name] ?? $_SERVER[$name] ?? $default;
 
 return App::config(
-    $env('SOLIDINVOICE_MESSENGER_MONINTOR_HOST', '') !== '' ? [
+    $env('SOLIDINVOICE_MESSENGER_MONITOR_HOST', '') !== '' ? [
             'zenstruck_messenger_monitor' => [
                 'storage' => [
                     'store_input' => true,
