@@ -4,6 +4,9 @@ Changelog
 Unreleased
 ----------
 
+3.1.3 / 2026-11-10
+------------------
+
 ### Fixes
 
 * The MCP server no longer fails with a server error on every request when SolidInvoice runs on its built-in FrankenPHP server. Some log entries could not be written to the server log, which failed the request
