@@ -77,6 +77,17 @@ return App::config([
                             'dir' => param('kernel.project_dir') . '/vendor/payum/core/Payum/Core/Bridge/Doctrine/Resources/mapping',
                             'prefix' => 'Payum\Core\Model',
                         ],
+                        // ProcessedMessage::$finishedAt and ::$runId (used by the index attributes
+                        // in src/CoreBundle/Entity/ProcessedMessage.php) live on this mapped
+                        // superclass. The bundle does not register its own mapping, so without
+                        // this entry those fields are missing from Doctrine's metadata and
+                        // schema creation fails on an unresolvable index.
+                        'zenstruck_messenger_monitor' => [
+                            'is_bundle' => false,
+                            'type' => 'xml',
+                            'dir' => param('kernel.project_dir') . '/vendor/zenstruck/messenger-monitor-bundle/config/doctrine/mapping',
+                            'prefix' => 'Zenstruck\Messenger\Monitor\History\Model',
+                        ],
                     ],
                 ],
             ],
