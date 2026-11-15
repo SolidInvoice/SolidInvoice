@@ -142,7 +142,8 @@ class TaxIdentifier implements Stringable
     {
         $this->client = $client;
 
-        if ($client instanceof Client) {
+        // A new, not-yet-persisted Client has no company; CompanyListener assigns it on prePersist.
+        if ($client instanceof Client && $client->getCompanyId() !== null) {
             $this->setCompany($client->getCompany());
         }
 

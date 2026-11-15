@@ -42,6 +42,11 @@ final class SameCompanyAsClientValidator extends ConstraintValidator
             return;
         }
 
+        // Entities that are not yet persisted may not have a company assigned yet (set by CompanyListener on prePersist).
+        if ($value->getCompanyId() === null || $client->getCompanyId() === null) {
+            return;
+        }
+
         $identifierCompany = $value->getCompany();
         $clientCompany = $client->getCompany();
 
