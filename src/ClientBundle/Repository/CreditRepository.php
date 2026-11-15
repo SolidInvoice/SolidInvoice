@@ -14,17 +14,18 @@ declare(strict_types=1);
 namespace SolidInvoice\ClientBundle\Repository;
 
 use Brick\Math\BigDecimal;
-use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\Exception\MathException;
+use Brick\Math\RoundingMode;
 use Doctrine\Persistence\ManagerRegistry;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Entity\Credit;
+use SolidInvoice\ClientBundle\Exception\InsufficientCreditException;
 use SolidWorx\Platform\PlatformBundle\Repository\EntityRepository;
-use function assert;
 
 /**
  * @extends EntityRepository<Credit>
+ * @see \SolidInvoice\ClientBundle\Tests\Repository\CreditRepositoryTest
  */
 class CreditRepository extends EntityRepository
 {
@@ -39,30 +40,54 @@ class CreditRepository extends EntityRepository
     public function addCredit(Client $client, BigNumber | float | int | string $amount): Credit
     {
         $credit = $client->getCredit();
+        $amountInt = BigDecimal::of(is_float($amount) ? (string) $amount : $amount)
+            ->toScale(0, RoundingMode::HalfEven)
+            ->toInt();
 
-        $value = $credit->getValue();
-        assert($value instanceof BigInteger || $value instanceof BigDecimal);
+        $this->getEntityManager()
+            ->createQueryBuilder()
+            ->update(Credit::class, 'c')
+            ->set('c.value', 'c.value + :amount')
+            ->where('c.id = :id')
+            ->setParameter('amount', $amountInt)
+            ->setParameter('id', $credit->getId())
+            ->getQuery()
+            ->execute();
 
-        $credit->setValue($value->plus($amount));
-
-        $this->save($credit);
+        $this->getEntityManager()->refresh($credit);
 
         return $credit;
     }
 
     /**
      * @throws MathException
+     * @throws InsufficientCreditException
      */
     public function deductCredit(Client $client, BigNumber | float | int | string $amount): Credit
     {
         $credit = $client->getCredit();
+        $amountInt = BigDecimal::of(is_float($amount) ? (string) $amount : $amount)
+            ->toScale(0, RoundingMode::HalfEven)
+            ->toInt();
 
-        $value = $credit->getValue();
-        assert($value instanceof BigInteger || $value instanceof BigDecimal);
+        // Atomic read-check-write: the WHERE clause guards against overdraft.
+        // Zero rows updated means another request already consumed the balance.
+        $updated = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->update(Credit::class, 'c')
+            ->set('c.value', 'c.value - :amount')
+            ->where('c.id = :id')
+            ->andWhere('c.value >= :amount')
+            ->setParameter('amount', $amountInt)
+            ->setParameter('id', $credit->getId())
+            ->getQuery()
+            ->execute();
 
-        $credit->setValue($value->minus($amount));
+        if ($updated === 0) {
+            throw new InsufficientCreditException();
+        }
 
-        $this->save($credit);
+        $this->getEntityManager()->refresh($credit);
 
         return $credit;
     }
