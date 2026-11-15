@@ -35,6 +35,9 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @see \SolidInvoice\TaxBundle\Tests\Entity\TaxIdentifierTest
+ */
 #[ORM\Table(name: TaxIdentifier::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: TaxIdentifierRepository::class)]
 #[ApiResource(

@@ -20,6 +20,9 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
+/**
+ * @see \SolidInvoice\TaxBundle\Tests\Validator\Constraints\SameCompanyAsClientValidatorTest
+ */
 final class SameCompanyAsClientValidator extends ConstraintValidator
 {
     public function validate(mixed $value, Constraint $constraint): void
