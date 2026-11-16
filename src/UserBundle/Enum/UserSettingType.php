@@ -24,4 +24,5 @@ enum UserSettingType: string
     case OnboardingCompletedAt = 'onboarding_completed_at';
     case OnboardingChecklistDismissed = 'onboarding_checklist_dismissed';
     case OnboardingEmailSequenceLastStep = 'onboarding_email_sequence_last_step';
+    case AffiliatePromptDismissedAt = 'affiliate_prompt_dismissed_at';
 }

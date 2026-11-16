@@ -17,7 +17,7 @@ return App::config([
     'toggler' => [
         'config' => [
             'features' => [
-                'allow_registration' => env('SOLIDINVOICE_ALLOW_REGISTRATION'),
+                'allow_registration' => env('SOLIDINVOICE_ALLOW_REGISTRATION')->bool(),
                 'google_oauth_login' => '@=env("SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_ID") !== null && env("SOLIDINVOICE_OAUTH_CLIENT_GOOGLE_CLIENT_SECRET") !== null',
                 'turnstile_captcha' => '@=env("SOLIDINVOICE_TURNSTILE_SITE_KEY") !== null && env("SOLIDINVOICE_TURNSTILE_SECRET_KEY") !== null',
                 'saas_enabled' => '@=env("SOLIDINVOICE_PLATFORM") === \'saas\'',

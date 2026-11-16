@@ -35,6 +35,9 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
 use function assert;
 
+/**
+ * @see \SolidInvoice\QuoteBundle\Tests\Action\EditTest
+ */
 final readonly class Edit
 {
     public function __construct(
@@ -58,7 +61,7 @@ final readonly class Edit
         $client = $quote->getClient();
         $formOptions = [];
         if ($client instanceof Client) {
-            $formOptions['currency'] = $client->getCurrency();
+            $formOptions['currency'] = $quote->getCurrency();
         }
 
         // Convert Quote entity to DTO for editing

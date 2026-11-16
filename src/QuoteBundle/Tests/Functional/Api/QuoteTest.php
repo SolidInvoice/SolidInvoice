@@ -41,9 +41,10 @@ final class QuoteTest extends ApiTestCase
     {
         $client = ClientFactory::createOne();
         $contacts = ContactFactory::createMany(1, ['client' => $client]);
-        QuoteFactory::createMany(3, [
+        QuoteFactory::createMany(3, static fn (): array => [
             'client' => $client,
             'users' => $contacts,
+            'lines' => [new Line()->setName('Test Item')->setQty(1)->setPrice(10000)],
             'discount' => new Discount()
                 ->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
         ]);
@@ -61,9 +62,10 @@ final class QuoteTest extends ApiTestCase
     {
         $client = ClientFactory::createOne();
         $contacts = ContactFactory::createMany(1, ['client' => $client]);
-        QuoteFactory::createMany(2, [
+        QuoteFactory::createMany(2, static fn (): array => [
             'client' => $client,
             'users' => $contacts,
+            'lines' => [new Line()->setName('Test Item')->setQty(1)->setPrice(10000)],
             'discount' => new Discount()
                 ->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
         ]);

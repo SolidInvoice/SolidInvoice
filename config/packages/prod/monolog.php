@@ -17,17 +17,11 @@ return App::config([
     'monolog' => [
         'handlers' => [
             'main' => [
-                'type' => 'fingers_crossed',
-                'action_level' => 'error',
-                'handler' => 'nested',
-                'buffer_size' => 50,
-                'excluded_http_codes' => [404, 405],
-            ],
-            'nested' => [
-                'type' => 'stream',
-                'path' => 'php://stderr',
-                'level' => 'debug',
-                'formatter' => 'monolog.formatter.json',
+                'type' => 'service',
+                'id' => 'solidinvoice.log.server_handler',
+                'channels' => [
+                    'elements' => ['!event', '!doctrine', '!deprecation'],
+                ],
             ],
             'console' => [
                 'type' => 'console',

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Tests\Widgets;
 
+use SolidInvoice\CoreBundle\Test\Snapshot\MatchesStableHtmlSnapshot;
 use SolidInvoice\DashboardBundle\Widgets\WidgetInterface;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -23,6 +24,9 @@ abstract class WidgetTestCase extends KernelTestCase
 {
     use EnsureApplicationInstalled;
     use MatchesSnapshots;
+    use MatchesStableHtmlSnapshot {
+        MatchesStableHtmlSnapshot::assertMatchesHtmlSnapshot insteadof MatchesSnapshots;
+    }
 
     protected Environment $twig;
 

@@ -5,7 +5,7 @@
 {% extends '@SolidInvoiceInvoice/Templates/_pdf_base.html.twig' %}
 {% import '@SolidInvoiceInvoice/Templates/_macros.html.twig' as inv %}
 
-{% set currency = invoice.client.currency %}
+{% set currency = invoice.currency %}
 {% set hasOutstandingBalance = invoice_has_outstanding_balance(invoice) %}
 
 {% block extra_styles %}
@@ -63,8 +63,9 @@
                                         <div style="font-size: 7pt; letter-spacing: 2px; text-transform: uppercase; color: #6b6b6b; margin: 10px 0 4px 0;">
                                             {{ 'invoice.due_date'|trans }}
                                         </div>
-                                        <div style="font-size: 11pt; color: #1a1a1a;">{{ invoice.due|date('F j, Y') }}</div>
+                                        <div style="font-size: 11pt; color: #1a1a1a;">{{ invoice.due|date('F j, Y') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}</div>
                                     {% endif %}
+                                    {{ inv.status_pair(invoice.status, {labelColor: '#6b6b6b', ink: '#1a1a1a'}) }}
                                 </td>
                                 <td style="width: 34%; padding: 16px 0 0 0; vertical-align: top; text-align: right;">
                                     <div style="font-size: 7pt; letter-spacing: 2px; text-transform: uppercase; color: #6b6b6b; margin-bottom: 4px;">

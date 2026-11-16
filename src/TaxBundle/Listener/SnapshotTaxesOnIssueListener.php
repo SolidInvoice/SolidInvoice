@@ -28,7 +28,7 @@ use Symfony\Component\Workflow\Transition;
 
 /**
  * Stamps `snapshotted_at` on every {@see LineTax} of an invoice or quote when the
- * document leaves a draft state (Draft/New → Pending/Active/Paid for invoices, or
+ * document leaves a draft state (Draft/New → Pending/Paid for invoices, or
  * Draft/New → Pending/Accepted for quotes).
  *
  * Once frozen, downstream {@see \SolidInvoice\TaxBundle\Calculator\TaxCalculator}
@@ -47,7 +47,6 @@ final class SnapshotTaxesOnIssueListener implements EventSubscriberInterface
 
     private const array INVOICE_ISSUED_PLACES = [
         InvoiceStatus::Pending->value,
-        InvoiceStatus::Active->value,
         InvoiceStatus::Paid->value,
         InvoiceStatus::Overdue->value,
     ];

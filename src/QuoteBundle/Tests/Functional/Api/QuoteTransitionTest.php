@@ -20,6 +20,7 @@ use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
@@ -38,7 +39,11 @@ final class QuoteTransitionTest extends ApiTestCase
     {
         $client = ClientFactory::createOne();
         $contact = ContactFactory::createOne(['client' => $client]);
-        $quote = QuoteFactory::createOne(['status' => QuoteStatus::Draft, 'client' => $client]);
+        $quote = QuoteFactory::createOne([
+            'status' => QuoteStatus::Draft,
+            'client' => $client,
+            'lines' => [new Line()->setName('Test Item')->setQty(1)->setPrice(10000)],
+        ]);
         $quote->addUser($contact);
         self::getContainer()->get('doctrine')->getManager()->flush();
 
@@ -85,6 +90,7 @@ final class QuoteTransitionTest extends ApiTestCase
         $quote = QuoteFactory::createOne([
             'status' => QuoteStatus::Draft,
             'users' => $contacts,
+            'lines' => [new Line()->setName('Test Item')->setQty(1)->setPrice(10000)],
         ]);
 
         $result = $this->requestPost(
@@ -117,6 +123,7 @@ final class QuoteTransitionTest extends ApiTestCase
         $quote = QuoteFactory::createOne([
             'status' => QuoteStatus::Draft,
             'users' => $contacts,
+            'lines' => [new Line()->setName('Test Item')->setQty(1)->setPrice(10000)],
         ]);
 
         $result = $this->requestPostExpecting(
@@ -136,6 +143,7 @@ final class QuoteTransitionTest extends ApiTestCase
         $quote = QuoteFactory::createOne([
             'status' => QuoteStatus::Draft,
             'users' => $contacts,
+            'lines' => [new Line()->setName('Test Item')->setQty(1)->setPrice(10000)],
         ]);
 
         $quoteId = $quote->getId();

@@ -1,5 +1,7 @@
 import { Controller } from '@hotwired/stimulus';
-import { Modal } from 'bootstrap';
+// Tabler's bundled Bootstrap types return BaseComponent from the static lookups, so the
+// instance has to be narrowed back to Modal at the call site.
+import { Modal } from '@tabler/core';
 
 /**
  * Manages the API token history modal display and URL parameter cleanup
@@ -18,7 +20,7 @@ export default class extends Controller<HTMLElement> {
 
             if (hasContent) {
                 // Create Bootstrap modal instance and show it
-                this.modalInstance = Modal.getOrCreateInstance(this.modalElement);
+                this.modalInstance = Modal.getOrCreateInstance(this.modalElement) as Modal;
                 this.modalInstance.show();
 
                 // Remove view_history parameter when modal is hidden

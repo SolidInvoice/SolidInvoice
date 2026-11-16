@@ -14,10 +14,8 @@ declare(strict_types=1);
 use Gedmo\Timestampable\TimestampableListener;
 use Mpociot\VatCalculator\VatCalculator;
 use SolidInvoice\AppMode;
-use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\CoreBundle\Contracts\PaidSubscriptionGateInterface;
 use SolidInvoice\CoreBundle\DummyData\DummyDataLoader;
-use SolidInvoice\CoreBundle\Email\NullEmailVerificationGate;
 use SolidInvoice\CoreBundle\Export\Serializer\ExportSerializer;
 use SolidInvoice\CoreBundle\Feature\NullUpgradePromptProvider;
 use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
@@ -102,12 +100,6 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
         ->load(SolidInvoiceCoreBundle::NAMESPACE . '\\Export\\Action\\', dirname(__DIR__, 3) . '/Export/Action')
         ->autowire(true)
         ->tag('controller.service_arguments');
-
-    $services->set(NullEmailVerificationGate::class);
-    $services->alias(
-        EmailVerificationGateInterface::class,
-        NullEmailVerificationGate::class,
-    );
 
     $services->set(NullUpgradePromptProvider::class);
     $services->alias(

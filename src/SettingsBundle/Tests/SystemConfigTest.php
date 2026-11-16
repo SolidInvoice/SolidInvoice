@@ -55,6 +55,7 @@ final class SystemConfigTest extends KernelTestCase
             'invoice/id_generation/id_prefix' => '',
             'invoice/id_generation/id_suffix' => '',
             'invoice/id_generation/strategy' => 'auto_increment',
+            'invoice/payment_terms' => 'net_30',
             'invoice/reminder/enabled' => '1',
             'invoice/reminder/pre_due_days' => '3',
             'invoice/reminder/pre_due_enabled' => '1',

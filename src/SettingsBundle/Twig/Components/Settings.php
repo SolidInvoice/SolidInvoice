@@ -141,9 +141,6 @@ final class Settings extends AbstractController
         $this->resetForm();
     }
 
-    /**
-     * @phpstan-ignore-next-line Overriding method from trait
-     */
     private function getDataModelValue(): string
     {
         return 'norender|*';

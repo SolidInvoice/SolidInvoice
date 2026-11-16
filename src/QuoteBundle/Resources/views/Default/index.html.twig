@@ -13,11 +13,16 @@
     {{ ux_icon('tabler:file-text', {width: 24, height: 24, class: 'me-2'}) }}{{ "quote.list.title"|trans }}
 {% endblock title %}
 
-{% block heading %}
-    <a class="btn btn-primary" href="{{ path("_quotes_create") }}">
-        {{ ux_icon('tabler:plus', {width: 18, height: 18}) }}
-        {{ "quote.create.title"|trans }}
-    </a>
+{% block page_title %}
+    <div class="col">
+        <h1 class="page-title">{{ "quote.list.title"|trans }}</h1>
+    </div>
+    <div class="col-auto ms-auto d-print-none">
+        <a class="btn btn-primary" href="{{ path("_quotes_create") }}">
+            {{ ux_icon('tabler:plus', {width: 18, height: 18}) }}
+            {{ "quote.create.title"|trans }}
+        </a>
+    </div>
 {% endblock %}
 
 {% block content %}

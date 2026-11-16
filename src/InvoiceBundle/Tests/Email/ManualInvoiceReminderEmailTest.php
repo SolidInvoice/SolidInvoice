@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Email;
 
 use Carbon\CarbonImmutable;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
+use SolidInvoice\CoreBundle\Test\Snapshot\MatchesStableHtmlSnapshot;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Email\ManualInvoiceReminderEmail;
 use SolidInvoice\InvoiceBundle\Entity\Line;
@@ -30,6 +31,9 @@ final class ManualInvoiceReminderEmailTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
     use MatchesSnapshots;
+    use MatchesStableHtmlSnapshot {
+        MatchesStableHtmlSnapshot::assertMatchesHtmlSnapshot insteadof MatchesSnapshots;
+    }
 
     private const string INVOICE_ID = '181aaf4a-0097-11ef-9b64-5a2cf21a5680';
 

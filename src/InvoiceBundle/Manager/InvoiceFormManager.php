@@ -52,6 +52,7 @@ final readonly class InvoiceFormManager
         $invoice->setInvoiceId($dto->invoiceId);
         $invoice->setInvoiceDate($dto->invoiceDate ?? CarbonImmutable::now());
         $invoice->setDue($dto->due);
+        $invoice->setPaymentTerms($dto->paymentTerms);
         $invoice->setDiscount($dto->discount);
         $invoice->setTerms($dto->terms);
         $invoice->setNotes($dto->notes);
@@ -88,13 +89,17 @@ final readonly class InvoiceFormManager
 
     /**
      * Updates an existing Invoice from DTO
-     * Does NOT change client (edit mode keeps existing client)
+     * If clientMode=New, the client is unpersisted and cascades when the invoice is flushed
      */
     public function updateInvoiceFromDTO(Invoice $invoice, InvoiceFormDTO $dto): void
     {
+        $client = $this->resolveClient($dto);
+        $invoice->setClient($client);
+
         $invoice->setInvoiceId($dto->invoiceId);
         $invoice->setInvoiceDate($dto->invoiceDate ?? CarbonImmutable::now());
         $invoice->setDue($dto->due);
+        $invoice->setPaymentTerms($dto->paymentTerms);
         $invoice->setDiscount($dto->discount);
         $invoice->setTerms($dto->terms);
         $invoice->setNotes($dto->notes);
@@ -124,7 +129,8 @@ final readonly class InvoiceFormManager
 
         // Sync users collection
         $invoice->getUsers()->clear();
-        foreach ($dto->users as $user) {
+        $users = $dto->clientMode === InvoiceClientMode::NewClient ? $client->getContacts() : $dto->users;
+        foreach ($users as $user) {
             $invoice->addUser($user);
         }
     }
@@ -156,6 +162,7 @@ final readonly class InvoiceFormManager
         $dto->invoiceId = $invoice->getInvoiceId();
         $dto->invoiceDate = $invoice->getInvoiceDate();
         $dto->due = $invoice->getDue();
+        $dto->paymentTerms = $invoice->getPaymentTerms();
         $dto->discount = $invoice->getDiscount();
         $dto->terms = $invoice->getTerms();
         $dto->notes = $invoice->getNotes();

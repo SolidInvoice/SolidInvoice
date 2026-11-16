@@ -16,6 +16,7 @@ namespace SolidInvoice\CoreBundle\Test;
 use const PASSWORD_DEFAULT;
 use PHPUnit\Framework\MockObject\Stub;
 use SolidInvoice\CoreBundle\Entity\Company;
+use SolidInvoice\CoreBundle\Test\Snapshot\MatchesStableHtmlSnapshot;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\UserBundle\Entity\User;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -33,6 +34,9 @@ abstract class LiveComponentTest extends KernelTestCase
     use InteractsWithLiveComponents;
     use EnsureApplicationInstalled;
     use MatchesSnapshots;
+    use MatchesStableHtmlSnapshot {
+        MatchesStableHtmlSnapshot::assertMatchesHtmlSnapshot insteadof MatchesSnapshots;
+    }
 
     protected KernelBrowser $client;
 
@@ -85,6 +89,7 @@ abstract class LiveComponentTest extends KernelTestCase
             $user = new User();
             $user->setEmail('test@example.com')
                 ->setEnabled(true)
+                ->setVerified(true)
                 ->setPassword(password_hash('Password1', PASSWORD_DEFAULT));
 
             foreach ($companies as $company) {

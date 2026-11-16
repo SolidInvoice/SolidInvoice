@@ -16,6 +16,7 @@ namespace SolidInvoice\CoreBundle\Tests\Listener;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery as M;
 use PHPUnit\Framework\TestCase;
+use SolidInvoice\CoreBundle\Company\CompanySelectorInterface;
 use SolidInvoice\CoreBundle\Listener\EmailFromListener;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\UserBundle\Entity\User;
@@ -26,6 +27,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\RawMessage;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Uid\Ulid;
 
 final class EmailFromListenerTest extends TestCase
 {
@@ -47,7 +49,7 @@ final class EmailFromListenerTest extends TestCase
 
         $tokenStorage->shouldNotReceive('getToken');
 
-        $listener = new EmailFromListener($systemConfig, $tokenStorage);
+        $listener = new EmailFromListener($systemConfig, $tokenStorage, $this->companySelector(new Ulid()), 'SolidInvoice <no-reply@example.com>');
 
         $message = new TemplatedEmail();
         $envelope = Envelope::create($message);
@@ -82,7 +84,7 @@ final class EmailFromListenerTest extends TestCase
             ->withNoArgs()
             ->andReturn($token);
 
-        $listener = new EmailFromListener($systemConfig, $tokenStorage);
+        $listener = new EmailFromListener($systemConfig, $tokenStorage, $this->companySelector(new Ulid()), 'SolidInvoice <no-reply@example.com>');
 
         $message = new TemplatedEmail();
         $envelope = Envelope::create($message);
@@ -100,16 +102,42 @@ final class EmailFromListenerTest extends TestCase
         $tokenStorage = M::mock(TokenStorageInterface::class);
         $tokenStorage->shouldNotReceive('getToken');
 
-        $listener = new EmailFromListener($systemConfig, $tokenStorage);
+        $listener = new EmailFromListener($systemConfig, $tokenStorage, $this->companySelector(new Ulid()), 'SolidInvoice <no-reply@example.com>');
 
         $message = new RawMessage('raw content');
         $envelope = new Envelope(new Address('sender@example.com'), [new Address('recipient@example.com')]);
         $listener(new MessageEvent($message, $envelope, 'smtp'));
     }
 
+    public function testUsesSystemSenderWithoutCompany(): void
+    {
+        $systemConfig = M::mock(SystemConfig::class);
+        $systemConfig->shouldNotReceive('get');
+
+        $tokenStorage = M::mock(TokenStorageInterface::class);
+        $tokenStorage->shouldNotReceive('getToken');
+
+        $listener = new EmailFromListener($systemConfig, $tokenStorage, $this->companySelector(null), 'SolidInvoice <no-reply@example.com>');
+
+        $message = new TemplatedEmail();
+        $envelope = Envelope::create($message->from('user@example.com')->to('user@example.com'));
+        $listener(new MessageEvent($message, $envelope, 'smtp'));
+
+        self::assertEquals([new Address('no-reply@example.com', 'SolidInvoice')], $message->getFrom());
+        self::assertSame('no-reply@example.com', $envelope->getSender()->getAddress());
+    }
+
     public function testEvents(): void
     {
         self::assertSame([MessageEvent::class], \array_keys(EmailFromListener::getSubscribedEvents()));
         self::assertSame(['__invoke', -256], EmailFromListener::getSubscribedEvents()[MessageEvent::class]);
+    }
+
+    private function companySelector(?Ulid $company): CompanySelectorInterface
+    {
+        $selector = M::mock(CompanySelectorInterface::class);
+        $selector->shouldReceive('getCompany')->andReturn($company);
+
+        return $selector;
     }
 }

@@ -5,7 +5,7 @@
 {% extends '@SolidInvoiceQuote/Templates/_pdf_base.html.twig' %}
 {% import '@SolidInvoiceQuote/Templates/_macros.html.twig' as q %}
 
-{% set currency = quote.client.currency %}
+{% set currency = quote.currency %}
 
 {% block body %}
 <table cellpadding="0" cellspacing="0" style="width: 100%; border: 2px solid #1e293b; margin-bottom: 24px;">
@@ -39,6 +39,7 @@
                 {{ q.meta_pair('quote.pdf.valid_until'|trans, quote.due|date('F j, Y')) }}
                 <div style="margin-bottom: 6px;">{{ q.validity_indicator(quote) }}</div>
             {% endif %}
+            {{ q.status_pair(quote.status) }}
         </td>
     </tr>
 </table>

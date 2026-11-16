@@ -64,22 +64,22 @@
     {{ email.divider('md') }}
 
     {# Financial breakdown #}
-    {{ email.info_row('quote.subtotal'|trans({}, 'email'), quote.baseTotal|formatCurrency(quote.client.currency)) }}
+    {{ email.info_row('quote.subtotal'|trans({}, 'email'), quote.baseTotal|formatCurrency(quote.currency)) }}
 
     {% if quote.tax.positive %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('quote.tax'|trans({}, 'email'), quote.tax|formatCurrency(quote.client.currency)) }}
+        {{ email.info_row('quote.tax'|trans({}, 'email'), quote.tax|formatCurrency(quote.currency)) }}
     {% endif %}
 
     {% if quote.discount.type is not empty %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('quote.discount'|trans({}, 'email'), '-' ~ discount(quote)|formatCurrency(quote.client.currency)) }}
+        {{ email.info_row('quote.discount'|trans({}, 'email'), '-' ~ discount(quote)|formatCurrency(quote.currency)) }}
     {% endif %}
 
     {{ email.spacer('sm') }}
 
     {# Total - highlighted #}
-    {{ email.info_row('quote.total'|trans({}, 'email'), quote.total|formatCurrency(quote.client.currency), true) }}
+    {{ email.info_row('quote.total'|trans({}, 'email'), quote.total|formatCurrency(quote.currency), true) }}
 
     {# Terms section if present #}
     {% if quote.terms is not empty %}

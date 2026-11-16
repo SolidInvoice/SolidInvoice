@@ -6,6 +6,7 @@ import (
 	"compress/gzip"
 	"context"
 	_ "embed"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -28,6 +29,7 @@ import (
 	"github.com/luno/jettison/log"
 	"github.com/luno/lu"
 	"github.com/luno/lu/process"
+	"go.uber.org/zap"
 
 	"github.com/spf13/cobra"
 
@@ -90,7 +92,7 @@ func main() {
 		os.Exit(1)
 	}
 
-    setupCommands()
+	setupCommands()
 
 	// Run CLI
 	if err := rootCmd.Execute(); err != nil {
@@ -139,13 +141,13 @@ func initializeApp() error {
 	}
 
 	// Only set if not already set
-    for key, value := range envVars {
-        if os.Getenv(key) == "" {
-            if err := os.Setenv(key, value); err != nil {
-                return fmt.Errorf("cannot set environment: %w", err)
-            }
-        }
-    }
+	for key, value := range envVars {
+		if os.Getenv(key) == "" {
+			if err := os.Setenv(key, value); err != nil {
+				return fmt.Errorf("cannot set environment: %w", err)
+			}
+		}
+	}
 
 	return nil
 }
@@ -481,6 +483,11 @@ func setupCommands() {
 					// Clear cache on app start, to avoid issues with generated configs
 					if err := runConsoleCommand("cache:clear"); err != nil {
 						log.Error(ctx, errors.Join(errors.New("failed to clear cache"), err))
+					}
+					// Runs before any process starts, so Caddy and the messenger workers never see a
+					// half-migrated schema. On failure the app still boots, so the error is visible.
+					if err := migrateOnStartup(ctx); err != nil {
+						log.Error(ctx, err)
 					}
 					// Generate OAuth2 signing keys for the MCP server on first boot.
 					// Idempotent — skipped if the keys already exist in SOLIDINVOICE_CONFIG_DIR/oauth/.
@@ -846,10 +853,42 @@ func (p *runningProcess) runInternalCommand(args ...string) error {
 	return p.cmd.Wait()
 }
 
+// monologRecord is a line written by Monolog's JSON formatter.
+type monologRecord struct {
+	Message   string         `json:"message"`
+	LevelName string         `json:"level_name"`
+	Channel   string         `json:"channel"`
+	Context   map[string]any `json:"context"`
+}
+
+// tee forwards a child process's output to the Caddy log, keeping the level of Monolog JSON lines.
 func tee(r io.ReadCloser) {
 	sc := bufio.NewScanner(r)
+	sc.Buffer(make([]byte, 0, 64*1024), 1024*1024)
 	for sc.Scan() {
-		caddy.Log().Info(sc.Text())
+		line := sc.Text()
+
+		var rec monologRecord
+		if json.Unmarshal([]byte(line), &rec) != nil || rec.LevelName == "" {
+			caddy.Log().Info(line)
+			continue
+		}
+
+		fields := []zap.Field{zap.String("channel", rec.Channel)}
+		if len(rec.Context) > 0 {
+			fields = append(fields, zap.Any("context", rec.Context))
+		}
+
+		switch rec.LevelName {
+		case "DEBUG":
+			caddy.Log().Debug(rec.Message, fields...)
+		case "INFO", "NOTICE":
+			caddy.Log().Info(rec.Message, fields...)
+		case "WARNING":
+			caddy.Log().Warn(rec.Message, fields...)
+		default:
+			caddy.Log().Error(rec.Message, fields...)
+		}
 	}
 }
 
@@ -867,6 +906,30 @@ func runConsoleCommand(args ...string) error {
 
 func isAppInstalled() bool {
 	return runConsoleCommand("solidinvoice:is-installed") == nil
+}
+
+// migrateOnStartup runs the real migration chain once at boot, but only for an installed app.
+// This is the binary's only migration path. A fresh install gets its schema from the installer
+// (InstallBundle\Installer\Database\Migration), and nothing migrates during a request (AGENTS.md §9).
+// Output goes through tee into the app log, and -vv makes Doctrine log every SQL query.
+// It is called from the lu.AppStartup hook, which blocks serving until it returns and is not
+// subject to StartupTimeout, so long backfills are fine. It is not retried: a failure (or a
+// database that is not up yet) is logged, and the next restart tries again.
+func migrateOnStartup(ctx context.Context) error {
+	if !isAppInstalled() {
+		return nil
+	}
+	if runConsoleCommand("doctrine:migrations:up-to-date") == nil {
+		return nil
+	}
+
+	log.Info(ctx, "Database is out of date, running migrations...")
+	if err := runConsoleCommand("doctrine:migrations:migrate", "--allow-no-migration", "-vv"); err != nil {
+		return errors.Join(errors.New("database migration failed"), err)
+	}
+	log.Info(ctx, "Database migrations complete")
+
+	return nil
 }
 
 func must(err error) {

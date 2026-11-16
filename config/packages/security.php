@@ -21,7 +21,6 @@ use SolidInvoice\McpBundle\Security\McpOAuthAuthenticator;
 use SolidInvoice\McpBundle\Security\McpOAuthUserProvider;
 use SolidInvoice\UserBundle\Security\OAuth\OAuthAuthenticator;
 use SolidInvoice\UserBundle\Security\UserChecker;
-use SolidInvoice\UserBundle\Security\VerifiedUserChecker;
 use SolidWorx\Platform\PlatformBundle\DependencyInjection\Extension\LoginExtension;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
@@ -76,7 +75,8 @@ $config = LoginExtension::defaultFormLoginConfig([
             'pattern' => '^/api',
             'stateless' => true,
             'provider' => 'api_token_user_provider',
-            'user_checker' => VerifiedUserChecker::class,
+            // UserChecker + the platform's VerifiedUserChecker, tagged in config/services.php.
+            'user_checker' => 'security.user_checker.chain.api',
             'custom_authenticators' => [ApiTokenAuthenticator::class],
         ],
         'mcp_oauth_endpoints' => [
@@ -98,7 +98,7 @@ $config = LoginExtension::defaultFormLoginConfig([
             'pattern' => '^/_mcp',
             'stateless' => true,
             'provider' => 'mcp_oauth_user_provider',
-            'user_checker' => VerifiedUserChecker::class,
+            'user_checker' => 'security.user_checker.chain.mcp',
             'custom_authenticators' => [McpOAuthAuthenticator::class],
         ],
         'main' => [

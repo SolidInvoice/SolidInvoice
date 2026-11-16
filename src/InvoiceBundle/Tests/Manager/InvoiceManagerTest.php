@@ -36,6 +36,7 @@ use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\Line as InvoiceLine;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
+use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use SolidInvoice\InvoiceBundle\Exception\InvalidTransitionException;
 use SolidInvoice\InvoiceBundle\Listener\WorkFlowSubscriber;
 use SolidInvoice\InvoiceBundle\Manager\InvoiceManager;
@@ -115,6 +116,7 @@ final class InvoiceManagerTest extends KernelTestCase
                 M::mock(CustomFieldValueRepository::class, ['findForRecord' => []]),
                 $entityManager,
             ),
+            $config,
         );
 
         $entityManager
@@ -132,6 +134,7 @@ final class InvoiceManagerTest extends KernelTestCase
         $client->setName('Test Client');
         $client->setWebsite('http://example.com');
         $client->setCreated(Carbon::parse('NOW'));
+        $client->setPaymentTerms(PaymentTerms::Net14);
 
         $tax = new Tax();
         $tax->setName('VAT');
@@ -167,6 +170,9 @@ final class InvoiceManagerTest extends KernelTestCase
 
         $invoice = $this->manager->createFromQuote($quote);
 
+        // A quote has no terms of its own, so the invoice takes the client's.
+        self::assertSame(PaymentTerms::Net14, $invoice->getPaymentTerms());
+        self::assertSame('2024-01-29', $invoice->getDue()?->format('Y-m-d'));
         self::assertEquals($quote->getTotal(), $invoice->getTotal());
         self::assertEquals($quote->getBaseTotal(), $invoice->getBaseTotal());
         self::assertSame($quote->getDiscount(), $invoice->getDiscount());
@@ -334,6 +340,7 @@ final class InvoiceManagerTest extends KernelTestCase
         $recurringInvoice->setNotes('Notes');
         $recurringInvoice->setTax(432);
         $recurringInvoice->setTerms('Terms');
+        $recurringInvoice->setPaymentTerms(PaymentTerms::Net30);
         $recurringInvoice->setTotal(987);
         $recurringInvoice->setClient($client);
         $recurringInvoice->addLine($line);
@@ -341,6 +348,9 @@ final class InvoiceManagerTest extends KernelTestCase
 
         $invoice = $this->manager->createFromRecurring($recurringInvoice);
 
+        // Due 30 days from the day it was generated, not from when the schedule was set up.
+        self::assertSame(PaymentTerms::Net30, $invoice->getPaymentTerms());
+        self::assertSame('2024-02-14', $invoice->getDue()?->format('Y-m-d'));
         self::assertEquals($recurringInvoice->getTotal(), $invoice->getTotal());
         self::assertEquals($recurringInvoice->getBaseTotal(), $invoice->getBaseTotal());
         self::assertSame($recurringInvoice->getDiscount(), $invoice->getDiscount());

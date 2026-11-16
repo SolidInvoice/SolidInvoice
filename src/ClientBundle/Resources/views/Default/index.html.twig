@@ -13,11 +13,16 @@
     {{ ux_icon('tabler:users-group', {width: 24, height: 24, class: 'me-2'}) }}{{ 'clients'|trans }}
 {% endblock title %}
 
-{% block heading %}
-    <a class="btn btn-primary" href="{{ path("_clients_add") }}">
-        {{ ux_icon('tabler:user-plus', {width: 18, height: 18}) }}
-        {{ "client_create"|trans }}
-    </a>
+{% block page_title %}
+    <div class="col">
+        <h1 class="page-title">{{ 'clients'|trans }}</h1>
+    </div>
+    <div class="col-auto ms-auto d-print-none">
+        <a class="btn btn-primary" href="{{ path("_clients_add") }}">
+            {{ ux_icon('tabler:user-plus', {width: 18, height: 18}) }}
+            {{ "client_create"|trans }}
+        </a>
+    </div>
 {% endblock %}
 
 {% block content %}

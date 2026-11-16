@@ -4,7 +4,7 @@
 {% extends '@SolidInvoiceInvoice/Templates/_pdf_base.html.twig' %}
 {% import '@SolidInvoiceInvoice/Templates/_macros.html.twig' as inv %}
 
-{% set currency = invoice.client.currency %}
+{% set currency = invoice.currency %}
 {% set hasOutstandingBalance = invoice_has_outstanding_balance(invoice) %}
 
 {% block body %}
@@ -28,7 +28,7 @@
                         </table>
                     </td>
                     <td style="vertical-align: middle; text-align: right; color: #ffffff;">
-                        <div style="font-size: 8pt; color: #94a3b8;">{{ 'invoice.date'|trans }}: {{ invoice.invoiceDate|date('Y-m-d') }}{% if invoice.due %} · {{ 'invoice.due_date'|trans }}: {{ invoice.due|date('Y-m-d') }}{% endif %}</div>
+                        <div style="font-size: 8pt; color: #94a3b8;">{{ 'invoice.date'|trans }}: {{ invoice.invoiceDate|date('Y-m-d') }}{% if invoice.due %} · {{ 'invoice.due_date'|trans }}: {{ invoice.due|date('Y-m-d') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '') }}{% endif %}</div>
                         <div style="font-size: 16pt; font-weight: bold;">{{ (hasOutstandingBalance ? invoice.balance : invoice.total)|formatCurrency(currency) }}</div>
                     </td>
                 </tr>
@@ -39,8 +39,9 @@
 
 <table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 12px;">
     <tr>
-        <td style="width: 50%; vertical-align: top;">{{ inv.from_block() }}</td>
-        <td style="width: 50%; vertical-align: top;">{{ inv.bill_to_block(invoice) }}</td>
+        <td style="width: 40%; vertical-align: top;">{{ inv.from_block() }}</td>
+        <td style="width: 40%; vertical-align: top;">{{ inv.bill_to_block(invoice) }}</td>
+        <td style="width: 20%; vertical-align: top; text-align: right;">{{ inv.status_pair(invoice.status) }}</td>
     </tr>
 </table>
 

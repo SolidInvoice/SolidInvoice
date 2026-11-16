@@ -20,6 +20,7 @@ use SolidInvoice\ClientBundle\Test\Factory\ContactFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Entity\Line;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\InvoiceFactory;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,6 +40,7 @@ final class InvoiceTransitionTest extends ApiTestCase
         $invoice = InvoiceFactory::createOne([
             'status' => InvoiceStatus::Draft,
             'users' => $contacts,
+            'lines' => [new Line()->setName('Test Item')->setQty(1)->setPrice(10000)],
         ]);
 
         $result = $this->requestPost(
@@ -56,6 +58,7 @@ final class InvoiceTransitionTest extends ApiTestCase
         $invoice = InvoiceFactory::createOne([
             'status' => InvoiceStatus::Draft,
             'users' => $contacts,
+            'lines' => [new Line()->setName('Test Item')->setQty(1)->setPrice(10000)],
         ]);
 
         $result = $this->requestPost(

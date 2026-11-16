@@ -30,7 +30,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Zenstruck\Browser\Test\HasBrowser;
 
 /**
- * End-to-end proof for SOL-5: two separate accounts cannot see each other's data.
+ * two separate accounts cannot see each other's data.
  *
  * Each "account" is an independent tenant — its own {@see Company}, its own {@see User}
  * (member of that company only), and its own {@see Client}/{@see Invoice}. The isolation

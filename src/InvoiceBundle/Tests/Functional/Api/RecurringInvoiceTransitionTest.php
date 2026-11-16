@@ -21,6 +21,7 @@ use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Entity\RecurringInvoiceLine;
 use SolidInvoice\InvoiceBundle\Enum\RecurringInvoiceStatus;
 use SolidInvoice\InvoiceBundle\Test\Factory\RecurringInvoiceFactory;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,6 +41,7 @@ final class RecurringInvoiceTransitionTest extends ApiTestCase
         $recurringInvoice = RecurringInvoiceFactory::createOne([
             'status' => RecurringInvoiceStatus::Draft,
             'users' => $contacts,
+            'lines' => [new RecurringInvoiceLine()->setName('Test Item')->setQty(1)->setPrice(10000)],
         ]);
 
         $result = $this->requestPost(
@@ -57,6 +59,7 @@ final class RecurringInvoiceTransitionTest extends ApiTestCase
         $recurringInvoice = RecurringInvoiceFactory::createOne([
             'status' => RecurringInvoiceStatus::Draft,
             'users' => $contacts,
+            'lines' => [new RecurringInvoiceLine()->setName('Test Item')->setQty(1)->setPrice(10000)],
         ]);
 
         $result = $this->requestPost(
@@ -93,6 +96,7 @@ final class RecurringInvoiceTransitionTest extends ApiTestCase
         $recurringInvoice = RecurringInvoiceFactory::createOne([
             'status' => RecurringInvoiceStatus::Active,
             'users' => $contacts,
+            'lines' => [new RecurringInvoiceLine()->setName('Test Item')->setQty(1)->setPrice(10000)],
         ]);
 
         $result = $this->requestPostExpecting(

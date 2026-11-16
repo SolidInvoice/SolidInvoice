@@ -99,7 +99,10 @@ fi
 # SolidInvoice-specific extensions (removed problematic/unnecessary ones)
 
 if [ -z "${PHP_EXTENSIONS:-}" ]; then
-    export PHP_EXTENSIONS=$(cat ./build-static.sh | grep 'defaultExtensions="' | head -n 1 | sed 's/.*defaultExtensions="//' | sed 's/".*//' | tr ',' '\n' | grep -v -E 'ssh2|gmp|pdo_sqlsrv|memcache|memcached' | tr '\n' ',' | sed 's/,$//')
+    # brotli: ext-brotli's bundled libbrotli is newer than spc's pre-built one, whose headers
+    # win, so a cold build fails (BROTLI_DECODER_ERROR_FORMAT_BLOCK_SWITCH undeclared).
+    # Nothing calls brotli_*; caddy-cbrotli only needs the library, which build-static.sh keeps.
+    export PHP_EXTENSIONS=$(cat ./build-static.sh | grep 'defaultExtensions="' | head -n 1 | sed 's/.*defaultExtensions="//' | sed 's/".*//' | tr ',' '\n' | grep -v -E 'ssh2|gmp|pdo_sqlsrv|memcache|memcached|brotli' | tr '\n' ',' | sed 's/,$//')
     # excimer is required for Sentry profiling (profiles_sample_rate > 0).
     # It is not in the upstream default set so we add it here.
     export PHP_EXTENSIONS="${PHP_EXTENSIONS},excimer"
@@ -107,6 +110,13 @@ fi
 
 if [ -z "${PHP_EXTENSION_LIBS:-}" ]; then
 	export PHP_EXTENSION_LIBS="libavif,nghttp2,nghttp3,ngtcp2"
+	# On the macos-26 runners, libngtcp2_crypto_ossl.a comes out of static-php-cli without its
+	# symbols, so linking libcurl fails with undefined _ngtcp2_crypto_* symbols. Leave out
+	# HTTP/3 for libcurl (PHP's outbound curl) on macOS. Caddy's HTTP/3 is pure Go and is unaffected.
+	# ponytail: re-add nghttp3,ngtcp2 on macOS once static-php-cli's ngtcp2 archive links on Xcode 26.
+	if [ "$(uname -s)" = "Darwin" ]; then
+		export PHP_EXTENSION_LIBS="libavif,nghttp2"
+	fi
 fi
 
 echo "PHP Configuration:"

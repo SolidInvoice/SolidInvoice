@@ -41,9 +41,10 @@ final class InvoiceTest extends ApiTestCase
     {
         $client = ClientFactory::createOne();
         $contacts = ContactFactory::createMany(1, ['client' => $client]);
-        InvoiceFactory::createMany(3, [
+        InvoiceFactory::createMany(3, static fn (): array => [
             'client' => $client,
             'users' => $contacts,
+            'lines' => [new Line()->setName('Test Item')->setQty(1)->setPrice(10000)],
             'discount' => new Discount()
                 ->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
         ]);
@@ -61,9 +62,10 @@ final class InvoiceTest extends ApiTestCase
     {
         $client = ClientFactory::createOne();
         $contacts = ContactFactory::createMany(1, ['client' => $client]);
-        InvoiceFactory::createMany(2, [
+        InvoiceFactory::createMany(2, static fn (): array => [
             'client' => $client,
             'users' => $contacts,
+            'lines' => [new Line()->setName('Test Item')->setQty(1)->setPrice(10000)],
             'discount' => new Discount()
                 ->setType(Discount::TYPE_PERCENTAGE)->setValue(0),
         ]);
@@ -236,6 +238,7 @@ final class InvoiceTest extends ApiTestCase
             ],
             'terms' => $invoice->getTerms(),
             'notes' => $invoice->getNotes(),
+            'paymentTerms' => 'custom',
             'withholdingAmount' => 0,
             'payableAmount' => 100,
             'invoiceTaxes' => [],
@@ -328,6 +331,7 @@ final class InvoiceTest extends ApiTestCase
             ],
             'terms' => $invoice->getTerms(),
             'notes' => $invoice->getNotes(),
+            'paymentTerms' => 'custom',
             'withholdingAmount' => 0,
             'payableAmount' => 9000,
             'invoiceTaxes' => [],

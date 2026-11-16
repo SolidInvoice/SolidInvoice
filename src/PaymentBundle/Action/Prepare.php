@@ -145,7 +145,7 @@ final class Prepare
             ],
             [
                 'user' => $this->getUser(),
-                'currency' => $invoice->getClient()->getCurrency(),
+                'currency' => $invoice->getCurrency(),
                 'preferred_choices' => $preferredChoices,
             ]
         );
@@ -199,8 +199,8 @@ final class Prepare
             $payment->setMethod($data['payment_method']);
             /** @var BigNumber $value */
             $value = $data['amount'];
-            $payment->setTotalAmount($value->toBigDecimal()->toScale(2, RoundingMode::HalfEven)->toInt());
-            $payment->setCurrencyCode($invoice->getClient()->getCurrency()->getCode());
+            $payment->setTotalAmount($value->toBigDecimal()->toScale(0, RoundingMode::HalfEven)->toInt());
+            $payment->setCurrencyCode($invoice->getCurrency()->getCode());
             $payment->setDescription('');
             $payment->setClient($invoice->getClient());
             $payment->setNumber($invoice->getId()?->toString());

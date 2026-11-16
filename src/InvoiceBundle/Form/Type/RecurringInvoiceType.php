@@ -24,6 +24,7 @@ use SolidInvoice\CoreBundle\Form\Type\CustomFieldValueCollectionType;
 use SolidInvoice\CoreBundle\Form\Type\DiscountType;
 use SolidInvoice\CronBundle\Form\Type\RecurringScheduleType;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use SolidInvoice\MoneyBundle\Form\Type\HiddenMoneyType;
 use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\SettingsBundle\SystemConfig;
@@ -32,6 +33,7 @@ use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -100,7 +102,14 @@ class RecurringInvoiceType extends AbstractType
             ]
         );
 
-        $builder->add('terms');
+        $builder->add('terms', null, ['label' => 'invoice.terms']);
+        $builder->add('paymentTerms', EnumType::class, [
+            'class' => PaymentTerms::class,
+            'choice_label' => static fn (PaymentTerms $terms): string => $terms->getLabel(),
+            'label' => 'invoice.payment_terms.label',
+            'empty_data' => PaymentTerms::Custom->value,
+            'help' => 'invoice.payment_terms.recurring_help',
+        ]);
         $builder->add('notes', null, ['help' => 'billing.notes_help']);
         $builder->add('total', HiddenMoneyType::class, ['currency' => $options['currency']]);
         $builder->add('baseTotal', HiddenMoneyType::class, ['currency' => $options['currency']]);

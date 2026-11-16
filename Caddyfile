@@ -70,9 +70,19 @@
 		}
 	}
 
-	# Static asset caching
-	@static path /css/* /js/* /static/* /images/* /fonts/* /build/* *.ico *.png *.jpg *.svg *.woff *.woff2
-	header @static Cache-Control "public, max-age=31536000, immutable" defer
+	# Static asset caching: files with a content hash in the name never change, so cache them
+	# for good; anything else keeps its name across releases and must be revalidated.
+	@static_hashed {
+		path /css/* /js/* /static/* /images/* /fonts/* /build/* *.ico *.png *.jpg *.svg *.woff *.woff2
+		path_regexp \.[0-9a-f]{8,}\.[a-z0-9]+$
+	}
+	header @static_hashed Cache-Control "public, max-age=31536000, immutable" defer
+
+	@static {
+		path /css/* /js/* /static/* /images/* /fonts/* /build/* *.ico *.png *.jpg *.svg *.woff *.woff2
+		not path_regexp \.[0-9a-f]{8,}\.[a-z0-9]+$
+	}
+	header @static Cache-Control "public, max-age=3600, must-revalidate" defer
 
 	# Compression
 	encode zstd br gzip

@@ -1,0 +1,50 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+{% if show|default(false) %}
+<div class="col-12 mb-4">
+    <a href="{{ path('_profile_affiliate', {source: 'dashboard'}) }}" class="card card-link text-reset text-decoration-none">
+        <div class="card-body d-flex align-items-center gap-3 py-3">
+            <span class="avatar avatar-sm bg-secondary-lt flex-shrink-0">{{ ux_icon('tabler:gift', {width: 18, height: 18}) }}</span>
+            <div class="flex-fill">
+                <div class="fw-medium">{{ 'affiliate.card.title'|trans }}</div>
+                <div class="text-secondary small">{{ 'affiliate.card.text'|trans({'%earnings%': yearlyEarnings}) }}</div>
+            </div>
+            {{ ux_icon('tabler:chevron-right', {width: 16, height: 16, class: 'text-secondary'}) }}
+        </div>
+    </a>
+</div>
+
+{% if showPrompt %}
+{# Shown by the controller once it has checked no modal is already open; closing it in any way dismisses it for good. #}
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div class="toast"
+         role="dialog"
+         aria-labelledby="affiliate-prompt-title"
+         data-bs-autohide="false"
+         {{ stimulus_controller('affiliate-prompt', {
+             dismissUrl: path('_affiliate_prompt_dismiss'),
+             token: csrf_token(constant('SolidInvoice\\UserBundle\\Action\\Affiliate\\DismissPrompt::CSRF_TOKEN_ID')),
+         }) }}
+    >
+        <div class="toast-header">
+            <span class="avatar avatar-xs bg-primary-lt me-2">{{ ux_icon('tabler:gift', {width: 14, height: 14}) }}</span>
+            <strong id="affiliate-prompt-title" class="me-auto">{{ 'affiliate.pitch.title'|trans({'%earnings%': yearlyEarnings}) }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="{{ 'action.close'|trans }}"></button>
+        </div>
+        <div class="toast-body">
+            <twig:AffiliatePitch source="banner" ctaAction="affiliate-prompt#close" />
+            <button type="button" class="btn btn-link btn-sm text-secondary px-0 mt-2" data-bs-dismiss="toast">
+                {{ 'affiliate.prompt.not_now'|trans }}
+            </button>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endif %}

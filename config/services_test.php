@@ -12,13 +12,11 @@ declare(strict_types=1);
  */
 
 use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
-use SolidInvoice\InstallBundle\Listener\UpgradeListener;
 use SolidInvoice\SaasBundle\Feature\RequiredPlanLabelProvider;
 use SolidInvoice\SaasBundle\Form\Extension\FeatureRestrictedExtension as SaasFeatureRestrictedExtension;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use SolidWorx\Platform\PlatformBundle\Feature\SubscriberResolver;
 use SolidWorx\Platform\SaasBundle\Feature\FeatureConfigRegistry;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -35,28 +33,12 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
         ->public()
         ->bind('$projectDir', '%kernel.project_dir%');
 
-    // The test schema is built by tests/bootstrap.php and Foundry, so the migrations
-    // metadata table is empty and this listener considers every request's database out
-    // of date. It then calls MetadataStorage::ensureInitialized(), which issues
-    // CREATE TABLE migration_versions mid-request. On MySQL that DDL implicitly commits
-    // the transaction dama/doctrine-test-bundle wraps each test in, taking every
-    // savepoint with it ("SAVEPOINT DAMA_TEST does not exist"). SQLite has transactional
-    // DDL, which is why this only ever showed up on MySQL.
-    //
-    // Removed in a compiler pass rather than with $services->remove(): bundle extensions
-    // are loaded after this file, so a removal here would just be undone again.
-    $container->addCompilerPass(new class() implements CompilerPassInterface {
-        public function process(ContainerBuilder $container): void
-        {
-            $container->removeDefinition(UpgradeListener::class);
-        }
-    }, priority: -256);
-
     // Expose wiring-contract aliases publicly so functional smoke tests can
     // assert the correct concrete implementation is resolved.
     $services->alias('test.' . FeatureGate::class, FeatureGate::class);
     $services->alias('test.' . SubscriberResolver::class, SubscriberResolver::class);
     $services->alias('test.' . UpgradePromptProvider::class, UpgradePromptProvider::class);
+    $services->alias('test.state_machine.invoice', 'state_machine.invoice');
 
     // FeatureConfigRegistry is registered by SaasBundle, which is only loaded
     // when the app mode is 'saas'. Mirror the same gate from bundles.php so

@@ -22,6 +22,7 @@ use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Entity\Discount;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateResolver;
+use SolidInvoice\CoreBundle\Test\Snapshot\MatchesStableHtmlSnapshot;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
@@ -41,6 +42,9 @@ final class ViewTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
     use MatchesSnapshots;
+    use MatchesStableHtmlSnapshot {
+        MatchesStableHtmlSnapshot::assertMatchesHtmlSnapshot insteadof MatchesSnapshots;
+    }
 
     private const string CLIENT_ID = '01JGXKV8QZ0000000000000001';
 
@@ -56,6 +60,7 @@ final class ViewTest extends KernelTestCase
         $twig = self::getContainer()->get(Environment::class);
 
         $action = new View(
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),
@@ -124,6 +129,7 @@ final class ViewTest extends KernelTestCase
         $twig = self::getContainer()->get(Environment::class);
 
         $action = new View(
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),
@@ -184,6 +190,7 @@ final class ViewTest extends KernelTestCase
         $twig = self::getContainer()->get(Environment::class);
 
         $action = new View(
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),
@@ -240,6 +247,7 @@ final class ViewTest extends KernelTestCase
         $twig = self::getContainer()->get(Environment::class);
 
         $action = new View(
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),
@@ -307,6 +315,7 @@ final class ViewTest extends KernelTestCase
         $twig = self::getContainer()->get(Environment::class);
 
         $action = new View(
+            self::getContainer()->get('doctrine')->getRepository(Client::class),
             new Generator('', new NullLogger()),
             $twig,
             self::getContainer()->get(BillingTemplateResolver::class),

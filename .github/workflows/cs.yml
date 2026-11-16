@@ -27,6 +27,7 @@ jobs:
             github.com:443
             objects.githubusercontent.com:443
             packagist.org:443
+            repo.packagist.org:443
             release-assets.githubusercontent.com:443
             setup-php.com:443
 

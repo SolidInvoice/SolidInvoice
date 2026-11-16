@@ -44,13 +44,17 @@ class InvoiceReminderRepository extends EntityRepository
     /**
      * Get all reminders sent for an invoice.
      *
+     * sentAt has only second precision, so reminders sent in the same flush share a value.
+     * The id tie-breaker keeps the order deterministic across database platforms: ULIDs are
+     * monotonic, so ordering by id also orders by creation order.
+     *
      * @return InvoiceReminder[]
      */
     public function getReminderHistory(Invoice $invoice): array
     {
         return $this->findBy(
             ['invoice' => $invoice],
-            ['sentAt' => 'ASC']
+            ['sentAt' => 'ASC', 'id' => 'ASC']
         );
     }
 }

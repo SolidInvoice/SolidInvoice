@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\CoreBundle\Listener;
 
+use Scheb\TwoFactorBundle\Security\Authentication\Token\TwoFactorTokenInterface;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Company\ResolvedHost;
 use SolidInvoice\CoreBundle\Entity\Company;
@@ -61,6 +62,12 @@ final readonly class CompanyEventSubscriber implements EventSubscriberInterface
         }
 
         if ($this->companySelector->getCompany() instanceof Ulid) {
+            return;
+        }
+
+        // No company context until 2FA completes; redirecting here would also
+        // swallow 2FA routes such as "resend code".
+        if ($this->security->getToken() instanceof TwoFactorTokenInterface) {
             return;
         }
 
@@ -113,7 +120,6 @@ final readonly class CompanyEventSubscriber implements EventSubscriberInterface
         return in_array(
             $routeName,
             [
-                '2fa_login',
                 '_select_company',
                 '_switch_company',
                 '_create_company',

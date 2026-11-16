@@ -5,7 +5,7 @@
 {% extends '@SolidInvoiceInvoice/Templates/_pdf_base.html.twig' %}
 {% import '@SolidInvoiceInvoice/Templates/_macros.html.twig' as inv %}
 
-{% set currency = invoice.client.currency %}
+{% set currency = invoice.currency %}
 
 {% block body %}
 <table cellpadding="0" cellspacing="0" style="width: 100%; border: 2px solid #1e293b; margin-bottom: 24px;">
@@ -36,8 +36,9 @@
         <td style="width: 34%; vertical-align: top;">
             {{ inv.meta_pair('invoice.date'|trans, invoice.invoiceDate|date('F j, Y')) }}
             {% if invoice.due %}
-                {{ inv.meta_pair('invoice.due_date'|trans, invoice.due|date('F j, Y')) }}
+                {{ inv.meta_pair('invoice.due_date'|trans, invoice.due|date('F j, Y') ~ (invoice.paymentTerms.value != 'custom' ? ' · ' ~ invoice.paymentTerms.label|trans : '')) }}
             {% endif %}
+            {{ inv.status_pair(invoice.status) }}
         </td>
     </tr>
 </table>

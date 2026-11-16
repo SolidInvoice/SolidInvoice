@@ -19,6 +19,7 @@ use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
 use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Entity\RecurringInvoice;
+use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use SolidInvoice\InvoiceBundle\Mcp\RecurringInvoiceReadTools;
 use SolidInvoice\InvoiceBundle\Mcp\RecurringInvoiceWriteTools;
 use SolidInvoice\McpBundle\Security\McpOAuthAuthenticator;
@@ -40,6 +41,7 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
         $client = ClientFactory::createOne([
             'company' => $this->company,
             'currencyCode' => 'USD',
+            'paymentTerms' => PaymentTerms::Net45,
         ]);
 
         $tool = self::getContainer()->get(RecurringInvoiceWriteTools::class);
@@ -61,6 +63,8 @@ final class RecurringInvoiceCreateTest extends KernelTestCase
         self::assertArrayHasKey('id', $result);
         self::assertSame('250000', $result['total']);
         self::assertSame('monthly', $result['schedule']['type']);
+        // No payment_terms passed, so the client's own terms apply.
+        self::assertSame('net_45', $result['payment_terms']);
         self::assertSame('after', $result['schedule']['end_type']);
         self::assertSame(12, $result['schedule']['end_occurrence']);
         self::assertSame('2026-05-01', substr((string) $result['date_start'], 0, 10));

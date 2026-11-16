@@ -17,12 +17,14 @@ use DateTimeImmutable;
 use Override;
 use ReflectionProperty;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
+use SolidInvoice\CoreBundle\Test\Snapshot\MatchesStableHtmlSnapshot;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
 use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingContext;
 use SolidInvoice\SaasBundle\Onboarding\OnboardingEmailStepInterface;
 use SolidInvoice\SaasBundle\Onboarding\Step\AddFirstClientStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\CustomizeLogoStep;
+use SolidInvoice\SaasBundle\Onboarding\Step\FeedbackStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\RecurringBillingStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\SendFirstInvoiceStep;
 use SolidInvoice\SaasBundle\Onboarding\Step\TrialAboutToEndStep;
@@ -45,6 +47,9 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
 {
     use EnsureApplicationInstalled;
     use MatchesSnapshots;
+    use MatchesStableHtmlSnapshot {
+        MatchesStableHtmlSnapshot::assertMatchesHtmlSnapshot insteadof MatchesSnapshots;
+    }
 
     private const string FROZEN_NOW = '2026-04-19 12:00:00';
 
@@ -128,6 +133,16 @@ final class OnboardingEmailSnapshotTest extends KernelTestCase
     public function testRecurringBillingTextSnapshot(): void
     {
         $this->assertMatchesTextSnapshot($this->renderText(self::getContainer()->get(RecurringBillingStep::class)));
+    }
+
+    public function testFeedbackHtmlSnapshot(): void
+    {
+        $this->assertMatchesHtmlSnapshot($this->renderHtml(self::getContainer()->get(FeedbackStep::class)));
+    }
+
+    public function testFeedbackTextSnapshot(): void
+    {
+        $this->assertMatchesTextSnapshot($this->renderText(self::getContainer()->get(FeedbackStep::class)));
     }
 
     public function testUpgradeOfferHtmlSnapshot(): void

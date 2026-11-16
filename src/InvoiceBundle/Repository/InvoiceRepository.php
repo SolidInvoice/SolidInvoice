@@ -296,7 +296,7 @@ class InvoiceRepository extends EntityRepository
     }
 
     /**
-     * @param list<int> $ids
+     * @param list<string> $ids
      */
     public function archiveInvoices(array $ids): void
     {

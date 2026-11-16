@@ -1,0 +1,37 @@
+{#
+ # This file is part of SolidInvoice package.
+ #
+ # (c) Pierre du Plessis <open-source@solidworx.co>
+ #
+ # This source file is subject to the MIT license that is bundled
+ # with this source code in the file LICENSE.
+ #}
+
+<div {{ attributes }}>
+    <p class="text-secondary mb-3">{{ 'affiliate.pitch.lead'|trans({'%commission%': this.program.commission}) }}</p>
+
+    <ol class="list-unstyled d-flex flex-column gap-2 mb-3">
+        <li class="d-flex align-items-center gap-2">
+            <span class="avatar avatar-xs bg-primary-lt flex-shrink-0">{{ ux_icon('tabler:user-plus', {width: 14, height: 14}) }}</span>
+            {{ 'affiliate.pitch.steps.join'|trans }}
+        </li>
+        <li class="d-flex align-items-center gap-2">
+            <span class="avatar avatar-xs bg-primary-lt flex-shrink-0">{{ ux_icon('tabler:link', {width: 14, height: 14}) }}</span>
+            {{ 'affiliate.pitch.steps.share'|trans }}
+        </li>
+        <li class="d-flex align-items-center gap-2">
+            <span class="avatar avatar-xs bg-primary-lt flex-shrink-0">{{ ux_icon('tabler:coins', {width: 14, height: 14}) }}</span>
+            {{ 'affiliate.pitch.steps.earn'|trans({'%commission%': this.program.commission}) }}
+        </li>
+    </ol>
+
+    <a href="{{ path('_affiliate_join', {source: source}) }}"
+       target="_blank"
+       rel="noopener"
+       class="btn btn-primary"
+       {% if ctaAction is not empty %}data-action="{{ ctaAction }}"{% endif %}
+    >
+        {{ 'affiliate.pitch.cta'|trans }}
+        {{ ux_icon('tabler:external-link', {width: 16, height: 16, class: 'ms-1'}) }}
+    </a>
+</div>

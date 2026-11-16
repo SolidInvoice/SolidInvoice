@@ -15,41 +15,69 @@ namespace SolidInvoice\MailerBundle\Factory;
 
 use JsonException;
 use RuntimeException;
+use SolidInvoice\CoreBundle\Company\CompanySelectorInterface;
 use SolidInvoice\MailerBundle\Configurator\ConfiguratorInterface;
+use SolidInvoice\MailerBundle\Transport\CompanyTransport;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Transport\TransportInterface;
+use Symfony\Component\Uid\Ulid;
+use function implode;
 use function json_decode;
 
 /**
  * @see \SolidInvoice\MailerBundle\Tests\Factory\MailerConfigFactoryTest
  */
-final readonly class MailerConfigFactory
+final class MailerConfigFactory
 {
     public const string CONFIG_KEY = 'email/sending_options/provider';
+
+    /**
+     * @var array<string, TransportInterface>
+     */
+    private array $resolved = [];
 
     /**
      * @param iterable<ConfiguratorInterface> $transports
      */
     public function __construct(
-        private Transport $inner,
-        private SystemConfig $config,
-        private iterable $transports
+        private readonly Transport $inner,
+        private readonly SystemConfig $config,
+        private readonly iterable $transports,
+        private readonly CompanySelectorInterface $companySelector,
     ) {
     }
 
     /**
      * @param list<string> $dsns
      */
-    public function fromStrings(array $dsns = []): ?TransportInterface
+    public function fromStrings(array $dsns = []): TransportInterface
     {
+        return new CompanyTransport(fn (): TransportInterface => $this->resolve($dsns));
+    }
+
+    /**
+     * @param list<string> $dsns
+     */
+    public function resolve(array $dsns = []): TransportInterface
+    {
+        // Mail settings belong to a company. Without one selected the settings
+        // query is unscoped and would return whichever company's row comes first.
+        $mailerConfig = $this->companySelector->getCompany() instanceof Ulid ? $this->config->get(self::CONFIG_KEY) : null;
+
+        return $this->resolved[$mailerConfig . "\0" . implode(',', $dsns)] ??= $this->create($mailerConfig, $dsns);
+    }
+
+    /**
+     * @param list<string> $dsns
+     */
+    private function create(?string $mailerConfig, array $dsns): TransportInterface
+    {
+        if (null === $mailerConfig) {
+            return $this->inner->fromStrings($dsns);
+        }
+
         try {
-            $mailerConfig = $this->config->get(self::CONFIG_KEY);
-
-            if (null === $mailerConfig) {
-                return $this->inner->fromStrings($dsns);
-            }
-
             $config = json_decode($mailerConfig, true, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException $e) {
             throw new RuntimeException('Invalid mailer config', $e->getCode(), $e);

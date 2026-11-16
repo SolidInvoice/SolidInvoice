@@ -13,6 +13,7 @@ permissions:
 env:
     SOLIDINVOICE_ENV: test
     SOLIDINVOICE_DEBUG: 0
+    SOLIDINVOICE_APP_SECRET: '$ecretf0rt3st'
     PANTHER_NO_HEADLESS: 0
     PANTHER_APP_ENV: test
     PANTHER_NO_SANDBOX: 1
@@ -178,6 +179,7 @@ jobs:
           allowed-endpoints: >
             bun.sh:443
             packagist.org:443
+            repo.packagist.org:443
             download.oracle.com:443
             azure.archive.ubuntu.com:443
             archive.ubuntu.com:443

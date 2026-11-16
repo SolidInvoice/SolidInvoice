@@ -60,7 +60,7 @@ final class GenerateTransportConfigCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $config = require dirname(__DIR__) . '/Resources/config/transports.php';
+        $config = require __DIR__ . '/../Resources/config/transports.php';
 
         $io = new SymfonyStyle($input, $output);
 

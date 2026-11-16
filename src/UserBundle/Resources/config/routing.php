@@ -12,6 +12,9 @@ declare(strict_types=1);
  */
 
 use SolidInvoice\UserBundle\Action\AcceptInvitation;
+use SolidInvoice\UserBundle\Action\Affiliate\DismissPrompt;
+use SolidInvoice\UserBundle\Action\Affiliate\Join;
+use SolidInvoice\UserBundle\Action\Affiliate\ReferAndEarn;
 use SolidInvoice\UserBundle\Action\ApiIndex;
 use SolidInvoice\UserBundle\Action\DeleteUserInvite;
 use SolidInvoice\UserBundle\Action\EditProfile;
@@ -27,7 +30,6 @@ use SolidInvoice\UserBundle\Action\Security\ChangePassword;
 use SolidInvoice\UserBundle\Action\Security\OAuthConnect;
 use SolidInvoice\UserBundle\Action\Security\OAuthConnectCheck;
 use SolidInvoice\UserBundle\Action\Security\TwoFactorIndex;
-use SolidInvoice\UserBundle\Action\Security\VerifyEmail;
 use SolidInvoice\UserBundle\Action\Users;
 use SolidInvoice\UserBundle\Onboarding\Action\Onboarding;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
@@ -96,10 +98,6 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         ->add('_profile_notifications', '/profile/notifications')
         ->controller(Notifications::class);
 
-    $routingConfigurator
-        ->add('_verify_email', '/verify')
-        ->controller(VerifyEmail::class);
-
     $routingConfigurator->add(OAuthConnect::ROUTE, '/oauth/connect/{service}')
         ->controller(OAuthConnect::class);
 
@@ -108,4 +106,20 @@ return static function (RoutingConfigurator $routingConfigurator): void {
 
     $routingConfigurator->add('_2fa_list', '/profile/2fa')
         ->controller(TwoFactorIndex::class);
+
+    $routingConfigurator
+        ->add('_profile_affiliate', '/profile/refer-and-earn')
+        ->controller(ReferAndEarn::class)
+        ->methods(['GET']);
+
+    $routingConfigurator
+        ->add('_affiliate_join', '/affiliate/join/{source}')
+        ->controller(Join::class)
+        ->requirements(['source' => 'banner|page'])
+        ->methods(['GET']);
+
+    $routingConfigurator
+        ->add('_affiliate_prompt_dismiss', '/affiliate/prompt/dismiss')
+        ->controller(DismissPrompt::class)
+        ->methods(['POST']);
 };

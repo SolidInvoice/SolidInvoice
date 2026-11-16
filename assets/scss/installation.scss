@@ -20,7 +20,7 @@ body {
     position: relative;
     border-radius: 50%;
     box-sizing: content-box;
-    border: 4px solid var(--swp-primary);
+    border: 4px solid var(--tblr-primary);
 }
 
 .success-checkmark .check-icon::before {
@@ -51,7 +51,7 @@ body {
 
 .success-checkmark .icon-line {
     height: 5px;
-    background-color: var(--swp-primary);
+    background-color: var(--tblr-primary);
     display: block;
     border-radius: 2px;
     position: absolute;

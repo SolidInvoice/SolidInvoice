@@ -1,5 +1,4 @@
 {% extends '@SolidInvoiceQuote/Templates/_email_base.html.twig' %}
-{% set accent = '#2e963a' %}
 
 {% set primary = quote.users|first %}
 {% set greeting = primary is not empty and primary.firstName is not empty ? primary.firstName : quote.client.name %}
@@ -26,7 +25,7 @@
                                 {{ 'quote.pdf.total'|trans }}
                             </p>
                             <p style="color: #166534; font-size: 14px; font-weight: 700; margin: 0; Margin: 0;">
-                                {{ quote.total|formatCurrency(quote.client.currency) }}
+                                {{ quote.total|formatCurrency(quote.currency) }}
                             </p>
                         </td>
                     </tr>

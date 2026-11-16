@@ -24,7 +24,7 @@ Due Date: {{ invoice.due|date('Y-m-d') }}
 Days Overdue: {{ days_overdue }}
 {% endif %}
 {% if invoice.balance %}
-Outstanding Amount: {{ invoice.balance|formatCurrency(invoice.client.currency) }}
+Outstanding Amount: {{ invoice.balance|formatCurrency(invoice.currency) }}
 {% endif %}
 
 Recommended Actions:

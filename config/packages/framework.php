@@ -15,7 +15,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 return App::config([
     'framework' => [
-        'secret' => env('SOLIDINVOICE_APP_SECRET'),
+        'secret' => env('SOLIDINVOICE_APP_SECRET')->default('solidinvoice.fallback_secret'),
         'php_errors' => [
             'log' => true,
         ],

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Listener\Mailer;
 
 use Mpdf\MpdfException;
+use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Pdf\Generator;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateChannel;
 use SolidInvoice\CoreBundle\Templates\BillingTemplateResolver;
@@ -32,6 +33,7 @@ readonly class QuotePdfListener implements EventSubscriberInterface
 {
     public function __construct(
         private Generator $generator,
+        private ClientRepository $clientRepository,
         private Environment $twig,
         private BillingTemplateResolver $templateResolver,
     ) {
@@ -46,6 +48,8 @@ readonly class QuotePdfListener implements EventSubscriberInterface
         $message = $event->getMessage();
 
         if ($message instanceof QuoteEmail && $this->generator->canPrintPdf()) {
+            $this->clientRepository->initializeArchived($message->getQuote()->getClient());
+
             $content = $this->generator->generate(
                 $this->twig->render($this->templateResolver->resolve($message->getQuote(), BillingTemplateChannel::Pdf), ['quote' => $message->getQuote()])
             );

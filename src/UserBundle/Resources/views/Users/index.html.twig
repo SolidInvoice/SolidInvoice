@@ -14,11 +14,16 @@
     {{ 'users.title'|trans }}
 {% endblock title %}
 
-{% block heading %}
-    <a class="btn btn-primary" href="{{ path("_user_invite") }}">
-        {{ ux_icon('tabler:user-plus', {width: 18, height: 18}) }}
-        {{ "users.invite_user"|trans }}
-    </a>
+{% block page_title %}
+    <div class="col">
+        <h1 class="page-title">{{ 'users.title'|trans }}</h1>
+    </div>
+    <div class="col-auto ms-auto d-print-none">
+        <a class="btn btn-primary" href="{{ path("_user_invite") }}">
+            {{ ux_icon('tabler:user-plus', {width: 18, height: 18}) }}
+            {{ "users.invite_user"|trans }}
+        </a>
+    </div>
 {% endblock %}
 
 {% block content %}

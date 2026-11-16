@@ -44,26 +44,26 @@
 // ============================================================================
 
 .settings-content-card {
-    border-radius: var(--swp-radius-lg);
+    border-radius: var(--tblr-radius-lg);
 
     &:hover {
         transform: none;
     }
 
     > .card-body {
-        padding: var(--swp-space-6);
+        padding: var(--tblr-space-6);
 
         @include media-breakpoint-up(md) {
-            padding: var(--swp-space-8) var(--swp-space-8) var(--swp-space-6);
+            padding: var(--tblr-space-8) var(--tblr-space-8) var(--tblr-space-6);
         }
     }
 
     > .card-footer {
-        padding: var(--swp-space-4) var(--swp-space-6);
-        border-top-color: var(--swp-border-light);
+        padding: var(--tblr-space-4) var(--tblr-space-6);
+        border-top-color: var(--tblr-border-light);
 
         @include media-breakpoint-up(md) {
-            padding: var(--swp-space-4) var(--swp-space-8);
+            padding: var(--tblr-space-4) var(--tblr-space-8);
         }
     }
 
@@ -71,20 +71,20 @@
     // a single quiet surface, not five stacked cards.
 
     .card-body > .border-bottom {
-        border-bottom-color: var(--swp-border-light) !important;
+        border-bottom-color: var(--tblr-border-light) !important;
     }
 
     // Section heading: match the design system title scale and let the icon
     // be a slate accent rather than a fifth green element on the page.
 
     .card-body h3 {
-        font-size: var(--swp-text-lg);
-        font-weight: var(--swp-font-semibold);
-        color: var(--swp-text-primary);
+        font-size: var(--tblr-text-lg);
+        font-weight: var(--tblr-font-semibold);
+        color: var(--tblr-text-primary);
         letter-spacing: -0.01em;
 
         > svg {
-            color: var(--swp-text-muted);
+            color: var(--tblr-text-muted);
         }
     }
 
@@ -126,8 +126,8 @@
 
         &:hover,
         &.dropzone-dragover {
-            border-color: var(--swp-primary);
-            background-color: rgba(var(--swp-primary-rgb), 0.02);
+            border-color: var(--tblr-primary);
+            background-color: rgba(var(--tblr-primary-rgb), 0.02);
         }
     }
 }
@@ -137,34 +137,34 @@
 // ============================================================================
 
 .settings-danger-zone .card {
-    border-radius: var(--swp-radius-lg);
-    border-color: var(--swp-danger-light);
+    border-radius: var(--tblr-radius-lg);
+    border-color: var(--tblr-danger-light);
 
     &:hover {
         transform: none;
     }
 
     .card-header {
-        background: var(--swp-danger-lighter) !important;
-        border-bottom-color: var(--swp-danger-light) !important;
-        padding: var(--swp-space-3) var(--swp-space-6);
+        background: var(--tblr-danger-lighter) !important;
+        border-bottom-color: var(--tblr-danger-light) !important;
+        padding: var(--tblr-space-3) var(--tblr-space-6);
 
         .card-title {
-            font-size: var(--swp-text-sm);
-            font-weight: var(--swp-font-semibold);
+            font-size: var(--tblr-text-sm);
+            font-weight: var(--tblr-font-semibold);
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            color: var(--swp-danger);
+            color: var(--tblr-danger);
         }
     }
 
     .card-body {
-        padding: var(--swp-space-5) var(--swp-space-6);
+        padding: var(--tblr-space-5) var(--tblr-space-6);
 
         h3 {
-            font-size: var(--swp-text-base);
-            font-weight: var(--swp-font-semibold);
-            color: var(--swp-text-primary);
+            font-size: var(--tblr-text-base);
+            font-weight: var(--tblr-font-semibold);
+            color: var(--tblr-text-primary);
         }
     }
 }
@@ -202,11 +202,11 @@
 
         &.sortable-ghost {
             opacity: 0.4;
-            background-color: rgba(var(--swp-primary-rgb, 99 102 241), 0.06);
+            background-color: rgba(var(--tblr-primary-rgb, 99 102 241), 0.06);
         }
 
         &.sortable-chosen {
-            background-color: rgba(var(--swp-primary-rgb, 99 102 241), 0.04);
+            background-color: rgba(var(--tblr-primary-rgb, 99 102 241), 0.04);
         }
     }
 

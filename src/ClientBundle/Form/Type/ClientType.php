@@ -19,17 +19,20 @@ use SolidInvoice\ClientBundle\Entity\Address;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Enum\CustomFieldTarget;
 use SolidInvoice\CoreBundle\Form\Type\CustomFieldValueCollectionType;
+use SolidInvoice\InvoiceBundle\Enum\PaymentTerms;
 use SolidInvoice\MoneyBundle\Form\Type\CurrencyType;
 use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidInvoice\TaxBundle\Form\Type\TaxIdentifierType;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
 /**
@@ -85,6 +88,17 @@ class ClientType extends AbstractType
                 }
             });
         }
+
+        $builder->add('paymentTerms', EnumType::class, [
+            'class' => PaymentTerms::class,
+            'choice_label' => static fn (PaymentTerms $terms): string => $terms->getLabel(),
+            'label' => 'client.form.payment_terms.label',
+            'help' => 'client.form.payment_terms.help',
+            'required' => false,
+            'placeholder' => new TranslatableMessage('client.form.payment_terms.placeholder', [
+                '%terms%' => new TranslatableMessage(PaymentTerms::forClient(null, $this->systemConfig)->getLabel()),
+            ]),
+        ]);
 
         $builder->add(
             'contacts',

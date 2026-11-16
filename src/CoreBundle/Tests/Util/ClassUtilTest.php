@@ -25,6 +25,6 @@ final class ClassUtilTest extends TestCase
 
     public function testFindClassInFileWithInvalidFile(): void
     {
-        self::assertNull(ClassUtil::findClassInFile(dirname(__DIR__) . '/Fixtures/file.php'));
+        self::assertNull(ClassUtil::findClassInFile(__DIR__ . '/../Fixtures/file.php'));
     }
 }

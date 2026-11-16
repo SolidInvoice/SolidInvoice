@@ -48,7 +48,7 @@
 
     {% if invoice.balance %}
         {{ email.spacer('xs') }}
-        {{ email.info_row('invoice.notification_overdue.outstanding_balance'|trans({}, 'email'), invoice.balance|formatCurrency(invoice.client.currency)) }}
+        {{ email.info_row('invoice.notification_overdue.outstanding_balance'|trans({}, 'email'), invoice.balance|formatCurrency(invoice.currency)) }}
     {% endif %}
 
     {{ email.spacer('sm') }}

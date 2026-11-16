@@ -27,6 +27,11 @@ Send beautiful quotes and invoices, accept online payments, automate recurring b
   <a href="https://github.com/SolidInvoice/SolidInvoice"><img src="https://img.shields.io/badge/Star-on%20GitHub-181717?style=for-the-badge&logo=github" alt="Star on GitHub" /></a>
 </p>
 
+<p>
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSeJ5pJjGzLXaN_a2TjT4_rMYnl71hi7xYuLCopkhphg-VTfgg/viewform"><img src="https://img.shields.io/badge/Share-Feedback-F59E0B?style=for-the-badge" alt="Share Feedback" /></a>
+  <a href="https://billing.solidinvoice.co/affiliates"><img src="https://img.shields.io/badge/Join%20the-Affiliate%20Program-8B5CF6?style=for-the-badge" alt="Join the Affiliate Program" /></a>
+</p>
+
 <img src="docs/static/img/dashboard.png" alt="SolidInvoice Dashboard" width="100%" />
 
 </div>
@@ -194,6 +199,20 @@ bun run build
 - 📖 Docs & guides — [solidinvoice.co/docs](https://solidinvoice.co/docs)
 - 🔄 Upgrading — [`UPGRADE.md`](UPGRADE.md)
 - 📝 Changelog — [`CHANGELOG.md`](CHANGELOG.md)
+
+---
+
+## 💬 Feedback
+
+Using SolidInvoice, hosted or self-hosted? Tell us what works, what gets in your way, and what's missing in our [5-minute feedback form](https://docs.google.com/forms/d/e/1FAIpQLSeJ5pJjGzLXaN_a2TjT4_rMYnl71hi7xYuLCopkhphg-VTfgg/viewform). It's anonymous and every question is optional.
+
+---
+
+## 🎁 Refer & Earn
+
+Earn up to $93 a year for every customer you refer to [SolidInvoice Cloud](https://solidinvoice.co). Join the affiliate program, share your link, and earn 20% of every payment your referrals make, month after month. Self-hosted users can take part too.
+
+<a href="https://billing.solidinvoice.co/affiliates"><img src="https://img.shields.io/badge/Join%20the-Affiliate%20Program-8B5CF6?style=for-the-badge" alt="Join the Affiliate Program" /></a>
 
 ---
 

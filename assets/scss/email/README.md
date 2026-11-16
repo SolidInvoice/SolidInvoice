@@ -16,12 +16,12 @@ All color values are derived from `assets/scss/design-system/_tokens.scss` to en
 
 | Design System Token | Email Variable | Hex Value |
 |---------------------|----------------|-----------|
-| `--swp-primary` | `$email-primary` | #2e963a (Green) |
-| `--swp-success` | `$email-success` | #10b981 |
-| `--swp-danger` | `$email-danger` | #ef4444 |
-| `--swp-warning` | `$email-warning` | #f59e0b |
-| `--swp-info` | `$email-info` | #3b82f6 |
-| `--swp-gray-*` | `$email-gray-*` | Slate gray scale |
+| `--tblr-primary` | `$email-primary` | #2e963a (Green) |
+| `--tblr-success` | `$email-success` | #10b981 |
+| `--tblr-danger` | `$email-danger` | #ef4444 |
+| `--tblr-warning` | `$email-warning` | #f59e0b |
+| `--tblr-info` | `$email-info` | #3b82f6 |
+| `--tblr-gray-*` | `$email-gray-*` | Slate gray scale |
 
 ## Webpack Compilation
 

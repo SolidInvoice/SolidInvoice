@@ -23,6 +23,18 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\SqlFormatter\SqlFormatter;
 use Generator;
 
+/**
+ * Builds the schema for a FRESH install. It does not run the migration chain, and that is deliberate.
+ *
+ * A new install has no data, so the data migrations in migrations/ have nothing to do. The schema is
+ * created straight from the ORM metadata, and every migration is then stamped as executed so that later
+ * upgrades only run the migrations added after this install.
+ *
+ * Upgrades of an existing install go through the real migrator: `doctrine:migrations:migrate`, which the
+ * FrankenPHP binary runs at startup (frankenphp/app.go, migrateOnStartup) and the Helm chart runs as a
+ * pre-upgrade job. Nothing runs migrations during an HTTP request. Do not "fix" this class to run the
+ * migrator, and do not bring back a request listener that migrates. See AGENTS.md §9.
+ */
 final readonly class Migration
 {
     private SqlFormatter $sqlFormatter;
@@ -32,18 +44,6 @@ final readonly class Migration
         private ManagerRegistry $registry,
     ) {
         $this->sqlFormatter = new SqlFormatter();
-    }
-
-    public function isUpToDate(): bool
-    {
-        $statusCalculator = $this->migrationDependencyFactory->getMigrationStatusCalculator();
-
-        $executedUnavailableMigrations = $statusCalculator->getExecutedUnavailableMigrations();
-        $newMigrations = $statusCalculator->getNewMigrations();
-        $newMigrationsCount = count($newMigrations);
-        $executedUnavailableMigrationsCount = count($executedUnavailableMigrations);
-
-        return $newMigrationsCount === 0 && $executedUnavailableMigrationsCount === 0;
     }
 
     public function migrate(?callable $callback = null): Generator

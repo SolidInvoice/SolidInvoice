@@ -39,7 +39,7 @@ Invoice Date: {{ invoice.invoiceDate|date('Y-m-d') }}
 Due Date: {{ invoice.due|date('Y-m-d') }}
 {% endif %}
 {% if invoice.balance %}
-Amount Due: {{ invoice.balance|formatCurrency(invoice.client.currency) }}
+Amount Due: {{ invoice.balance|formatCurrency(invoice.currency) }}
 {% endif %}
 
 {%- if reminder_type == 'pre_due' -%}

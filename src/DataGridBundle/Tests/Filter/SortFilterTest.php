@@ -18,6 +18,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SolidInvoice\DataGridBundle\Filter\SortFilter;
+use SortDirection;
 
 #[CoversClass(SortFilter::class)]
 final class SortFilterTest extends TestCase
@@ -37,7 +38,7 @@ final class SortFilterTest extends TestCase
         $this->queryBuilder
             ->expects($this->once())
             ->method('orderBy')
-            ->with('d.field', 'ASC');
+            ->with('d.field', SortDirection::Ascending);
 
         $this->filter->filter($this->queryBuilder, null);
     }
@@ -60,7 +61,7 @@ final class SortFilterTest extends TestCase
         $this->queryBuilder
             ->expects($this->once())
             ->method('orderBy')
-            ->with('d.field', 'DESC');
+            ->with('d.field', SortDirection::Descending);
 
         $sortFilter->filter($this->queryBuilder, null);
     }

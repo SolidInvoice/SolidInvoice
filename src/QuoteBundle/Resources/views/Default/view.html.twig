@@ -14,7 +14,7 @@
 
 {% block content %}
 {% import '@SolidInvoiceQuote/Templates/_macros.html.twig' as q %}
-{% set currency = quote.client.currency %}
+{% set currency = quote.currency %}
 <div class="doc-view-page">
     {# ═══════════════════════════════════════════════════════════════════════
        PAGE HEADER - Quote Title, Status, and Actions

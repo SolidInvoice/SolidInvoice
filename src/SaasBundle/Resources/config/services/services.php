@@ -11,11 +11,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use SolidInvoice\CoreBundle\Contracts\EmailVerificationGateInterface;
 use SolidInvoice\CoreBundle\Contracts\PaidSubscriptionGateInterface;
 use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
 use SolidInvoice\DashboardBundle\Checklist\ChecklistItemInterface;
-use SolidInvoice\SaasBundle\Email\SaasEmailVerificationGate;
 use SolidInvoice\SaasBundle\Feature\UpgradePromptRenderer;
 use SolidInvoice\SaasBundle\Service\SubscriptionEligibility;
 use SolidInvoice\SaasBundle\SolidInvoiceSaasBundle;
@@ -47,11 +45,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->load(SolidInvoiceSaasBundle::NAMESPACE . '\\Controller\\', dirname(__DIR__, 3) . '/Controller')
         ->tag('controller.service_arguments');
-
-    $services->alias(
-        EmailVerificationGateInterface::class,
-        SaasEmailVerificationGate::class,
-    );
 
     $services->alias(
         UpgradePromptProvider::class,

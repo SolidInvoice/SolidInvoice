@@ -24,7 +24,7 @@
 {{ 'invoice.notification_overdue.due_date'|trans({}, 'email') }}: {{ invoice.due|date('Y-m-d') }}
 {% endif -%}
 {% if invoice.balance -%}
-{{ 'invoice.notification_overdue.outstanding_balance'|trans({}, 'email') }}: {{ invoice.balance|formatCurrency(invoice.client.currency) }}
+{{ 'invoice.notification_overdue.outstanding_balance'|trans({}, 'email') }}: {{ invoice.balance|formatCurrency(invoice.currency) }}
 {% endif -%}
 {{ 'invoice.notification_overdue.status'|trans({}, 'email') }}: {{ invoice.status.label }}
 
