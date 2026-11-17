@@ -6,6 +6,7 @@ Unreleased
 
 ### Fixes
 
+* PostgreSQL installs upgraded from 3.0.x can load invoices, clients and users again. Since 3.1, every read failed with a "Could not convert database value" error, because 3.0.x had created the date columns without a time zone. A migration converts them and keeps every stored time
 * The MCP server no longer fails with a server error on every request when SolidInvoice runs on its built-in FrankenPHP server. Some log entries could not be written to the server log, which failed the request
 * Trimmed internal payment method fields from API payment responses
 * Recording a payment through the API or the MCP tools no longer marks the invoice as paid when the payment does not cover the full balance. The invoice stays pending with its balance reduced, and is marked paid once the payments settle it. Before, a second payment against the same invoice was rejected
