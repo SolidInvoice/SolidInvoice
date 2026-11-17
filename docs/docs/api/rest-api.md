@@ -347,7 +347,7 @@ The same documentation for the latest public release is hosted at [solidinvoice.
 
 The main resource roots are:
 
-- `/api/invoices` and `/api/recurring-invoices`
+- `/api/invoices`, `/api/recurring-invoices`, and `/api/credit-notes`
 - `/api/quotes`
 - `/api/clients`, `/api/contacts`, and `/api/addresses`
 - `/api/payments` and `/api/payment-methods`

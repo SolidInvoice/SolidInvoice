@@ -35,7 +35,7 @@ abstract class BaseInvoice implements HasFrozenCurrencyInterface
     use HasFrozenCurrency;
 
     #[ORM\Column(name: 'total_amount', type: BigIntegerType::NAME)]
-    #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'searchable'])]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'credit_note_api:read', 'searchable'])]
     #[ApiProperty(
         writable: false,
         openapiContext: [
@@ -48,7 +48,7 @@ abstract class BaseInvoice implements HasFrozenCurrencyInterface
     protected BigNumber $total;
 
     #[ORM\Column(name: 'baseTotal_amount', type: BigIntegerType::NAME)]
-    #[Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'invoice_api:read', 'recurring_invoice_api:read'])]
+    #[Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'invoice_api:read', 'recurring_invoice_api:read', 'credit_note_api:read'])]
     #[ApiProperty(
         writable: false,
         openapiContext: [
@@ -61,7 +61,7 @@ abstract class BaseInvoice implements HasFrozenCurrencyInterface
     protected BigNumber $baseTotal;
 
     #[ORM\Column(name: 'tax_amount', type: BigIntegerType::NAME)]
-    #[Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'invoice_api:read', 'recurring_invoice_api:read'])]
+    #[Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'invoice_api:read', 'recurring_invoice_api:read', 'credit_note_api:read'])]
     #[ApiProperty(
         writable: false,
         openapiContext: [
@@ -74,7 +74,7 @@ abstract class BaseInvoice implements HasFrozenCurrencyInterface
     protected BigNumber $tax;
 
     #[ORM\Embedded(class: Discount::class)]
-    #[Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api', 'invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    #[Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api', 'invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write', 'credit_note_api:read', 'credit_note_api:write'])]
     #[ApiProperty(
         openapiContext: [
             'type' => 'object',
@@ -114,19 +114,19 @@ abstract class BaseInvoice implements HasFrozenCurrencyInterface
     protected Discount $discount;
 
     #[ORM\Column(name: 'terms', type: Types::TEXT, nullable: true)]
-    #[Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api', 'invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    #[Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api', 'invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write', 'credit_note_api:read', 'credit_note_api:write'])]
     protected ?string $terms = null;
 
     #[ORM\Column(name: 'payment_terms', type: Types::STRING, length: 25, enumType: PaymentTerms::class, options: ['default' => PaymentTerms::Custom->value])]
-    #[Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api', 'invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    #[Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api', 'invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write', 'credit_note_api:read', 'credit_note_api:write'])]
     protected PaymentTerms $paymentTerms = PaymentTerms::Custom;
 
     #[ORM\Column(name: 'notes', type: Types::TEXT, nullable: true)]
-    #[Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api', 'invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write'])]
+    #[Groups(['invoice_api', 'recurring_invoice_api', 'client_api', 'create_invoice_api', 'create_recurring_invoice_api', 'invoice_api:read', 'invoice_api:write', 'recurring_invoice_api:read', 'recurring_invoice_api:write', 'credit_note_api:read', 'credit_note_api:write'])]
     protected ?string $notes = null;
 
     #[ORM\Column(name: 'withholding_amount', type: BigIntegerType::NAME, options: ['default' => 0])]
-    #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'credit_note_api:read'])]
     #[ApiProperty(
         writable: false,
         openapiContext: [
@@ -139,7 +139,7 @@ abstract class BaseInvoice implements HasFrozenCurrencyInterface
     protected BigNumber $withholdingAmount;
 
     #[ORM\Column(name: 'payable_amount', type: BigIntegerType::NAME, options: ['default' => 0])]
-    #[Groups(['invoice_api:read', 'recurring_invoice_api:read'])]
+    #[Groups(['invoice_api:read', 'recurring_invoice_api:read', 'credit_note_api:read'])]
     #[ApiProperty(
         writable: false,
         openapiContext: [

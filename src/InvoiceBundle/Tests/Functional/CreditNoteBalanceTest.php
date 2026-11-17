@@ -16,6 +16,7 @@ namespace SolidInvoice\InvoiceBundle\Tests\Functional;
 use Brick\Math\BigDecimal;
 use PHPUnit\Framework\Attributes\Group;
 use SolidInvoice\ClientBundle\Test\Factory\ClientFactory;
+use SolidInvoice\CoreBundle\Company\CompanySelector;
 use SolidInvoice\CoreBundle\Test\Factory\CompanyFactory;
 use SolidInvoice\CoreBundle\Test\Traits\DoctrineTestTrait;
 use SolidInvoice\InstallBundle\Test\EnsureApplicationInstalled;
@@ -120,7 +121,12 @@ final class CreditNoteBalanceTest extends KernelTestCase
         $otherClient = ClientFactory::createOne(['company' => $otherCompany]);
         $foreignInvoice = InvoiceFactory::createOne(['company' => $otherCompany, 'client' => $otherClient]);
 
-        $filters->enable('company');
+        // A raw $filters->enable('company') would leave the filter active but with no
+        // `companyId` parameter bound — Doctrine's FilterCollection replaces the filter instance
+        // on enable(), discarding whatever switchCompany() had set. CompanyFilter then adds no
+        // WHERE clause at all, so CreditNoteInvoiceBelongsToSameCompanyValidator's visibility
+        // check would see every company's rows. switchCompany() re-binds the parameter.
+        self::getContainer()->get(CompanySelector::class)->switchCompany($this->company->getId());
 
         $client = ClientFactory::createOne(['company' => $this->company]);
 

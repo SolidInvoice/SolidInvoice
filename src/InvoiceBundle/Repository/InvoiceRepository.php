@@ -303,6 +303,26 @@ class InvoiceRepository extends EntityRepository
     }
 
     /**
+     * Whether an invoice with this id is visible under the active `CompanyFilter`. Use this
+     * instead of `find()` to check tenancy on an id resolved from a Doctrine reference (such as
+     * an API Platform IRI), since `find()` can return an already-registered, unfiltered proxy
+     * straight from the identity map without running the filtered query at all.
+     */
+    public function isVisible(?Ulid $id): bool
+    {
+        if (! $id instanceof Ulid) {
+            return false;
+        }
+
+        return $this->createQueryBuilder('i')
+            ->select('i.id')
+            ->where('i.id = :id')
+            ->setParameter('id', $id, UlidType::NAME)
+            ->getQuery()
+            ->getOneOrNullResult() !== null;
+    }
+
+    /**
      * Checks if an invoice is paid in full.
      */
     public function isFullyPaid(Invoice $invoice): bool

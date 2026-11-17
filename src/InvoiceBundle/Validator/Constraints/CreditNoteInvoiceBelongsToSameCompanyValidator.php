@@ -15,6 +15,7 @@ namespace SolidInvoice\InvoiceBundle\Validator\Constraints;
 
 use SolidInvoice\InvoiceBundle\Entity\CreditNote;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -25,6 +26,11 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
  */
 final class CreditNoteInvoiceBelongsToSameCompanyValidator extends ConstraintValidator
 {
+    public function __construct(
+        private readonly InvoiceRepository $invoiceRepository,
+    ) {
+    }
+
     public function validate(mixed $value, Constraint $constraint): void
     {
         if (! $constraint instanceof CreditNoteInvoiceBelongsToSameCompany) {
@@ -41,7 +47,11 @@ final class CreditNoteInvoiceBelongsToSameCompanyValidator extends ConstraintVal
             return;
         }
 
-        if ($value->getCompany()->getId()->toRfc4122() !== $invoice->getCompany()->getId()->toRfc4122()) {
+        // $value->getCompany() is not set yet here: CompanyListener only stamps it at
+        // prePersist, which runs after validation, so reading it throws on a new credit note.
+        // Check tenancy by asking whether the invoice is visible under the active
+        // CompanyFilter instead of comparing against the credit note's own company.
+        if (! $this->invoiceRepository->isVisible($invoice->getId())) {
             $this->context->buildViolation($constraint->message)
                 ->atPath('invoice')
                 ->addViolation();

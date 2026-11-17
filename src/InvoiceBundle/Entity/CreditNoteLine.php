@@ -13,10 +13,19 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use Doctrine\ORM\Mapping as ORM;
 use Override;
+use SolidInvoice\ApiBundle\State\Processor\CreditNoteLinePersistProcessor;
 use SolidInvoice\CoreBundle\Entity\LineInterface;
 use SolidInvoice\InvoiceBundle\Repository\CreditNoteLineRepository;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 
 /**
  * A credit note's line item. Extends {@see Line} rather than declaring its own table — `Line`
@@ -27,8 +36,83 @@ use SolidInvoice\InvoiceBundle\Repository\CreditNoteLineRepository;
  * The `#[ORM\Entity]` attribute is required even though nothing else about the mapping is
  * redeclared: Doctrine's attribute driver does not recognise a plain PHP subclass listed only
  * in the parent's `DiscriminatorMap` as an entity, mirroring {@see RecurringInvoiceLine}.
+ *
+ * `#[ApiResource]` is required here too, for an unrelated reason: without it, API Platform's
+ * `ResourceClassResolver` has no registration more specific than `Line` for this subclass, so
+ * every nested `CreditNoteLine` — both denormalizing the array {@see CreditNote::$lines} posts
+ * and generating each line's own `@id` — resolves to `Line`'s resource metadata instead of this
+ * class's, and 400s or 500s depending on which direction crosses the mismatch. Mirrors how
+ * {@see RecurringInvoiceLine} solves the identical problem.
  */
 #[ORM\Entity(repositoryClass: CreditNoteLineRepository::class)]
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            uriTemplate: '/credit-notes/{creditNoteId}/lines',
+            uriVariables: [
+                'creditNoteId' => new Link(
+                    fromProperty: 'lines',
+                    fromClass: CreditNote::class,
+                ),
+            ],
+        ),
+        new Post(
+            uriTemplate: '/credit-notes/{creditNoteId}/lines',
+            uriVariables: [
+                'creditNoteId' => new Link(
+                    fromProperty: 'lines',
+                    fromClass: CreditNote::class,
+                ),
+            ],
+            // The `lines` link would otherwise have API Platform deserialize into the owner's
+            // existing line, so a second post overwrites the first. A create has nothing to read.
+            read: false,
+            processor: CreditNoteLinePersistProcessor::class,
+        ),
+        new Get(
+            uriTemplate: '/credit-notes/{creditNoteId}/line/{id}',
+            uriVariables: [
+                'creditNoteId' => new Link(
+                    fromProperty: 'lines',
+                    fromClass: CreditNote::class,
+                ),
+                'id' => new Link(
+                    fromClass: CreditNoteLine::class,
+                ),
+            ],
+        ),
+        new Patch(
+            uriTemplate: '/credit-notes/{creditNoteId}/line/{id}',
+            uriVariables: [
+                'creditNoteId' => new Link(
+                    fromProperty: 'lines',
+                    fromClass: CreditNote::class,
+                ),
+                'id' => new Link(
+                    fromClass: CreditNoteLine::class,
+                ),
+            ],
+        ),
+        new Delete(
+            uriTemplate: '/credit-notes/{creditNoteId}/line/{id}',
+            uriVariables: [
+                'creditNoteId' => new Link(
+                    fromProperty: 'lines',
+                    fromClass: CreditNote::class,
+                ),
+                'id' => new Link(
+                    fromClass: CreditNoteLine::class,
+                ),
+            ],
+        ),
+    ],
+    normalizationContext: [
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ]
+)]
 class CreditNoteLine extends Line
 {
     #[ORM\ManyToOne(targetEntity: CreditNote::class, inversedBy: 'lines')]

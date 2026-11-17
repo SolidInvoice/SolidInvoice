@@ -13,6 +13,18 @@ declare(strict_types=1);
 
 namespace SolidInvoice\InvoiceBundle\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use Carbon\CarbonImmutable;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -20,6 +32,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use SolidInvoice\ApiBundle\State\Processor\CreateCreditNoteFromInvoiceProcessor;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\CoreBundle\Traits\Entity\Archivable;
 use SolidInvoice\CoreBundle\Traits\Entity\LinePositions;
@@ -33,6 +46,8 @@ use SolidInvoice\TaxBundle\Entity\InvoiceTax;
 use Stringable;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -46,6 +61,39 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['company_id', 'status'])]
 #[ORM\UniqueConstraint(columns: ['company_id', 'credit_note_id'])]
 #[ORM\Entity(repositoryClass: CreditNoteRepository::class)]
+#[ApiFilter(SearchFilter::class, properties: ['status' => 'exact', 'client' => 'exact'])]
+#[ApiFilter(DateFilter::class, properties: ['creditNoteDate'])]
+#[ApiFilter(OrderFilter::class, properties: ['creditNoteDate', 'status'])]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get(),
+        new Post(),
+        new Patch(),
+        new Delete(),
+        new Post(
+            uriTemplate: '/invoices/{invoiceId}/credit-notes',
+            uriVariables: [
+                'invoiceId' => new Link(fromClass: Invoice::class),
+            ],
+            read: false,
+            // `client` and `company` are derived from the invoice, not sent in the payload, so
+            // they are still unset when API Platform would normally validate (right after
+            // deserializing, before the processor runs). The processor sets them and validates
+            // itself, once the object is actually complete.
+            validate: false,
+            processor: CreateCreditNoteFromInvoiceProcessor::class,
+        ),
+    ],
+    normalizationContext: [
+        'groups' => ['credit_note_api:read'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+    denormalizationContext: [
+        'groups' => ['credit_note_api:write'],
+        AbstractObjectNormalizer::SKIP_NULL_VALUES => false,
+    ],
+)]
 #[CreditNoteInvoiceBelongsToSameCompany]
 #[CreditNoteWithinInvoiceTotal]
 class CreditNote extends BaseInvoice implements Stringable
@@ -60,23 +108,32 @@ class CreditNote extends BaseInvoice implements Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
+    #[Groups(['credit_note_api:read'])]
     private ?Ulid $id = null;
 
     #[ORM\Column(name: 'credit_note_id', type: Types::STRING, length: 255)]
+    #[Groups(['credit_note_api:read', 'credit_note_api:write'])]
     private string $creditNoteId = '';
 
     #[ORM\Column(name: 'uuid', type: Types::STRING, length: 36)]
+    #[Groups(['credit_note_api:read'])]
+    #[ApiProperty(writable: false)]
     private string $uuid;
 
     #[ORM\Column(name: 'status', type: Types::STRING, length: 25, enumType: CreditNoteStatus::class)]
+    #[Groups(['credit_note_api:read'])]
+    #[ApiProperty(writable: false)]
     private CreditNoteStatus $status = CreditNoteStatus::Draft;
 
     #[ORM\Column(name: 'invoice_type_code', type: Types::STRING, length: 4, enumType: InvoiceTypeCode::class, options: ['default' => InvoiceTypeCode::CreditNote->value])]
+    #[Groups(['credit_note_api:read'])]
+    #[ApiProperty(writable: false)]
     private InvoiceTypeCode $invoiceTypeCode = InvoiceTypeCode::CreditNote;
 
     #[ORM\ManyToOne(targetEntity: Client::class)]
     #[ORM\JoinColumn(name: 'client_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     #[Assert\NotBlank]
+    #[Groups(['credit_note_api:read', 'credit_note_api:write'])]
     private ?Client $client = null;
 
     /**
@@ -85,12 +142,19 @@ class CreditNote extends BaseInvoice implements Stringable
      */
     #[ORM\ManyToOne(targetEntity: Invoice::class)]
     #[ORM\JoinColumn(name: 'invoice_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    #[Groups(['credit_note_api:read', 'credit_note_api:write'])]
+    // Invoice extends the same BaseInvoice as CreditNote, so its inherited properties carry
+    // `credit_note_api:read` too. Without this, API Platform sees exposed properties on the
+    // related Invoice under the current group and embeds it in full instead of its IRI.
+    #[ApiProperty(readableLink: false, writableLink: false)]
     private ?Invoice $invoice = null;
 
     #[ORM\Column(name: 'credit_note_date', type: Types::DATE_IMMUTABLE, nullable: false)]
+    #[Groups(['credit_note_api:read', 'credit_note_api:write'])]
     private DateTimeImmutable $creditNoteDate;
 
     #[ORM\Column(name: 'reason', type: Types::TEXT, nullable: true)]
+    #[Groups(['credit_note_api:read', 'credit_note_api:write'])]
     private ?string $reason = null;
 
     /**
@@ -98,12 +162,15 @@ class CreditNote extends BaseInvoice implements Stringable
      */
     #[ORM\OneToMany(targetEntity: CreditNoteLine::class, mappedBy: 'creditNote', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
+    #[Assert\Valid]
+    #[Groups(['credit_note_api:read', 'credit_note_api:write'])]
     private Collection $lines;
 
     /**
      * @var Collection<int, InvoiceTax>
      */
     #[ORM\OneToMany(targetEntity: InvoiceTax::class, mappedBy: 'creditNote', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Groups(['credit_note_api:read', 'credit_note_api:write'])]
     private Collection $invoiceTaxes;
 
     public function __construct()
