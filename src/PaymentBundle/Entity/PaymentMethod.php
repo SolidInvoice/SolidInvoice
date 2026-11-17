@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Entity;
 
+use const FILTER_VALIDATE_BOOLEAN;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
@@ -20,7 +21,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JsonException;
 use Payum\Core\Model\GatewayConfigInterface;
+use Payum\Core\Security\CryptedInterface;
+use Payum\Core\Security\CypherInterface;
 use SolidInvoice\CoreBundle\Export\Attribute\ExportIgnore;
 use SolidInvoice\CoreBundle\Traits\Entity\CompanyAware;
 use SolidInvoice\CoreBundle\Traits\Entity\TimeStampable;
@@ -35,6 +39,9 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 use function array_key_exists;
+use function filter_var;
+use function is_bool;
+use function json_encode;
 
 #[ORM\Table(name: PaymentMethod::TABLE_NAME)]
 #[ORM\Entity(repositoryClass: PaymentMethodRepository::class)]
@@ -51,7 +58,7 @@ use function array_key_exists;
     graphQlOperations: [],
 )]
 #[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'company', inversedBy: 'paymentMethods')])]
-class PaymentMethod implements GatewayConfigInterface, Stringable
+class PaymentMethod implements GatewayConfigInterface, Stringable, CryptedInterface
 {
     final public const string TABLE_NAME = 'payment_methods';
 
@@ -80,12 +87,14 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
     private ?string $factoryName = null;
 
     /**
-     * @var array<string, string>
+     * @var array<string, string|true>
      */
     #[ORM\Column(name: 'config', type: Types::JSON)]
     #[ExportIgnore]
     #[Ignore]
     private array $config = [];
+
+    private array $decryptedConfig = [];
 
     #[ORM\Column(name: 'internal', type: Types::BOOLEAN, nullable: true)]
     #[Groups(['payment_method_api:read'])]
@@ -154,6 +163,7 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
         }
 
         $this->config = $config;
+        $this->decryptedConfig = $config;
 
         return $this;
     }
@@ -164,6 +174,14 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
     public function getConfig(): ?array
     {
         $config = $this->config;
+
+        if (array_key_exists('encrypted', $config) && $config['encrypted'] === true) {
+            if (array_key_exists('sandbox', $this->decryptedConfig)) {
+                $this->decryptedConfig['sandbox'] = filter_var($this->decryptedConfig['sandbox'], FILTER_VALIDATE_BOOLEAN);
+            }
+
+            return $this->decryptedConfig;
+        }
 
         if (array_key_exists('sandbox', $config)) {
             $config['sandbox'] = filter_var($config['sandbox'], FILTER_VALIDATE_BOOLEAN);
@@ -266,5 +284,38 @@ class PaymentMethod implements GatewayConfigInterface, Stringable
     public function __toString(): string
     {
         return (string) $this->name;
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function decrypt(CypherInterface $cypher): void
+    {
+        if (($this->config['encrypted'] ?? false) !== true) {
+            return;
+        }
+
+        $this->decryptedConfig = json_decode($cypher->decrypt($this->config['payload']), true, 512, JSON_THROW_ON_ERROR);
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function encrypt(CypherInterface $cypher): void
+    {
+        $payload = [];
+        $decryptedConfig = [
+            'encrypted' => true,
+        ];
+
+        foreach ($this->decryptedConfig as $name => $value) {
+            if ('encrypted' === $name || is_bool($value)) {
+                continue;
+            }
+
+            $payload[$name] = $value;
+        }
+
+        $this->config = $decryptedConfig + ['payload' => $cypher->encrypt(json_encode($payload, JSON_THROW_ON_ERROR))];
     }
 }

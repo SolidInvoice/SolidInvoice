@@ -51,6 +51,9 @@ return App::config([
                     'doctrine' => 'orm',
                 ],
             ],
+            'encryption' => [
+                'defuse_secret_key' => env('SOLIDINVOICE_APP_SECRET')
+            ],
         ],
     ],
     'payment' => [
