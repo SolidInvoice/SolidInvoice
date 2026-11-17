@@ -4,6 +4,9 @@ Changelog
 Unreleased
 ----------
 
+3.1.3 / 2026-11-10
+------------------
+
 ### Fixes
 
 * PostgreSQL installs upgraded from 3.0.x can load invoices, clients and users again. Since 3.1, every read failed with a "Could not convert database value" error, because 3.0.x had created the date columns without a time zone. A migration converts them and keeps every stored time
