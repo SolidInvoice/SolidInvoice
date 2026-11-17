@@ -20,6 +20,9 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
+/**
+ * @see \SolidInvoice\TaxBundle\Tests\Validator\Constraints\SameCompanyAsClientValidatorTest
+ */
 final class SameCompanyAsClientValidator extends ConstraintValidator
 {
     public function validate(mixed $value, Constraint $constraint): void
@@ -39,6 +42,11 @@ final class SameCompanyAsClientValidator extends ConstraintValidator
         $client = $value->getClient();
 
         if (! $client instanceof Client) {
+            return;
+        }
+
+        // Entities that are not yet persisted may not have a company assigned yet (set by CompanyListener on prePersist).
+        if ($value->getCompanyId() === null || $client->getCompanyId() === null) {
             return;
         }
 
