@@ -919,6 +919,9 @@ func migrateOnStartup(ctx context.Context) error {
 	if !isAppInstalled() {
 		return nil
 	}
+
+	defer runConsoleCommand("solidinvoice:payment:migrate-config", "-q")
+
 	if runConsoleCommand("doctrine:migrations:up-to-date") == nil {
 		return nil
 	}
