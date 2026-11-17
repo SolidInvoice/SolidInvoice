@@ -439,4 +439,32 @@ final class CreateInvoiceTest extends LiveComponentTest
         );
         self::assertSame([0, 1, 2], $refreshed->getLines()->map(static fn (Line $line): int => $line->getPosition())->toArray());
     }
+
+    /**
+     * @see https://github.com/SolidInvoice/SolidInvoice/issues/2960
+     */
+    public function testSendActionIsCallableAndBehavesLikeSaveSend(): void
+    {
+        $client = ClientFactory::createOne(['name' => 'No Contacts Ltd', 'currencyCode' => 'USD']);
+
+        $dto = new InvoiceFormDTO();
+        $dto->invoiceDate = CarbonImmutable::parse('2021-01-01');
+        $dto->client = $client;
+        $dto->lines->add(new Line()->setName('Consulting')->setPrice(10000)->setQty(1));
+
+        $component = $this->createLiveComponent(
+            name: CreateInvoice::class,
+            data: ['dto' => $dto],
+            client: $this->client,
+        )->actingAs($this->getUser());
+
+        try {
+            $component->call('send');
+            self::fail('A send with nobody to send to must not save.');
+        } catch (UnprocessableEntityHttpException $e) {
+            self::assertStringContainsString(self::getContainer()->get('translator')->trans('invoice.users.min', [], 'validators'), $e->getMessage());
+        }
+
+        self::assertSame(0, self::getContainer()->get('doctrine')->getRepository(Invoice::class)->count([]));
+    }
 }
