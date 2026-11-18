@@ -74,6 +74,7 @@
         "php-http/discovery": "^1.20",
         "php-http/guzzle7-adapter": "^1.1",
         "php-http/message": "^1.16",
+        "php-http/message-factory": "^1.1",
         "psr/http-factory": "^1.1",
         "sentry/sentry-symfony": "^5.10",
         "solidworx/platform": "dev-main",
