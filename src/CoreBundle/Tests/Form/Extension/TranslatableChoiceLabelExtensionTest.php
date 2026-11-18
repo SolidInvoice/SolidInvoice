@@ -39,7 +39,7 @@ final class TranslatableChoiceLabelExtensionTest extends TypeTestCase
     {
         $view = $this->factory->create(ChoiceType::class, null, [
             'choices' => ['a' => 'a', 'b' => 'b'],
-            'choice_label' => static fn (string $choice): TranslatableMessage|string => 'a' === $choice
+            'choice_label' => static fn (string $choice): TranslatableMessage | string => 'a' === $choice
                 ? new TranslatableMessage('Label %name%', ['%name%' => 'A'])
                 : 'Plain B',
             'choice_translation_domain' => false,
