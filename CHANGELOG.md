@@ -32,6 +32,7 @@ Changelog
 
 ### Fixes
 
+* Concurrent credit payments no longer overdraw a client's balance; each deduction is a single atomic SQL statement that checks and subtracts in one step, so two simultaneous payments never both succeed against the same insufficient balance
 * MCP clients that connect without a token now receive a `WWW-Authenticate` header pointing them to the OAuth metadata, so they can start sign-in automatically
 * The installer no longer stops with a JavaScript error when installation finishes
 * Deleting a custom field whose name contains an apostrophe now shows its confirmation prompt
