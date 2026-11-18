@@ -39,6 +39,7 @@ final class InvoiceTaxType extends AbstractType
             ->add('tax', EntityType::class, [
                 'class' => Tax::class,
                 'placeholder' => 'tax.invoice_tax.tax.placeholder',
+                'choice_translation_domain' => 'messages',
                 'required' => true,
                 'choice_label' => static function (Tax $tax): TranslatableMessage {
                     $rate = $tax->getRate() ?? 0;

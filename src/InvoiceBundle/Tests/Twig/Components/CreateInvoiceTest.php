@@ -137,6 +137,25 @@ final class CreateInvoiceTest extends LiveComponentTest
         $this->assertMatchesHtmlSnapshot($this->replaceChecksum($component->render()->toString()));
     }
 
+    public function testAddingAnInvoiceTaxRendersTheTaxChoiceLabel(): void
+    {
+        $em = self::getContainer()->get('doctrine')->getManager();
+        $em->persist(new Tax()->setName('VAT')->setRate(20)->setType(Tax::TYPE_EXCLUSIVE));
+        $em->flush();
+
+        $dto = new InvoiceFormDTO();
+        $dto->invoiceDate = CarbonImmutable::parse('2021-01-01');
+
+        $component = $this->createLiveComponent(
+            name: CreateInvoice::class,
+            data: ['dto' => $dto]
+        )->actingAs($this->getUser());
+
+        $component->call('addCollectionItem', ['name' => 'invoice[invoiceTaxes]']);
+
+        self::assertStringContainsString('VAT', $component->render()->toString());
+    }
+
     /**
      * Tests that contacts are auto-selected when a client is pre-selected.
      * The component's PostMount hook should auto-select all contacts.
