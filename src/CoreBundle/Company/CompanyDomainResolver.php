@@ -47,7 +47,7 @@ final class CompanyDomainResolver implements ResetInterface
     public function __construct(
         private readonly CompanyRepository $companyRepository,
         private readonly string $applicationUrl = '',
-        #[Autowire(env: 'SOLIDINVOICE_MESSENGER_MONINTOR_HOST')]
+        #[Autowire(env: 'SOLIDINVOICE_MESSENGER_MONITOR_HOST')]
         private readonly string $messengerMonitorHost = '',
     ) {
     }
