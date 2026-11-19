@@ -40,7 +40,6 @@ use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 use function array_key_exists;
 use function filter_var;
-use function is_bool;
 use function json_encode;
 
 #[ORM\Table(name: PaymentMethod::TABLE_NAME)]
@@ -156,9 +155,9 @@ class PaymentMethod implements GatewayConfigInterface, Stringable, CryptedInterf
     {
         // Preserve existing password values if new values are empty
         foreach ($config as $key => $value) {
-            if ($value === '' && isset($this->config[$key]) && $this->config[$key] !== '') {
+            if ($value === '' && isset($this->decryptedConfig[$key]) && $this->decryptedConfig[$key] !== '') {
                 // Keep the existing value for empty fields (likely passwords)
-                $config[$key] = $this->config[$key];
+                $config[$key] = $this->decryptedConfig[$key];
             }
         }
 
@@ -186,8 +185,6 @@ class PaymentMethod implements GatewayConfigInterface, Stringable, CryptedInterf
         if (array_key_exists('sandbox', $config)) {
             $config['sandbox'] = filter_var($config['sandbox'], FILTER_VALIDATE_BOOLEAN);
         }
-
-        $config['factory'] = $this->factoryName;
 
         return $config;
     }
@@ -303,19 +300,10 @@ class PaymentMethod implements GatewayConfigInterface, Stringable, CryptedInterf
      */
     public function encrypt(CypherInterface $cypher): void
     {
-        $payload = [];
-        $decryptedConfig = [
-            'encrypted' => true,
-        ];
-
-        foreach ($this->decryptedConfig as $name => $value) {
-            if ('encrypted' === $name || is_bool($value)) {
-                continue;
-            }
-
-            $payload[$name] = $value;
+        if ($this->decryptedConfig === []) {
+            $this->config = [];
+        } else {
+            $this->config = ['encrypted' => true, 'payload' => $cypher->encrypt(json_encode($this->decryptedConfig, JSON_THROW_ON_ERROR))];
         }
-
-        $this->config = $decryptedConfig + ['payload' => $cypher->encrypt(json_encode($payload, JSON_THROW_ON_ERROR))];
     }
 }

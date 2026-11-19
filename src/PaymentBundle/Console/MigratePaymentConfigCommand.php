@@ -13,11 +13,17 @@ declare(strict_types=1);
 
 namespace SolidInvoice\PaymentBundle\Console;
 
+use Payum\Core\Exception\LogicException;
+use Payum\Core\Exception\RuntimeException;
+use Payum\Core\Model\GatewayConfigInterface;
+use Payum\Core\Security\CryptedInterface;
+use Payum\Core\Security\CypherInterface;
 use Payum\Core\Storage\StorageInterface;
-use SolidInvoice\PaymentBundle\Repository\PaymentMethodRepository;
 use SolidWorx\Platform\PlatformBundle\Console\Command;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Throwable;
+use function sprintf;
 
 #[AsCommand(
     name: 'solidinvoice:payment:migrate-config',
@@ -26,19 +32,41 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 class MigratePaymentConfigCommand extends Command
 {
     public function __construct(
-        private readonly PaymentMethodRepository $paymentMethodRepository,
         #[Autowire(service: 'payum.dynamic_gateways.encrypted_config_storage')]
         private readonly StorageInterface $storage,
+        #[Autowire(service: 'payum.dynamic_gateways.cypher')]
+        private readonly CypherInterface $cypher,
     ) {
         parent::__construct();
     }
 
     protected function handle(): int
     {
-        foreach ($this->io->progressIterate($this->paymentMethodRepository->findAll()) as $paymentMethod) {
-            $paymentMethod->setConfig($paymentMethod->getConfig());
-            $this->storage->update($paymentMethod);
+        $count = 0;
+
+        foreach ($this->io->progressIterate($this->storage->findBy([])) as $gatewayConfig) {
+            if (! $gatewayConfig instanceof GatewayConfigInterface || ! $gatewayConfig instanceof CryptedInterface) {
+                throw new LogicException(sprintf('The gateway config %s must implement %s and %s.', $gatewayConfig::class, GatewayConfigInterface::class, CryptedInterface::class));
+            }
+
+            try {
+                $gatewayConfig->decrypt($this->cypher);
+            } catch (Throwable $e) {
+                throw new RuntimeException(sprintf(
+                    'Cannot decrypt the config of gateway "%s" with the configured key.',
+                    $gatewayConfig->getGatewayName(),
+                ), 0, $e);
+            }
+
+            // Without setConfig() a config stored as plain text is flagged as encrypted but keeps its plain values.
+            $gatewayConfig->setConfig($gatewayConfig->getConfig());
+            $gatewayConfig->encrypt($this->cypher);
+            $this->storage->update($gatewayConfig);
+
+            ++$count;
         }
+
+        $this->io->writeln(sprintf('Re-encrypted %d gateway config(s).', $count));
 
         return self::SUCCESS;
     }
