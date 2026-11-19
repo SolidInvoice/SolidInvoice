@@ -77,7 +77,7 @@ final readonly class RecentActivityWidget implements WidgetInterface
         foreach ($recentlySentInvoices as $invoice) {
             $activities[] = [
                 'type' => 'invoice_sent',
-                'date' => $invoice->getUpdated() ?? $invoice->getCreated(),
+                'date' => $invoice->getUpdated(),
                 'id' => $invoice->getId(),
                 'invoiceId' => $invoice->getInvoiceId(),
                 'client' => $invoice->getClient()?->getName(),
@@ -92,7 +92,7 @@ final readonly class RecentActivityWidget implements WidgetInterface
         foreach ($recentlyRespondedQuotes as $quote) {
             $activities[] = [
                 'type' => 'quote_' . $quote->getStatus()?->value,
-                'date' => $quote->getUpdated() ?? $quote->getCreated(),
+                'date' => $quote->getUpdated(),
                 'id' => $quote->getId(),
                 'quoteId' => $quote->getQuoteId(),
                 'client' => $quote->getClient()?->getName(),
