@@ -84,6 +84,22 @@ final readonly class CurrencyScale
     }
 
     /**
+     * Rounds a minor-unit value to a whole number of them, which is all `Money` accepts.
+     * Half-even, and the single definition of it: the display filters and anything deriving
+     * one printed figure from another must agree to the unit or the printed figures stop
+     * adding up. No `Currency` argument - the value is already in minor units, so the
+     * currency's own decimal count has already been applied.
+     *
+     * @throws MathException
+     */
+    public function toWholeMinorUnits(BigNumber | float | int | string $value): BigDecimal
+    {
+        $value = $this->toBigDecimal($value);
+
+        return $value->getScale() > 0 ? $value->toScale(0, RoundingMode::HalfEven) : $value;
+    }
+
+    /**
      * @throws MathException
      */
     private function toBigDecimal(BigNumber | float | int | string $value): BigDecimal

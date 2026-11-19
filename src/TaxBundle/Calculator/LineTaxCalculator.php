@@ -70,17 +70,19 @@ final class LineTaxCalculator
             }
 
             if ($category !== TaxCategory::Standard) {
-                $taxRows[] = $this->summary($lineTax, BigDecimal::zero());
+                $taxRows[] = $this->summary($lineTax, BigDecimal::zero(), $subtotal);
                 continue;
             }
 
             $type = $lineTax->getTypeSnapshot();
             $rate = BigDecimal::of($lineTax->getRateSnapshot());
+            $base = $subtotal;
 
             switch ($type) {
                 case TaxType::Inclusive:
                     $amount = $this->extractInclusive($gross, $rate, $rounder);
                     $subtotal = $subtotal->minus($amount);
+                    $base = $gross->minus($amount);
                     break;
 
                 case TaxType::Exclusive:
@@ -104,7 +106,7 @@ final class LineTaxCalculator
             }
 
             $totalTax = $totalTax->plus($amount);
-            $taxRows[] = $this->summary($lineTax, $amount);
+            $taxRows[] = $this->summary($lineTax, $amount, $base);
         }
 
         return new LineBreakdown($subtotal, $lineTotal, $totalTax, $taxRows);
@@ -139,7 +141,7 @@ final class LineTaxCalculator
         return $rounder->round($rate->multipliedBy(100));
     }
 
-    private function summary(LineTax $lineTax, BigDecimal $amount): TaxSummaryRow
+    private function summary(LineTax $lineTax, BigDecimal $amount, BigDecimal $taxableBase): TaxSummaryRow
     {
         return new TaxSummaryRow(
             name: (string) $lineTax->getNameSnapshot(),
@@ -148,6 +150,7 @@ final class LineTaxCalculator
             type: $lineTax->getTypeSnapshot(),
             compound: $lineTax->isCompound(),
             amount: $amount,
+            taxableBase: $taxableBase,
             sequence: $lineTax->getSequence(),
         );
     }

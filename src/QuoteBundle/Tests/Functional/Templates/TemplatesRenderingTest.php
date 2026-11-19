@@ -28,6 +28,9 @@ use SolidInvoice\QuoteBundle\Entity\Quote;
 use SolidInvoice\QuoteBundle\Enum\QuoteStatus;
 use SolidInvoice\QuoteBundle\Test\Factory\QuoteFactory;
 use SolidInvoice\SettingsBundle\Entity\Setting;
+use SolidInvoice\TaxBundle\Entity\LineTax;
+use SolidInvoice\TaxBundle\Enum\TaxCategory;
+use SolidInvoice\TaxBundle\Enum\TaxType;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Twig\Environment;
 use function array_keys;
@@ -231,6 +234,138 @@ final class TemplatesRenderingTest extends KernelTestCase
             'lines' => $lines,
             'users' => [$contact],
         ]);
+    }
+
+    /**
+     * Builds a one-line, EUR-denominated quote (EUR is not the fixture's usual
+     * USD) carrying the given {@see LineTax} rows, so the rendered taxable-base
+     * suffix can be checked against a currency other than the one every other
+     * fixture in this file uses.
+     *
+     * @param list<LineTax> $lineTaxes
+     */
+    private function createFixtureQuoteWithLineTaxes(array $lineTaxes): Quote
+    {
+        $this->seedCompanyLogo();
+
+        $client = ClientFactory::createOne([
+            'company' => $this->company,
+            'name' => 'Acme Corp',
+            'currencyCode' => 'EUR',
+        ]);
+
+        $contact = ContactFactory::createOne([
+            'client' => $client,
+            'company' => $this->company,
+            'firstName' => 'Jane',
+            'lastName' => 'Doe',
+            'email' => 'jane@example.com',
+        ]);
+
+        $line = new Line()
+            ->setName('Sample line item')
+            ->setPrice(BigInteger::of(100000))
+            ->setQty(1)
+            ->setTotal(BigInteger::of(100000));
+
+        foreach ($lineTaxes as $lineTax) {
+            $line->addTax($lineTax);
+        }
+
+        return QuoteFactory::createOne([
+            'company' => $this->company,
+            'client' => $client,
+            'status' => QuoteStatus::Pending,
+            'quoteId' => 'QUOTE-FIXTURE-001',
+            'due' => CarbonImmutable::now()->addDays(14),
+            'archived' => null,
+            'terms' => null,
+            'notes' => null,
+            'total' => BigInteger::of(100000),
+            'baseTotal' => BigInteger::of(100000),
+            'tax' => BigInteger::of(0),
+            'discount' => new Discount()
+                ->setType(null),
+            'lines' => [$line],
+            'users' => [$contact],
+        ]);
+    }
+
+    private function lineTax(string $name, string $rate, TaxCategory $category = TaxCategory::Standard): LineTax
+    {
+        return new LineTax()
+            ->setNameSnapshot($name)
+            ->setRateSnapshot($rate)
+            ->setCategorySnapshot($category)
+            ->setTypeSnapshot(TaxType::Exclusive);
+    }
+
+    private function renderQuotePdf(string $slug, Quote $quote): string
+    {
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        return $twig->render(
+            sprintf('@SolidInvoiceQuote/Templates/%s/pdf.html.twig', $slug),
+            ['quote' => $quote]
+        );
+    }
+
+    /**
+     * Design §9.2: the taxable base is a suffix on the existing label cell,
+     * not a new column — `VAT (15.0000%) on €1,000.00`. `totals_block()` is
+     * shared by every `pdf.html.twig` in `Templates/*`, so one case per slug
+     * proves the macro change reaches all 8 designs.
+     */
+    #[DataProvider('pdfTemplateProvider')]
+    public function testTaxBreakdownRendersTheTaxableBaseSuffixForASingleRate(string $slug): void
+    {
+        $quote = $this->createFixtureQuoteWithLineTaxes([
+            $this->lineTax('VAT', '15.0000'),
+        ]);
+
+        $output = $this->renderQuotePdf($slug, $quote);
+
+        self::assertStringContainsString('VAT (15.0000%) on €1,000.00', $output);
+    }
+
+    /**
+     * Two different rates on the same line must each carry their own base
+     * suffix — the regression this guards against is the base being summed
+     * or dropped when `TaxCalculator::mergeSummaryRows()` sees two distinct
+     * rates rather than merging them into one row.
+     */
+    #[DataProvider('pdfTemplateProvider')]
+    public function testTaxBreakdownRendersTheTaxableBaseSuffixForMultipleRates(string $slug): void
+    {
+        $quote = $this->createFixtureQuoteWithLineTaxes([
+            $this->lineTax('VAT', '15.0000'),
+            $this->lineTax('Eco Tax', '5.0000'),
+        ]);
+
+        $output = $this->renderQuotePdf($slug, $quote);
+
+        self::assertStringContainsString('VAT (15.0000%) on €1,000.00', $output);
+        self::assertStringContainsString('Eco Tax (5.0000%) on €1,000.00', $output);
+    }
+
+    /**
+     * Design §9.3: a quote whose only tax is `ZeroRated` has `quote.tax` at
+     * zero, so the old `{% if quote.tax.positive %}` guard suppressed the
+     * whole breakdown. The widened guard
+     * (`quote.tax.positive or _tb.lineTaxRows is not empty`) must still let
+     * this row through, base and all.
+     */
+    #[DataProvider('pdfTemplateProvider')]
+    public function testZeroRatedOnlyQuoteStillRendersABreakdownRow(string $slug): void
+    {
+        $quote = $this->createFixtureQuoteWithLineTaxes([
+            $this->lineTax('Export', '0.0000', TaxCategory::ZeroRated),
+        ]);
+
+        $output = $this->renderQuotePdf($slug, $quote);
+
+        self::assertStringContainsString('Export (0.0000%) on €1,000.00', $output);
     }
 
     /**

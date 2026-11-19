@@ -69,7 +69,19 @@ final readonly class TaxCalculator implements TaxCalculatorInterface
             $rounder
         );
 
-        $summaryRows = $this->mergeSummaryRows([...$perLineSummary, ...$invoiceLevel->taxRows]);
+        // Line-level and invoice-level rows are merged in separate passes, not
+        // together: a line-level tax and an invoice-level tax can snapshot the
+        // same name/rate and still be two different BG-23 groups, each applied
+        // to its own base. Merging them into one row would make that row's base
+        // meaningless - the two contributions tax the same subtotal rather than
+        // adding further money to it, so neither summing nor picking one base
+        // over the other is a real answer. Keeping the rows separate reports
+        // each level's own, correct base and lets TaxBreakdownExtension's
+        // existing isInvoiceLevelRow() split them the way it already does.
+        $summaryRows = [
+            ...$this->mergeSummaryRows($perLineSummary),
+            ...$this->mergeSummaryRows($invoiceLevel->taxRows),
+        ];
 
         $total = $total->plus($invoiceLevel->totalInvoiceLevelTax);
 
@@ -85,7 +97,11 @@ final readonly class TaxCalculator implements TaxCalculatorInterface
 
     /**
      * Aggregate {@see TaxSummaryRow}s with the same identity (name + rate + type +
-     * category + compound flag) into a single row whose amount is the sum.
+     * category + compound flag) into a single row whose amount and taxableBase
+     * are both summed.
+     *
+     * Call this once per level (line, invoice), never on a combined list - see
+     * the comment at the call site in {@see self::calculate()}.
      *
      * @param list<TaxSummaryRow> $rows
      * @return list<TaxSummaryRow>
@@ -121,6 +137,7 @@ final readonly class TaxCalculator implements TaxCalculatorInterface
                 type: $existing->type,
                 compound: $existing->compound,
                 amount: $existing->amount->plus($row->amount),
+                taxableBase: $existing->taxableBase->plus($row->taxableBase),
                 sequence: $existing->sequence,
                 direction: $existing->direction,
                 note: $existing->note,

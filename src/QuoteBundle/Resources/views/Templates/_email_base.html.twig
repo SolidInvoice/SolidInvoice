@@ -71,18 +71,20 @@
 
     {{ email.info_row('quote.subtotal'|trans({}, 'email'), quote.baseTotal|formatCurrency(quote.currency)) }}
     {% set _tb = tax_breakdown(quote) %}
-    {% if quote.tax.positive %}
-        {{ email.spacer('xs') }}
-        {{ email.info_row('quote.tax'|trans({}, 'email'), quote.tax|formatCurrency(quote.currency)) }}
+    {% if quote.tax.positive or _tb.lineTaxRows is not empty %}
+        {% if quote.tax.positive %}
+            {{ email.spacer('xs') }}
+            {{ email.info_row('quote.tax'|trans({}, 'email'), quote.tax|formatCurrency(quote.currency)) }}
+        {% endif %}
         {% for row in _tb.lineTaxRows %}
             {{ email.spacer('xs') }}
-            {{ email.info_row(row.name ~ ' (' ~ row.rate ~ '%)', row.amount|formatCurrency(quote.currency)) }}
-        {% endfor %}
-        {% for row in _tb.additiveRows %}
-            {{ email.spacer('xs') }}
-            {{ email.info_row(row.name ~ ' (' ~ row.rate ~ '%)', row.amount|formatCurrency(quote.currency)) }}
+            {{ email.info_row(row.name ~ ' (' ~ row.rate ~ '%) ' ~ 'quote.taxable_base_on'|trans({'%base%': row.taxableBase|formatCurrency(quote.currency)}, 'email'), row.amount|formatCurrency(quote.currency)) }}
         {% endfor %}
     {% endif %}
+    {% for row in _tb.additiveRows %}
+        {{ email.spacer('xs') }}
+        {{ email.info_row(row.name ~ ' (' ~ row.rate ~ '%) ' ~ 'quote.taxable_base_on'|trans({'%base%': row.taxableBase|formatCurrency(quote.currency)}, 'email'), row.amount|formatCurrency(quote.currency)) }}
+    {% endfor %}
     {% if quote.discount.type is not empty %}
         {{ email.spacer('xs') }}
         {{ email.info_row('quote.discount'|trans({}, 'email'), '-' ~ discount(quote)|formatCurrency(quote.currency)) }}
