@@ -50,6 +50,8 @@ final class SystemConfigTest extends KernelTestCase
             'email/from_address' => 'no-reply@solidinvoice.co',
             'email/from_name' => 'SolidInvoice',
             'email/sending_options/provider' => null,
+            'invoice/attachments/max_file_size' => '10',
+            'invoice/attachments/max_per_invoice' => '10',
             'invoice/bcc_address' => null,
             'invoice/email_subject' => 'New Invoice - #{id}',
             'invoice/id_generation/id_prefix' => '',
