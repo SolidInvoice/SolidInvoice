@@ -41,20 +41,7 @@ final readonly class BigNumberTypeConverter implements TypeConverterInterface
     ) {
     }
 
-    /**
-     * Deprecated in API Platform 4.2, and dead on this stack: the interface types this
-     * parameter as `Symfony\Component\PropertyInfo\Type`, which Symfony 8 removed in
-     * favour of TypeInfo. The parameter is therefore declared `mixed` — naming a class
-     * that does not exist would be a lie — and the call is passed straight through.
-     *
-     * @param mixed $type a `Symfony\Component\PropertyInfo\Type` on Symfony 7 and below
-     */
     #[Override]
-    public function convertType(mixed $type, bool $input, Operation $rootOperation, string $resourceClass, string $rootResource, ?string $property, int $depth): GraphQLType | string | null
-    {
-        return $this->decorated->convertType($type, $input, $rootOperation, $resourceClass, $rootResource, $property, $depth);
-    }
-
     public function convertPhpType(Type $type, bool $input, Operation $rootOperation, string $resourceClass, string $rootResource, ?string $property, int $depth): GraphQLType | string | null
     {
         if ($type->isIdentifiedBy(TypeIdentifier::OBJECT) && $type->isIdentifiedBy(BigNumber::class)) {
