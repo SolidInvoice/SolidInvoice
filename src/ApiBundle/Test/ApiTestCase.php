@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace SolidInvoice\ApiBundle\Test;
 
 use ApiPlatform\JsonLd\ContextBuilderInterface;
-use ApiPlatform\Symfony\Bundle\Test\ApiTestCase as ApiPlatformTestCase;
-use ApiPlatform\Symfony\Bundle\Test\Client;
+use ApiPlatform\Test\ApiTestCase as ApiPlatformTestCase;
+use ApiPlatform\Test\Client;
 use Faker\Factory;
 use Faker\Generator;
 use PHPUnit\Framework\ExpectationFailedException;

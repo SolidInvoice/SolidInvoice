@@ -86,11 +86,12 @@ return App::config([
             'extra_properties' => [
                 'standard_put' => true,
                 'rfc_7807_compliant_errors' => true,
-                'deduplicate_resource_short_names' => true,
             ],
             'cache_headers' => [['Content-Type', 'Authorization', 'Origin']],
         ],
         'use_symfony_listeners' => true,
+        // API Platform 5 defaults this to false (entity id in `data.id`); keep IRIs so existing JSON:API clients don't break.
+        'jsonapi' => ['use_iri_as_id' => true],
         'graphql' => [
             'enabled' => true,
             'graphiql' => ['enabled' => true],
