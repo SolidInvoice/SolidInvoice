@@ -2315,21 +2315,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         template?: scalar|Param|null, // Default: "@SchebTwoFactor/Authentication/form.html.twig"
  *     },
  * }
- * @psalm-type ZenstruckMessengerMonitorConfig = array{
- *     storage?: array{
- *         auto_stamp?: bool|Param, // Whether to add a MonitorStamp when dispatching messages to a transport. // Default: true
- *         store_input?: bool|Param, // Whether to store message input in history by default. // Default: false
- *         exclude?: list<scalar|Param|null>,
- *         orm?: array{
- *             entity_class?: scalar|Param|null, // Your Doctrine entity class that extends "Zenstruck\Messenger\Monitor\History\Model\ProcessedMessage"
- *             entity_manager?: scalar|Param|null, // Doctrine entity manager to use. // Default: "default"
- *         },
- *     },
- *     cache?: array{
- *         pool?: scalar|Param|null, // Cache pool to use for worker cache. // Default: "cache.app"
- *         expired_worker_ttl?: int|Param, // How long to keep expired workers in cache (in seconds). // Default: 3600
- *     },
- * }
  * @psalm-type PaymentConfig = array{
  *     gateways?: list<array{ // Default: []
  *         name?: scalar|Param|null,
@@ -2370,7 +2355,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     nelmio_cors?: NelmioCorsConfig,
  *     symfonycasts_reset_password?: SymfonycastsResetPasswordConfig,
  *     scheb_two_factor?: SchebTwoFactorConfig,
- *     zenstruck_messenger_monitor?: ZenstruckMessengerMonitorConfig,
  *     payment?: PaymentConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
