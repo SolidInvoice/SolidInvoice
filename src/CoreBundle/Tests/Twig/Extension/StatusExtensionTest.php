@@ -53,37 +53,37 @@ final class StatusExtensionTest extends TestCase
         yield 'success variant' => [
             '{{ invoice_label(status) }}',
             ['status' => InvoiceStatus::Paid],
-            '<span class="status-chip status-chip--success">Translated Paid</span>',
+            '<span class="status-chip status-chip--success">translated paid</span>',
         ];
 
         yield 'warning variant, from a recurring status' => [
             '{{ invoice_label(status) }}',
             ['status' => RecurringInvoiceStatus::Paused],
-            '<span class="status-chip status-chip--warning">Translated Paused</span>',
+            '<span class="status-chip status-chip--warning">translated paused</span>',
         ];
 
         yield 'neutral variant' => [
             '{{ quote_label(status) }}',
             ['status' => QuoteStatus::Archived],
-            '<span class="status-chip status-chip--neutral">Translated Archived</span>',
+            '<span class="status-chip status-chip--neutral">translated archived</span>',
         ];
 
         yield 'danger variant' => [
             '{{ quote_label(status) }}',
             ['status' => QuoteStatus::Declined],
-            '<span class="status-chip status-chip--danger">Translated Declined</span>',
+            '<span class="status-chip status-chip--danger">translated declined</span>',
         ];
 
         yield 'info variant' => [
             '{{ client_label(status) }}',
             ['status' => ClientStatus::Active],
-            '<span class="status-chip status-chip--info">Translated Active</span>',
+            '<span class="status-chip status-chip--info">translated active</span>',
         ];
 
         yield 'payment_label' => [
             '{{ payment_label(status) }}',
             ['status' => PaymentStatus::Captured],
-            '<span class="status-chip status-chip--success">Translated Captured</span>',
+            '<span class="status-chip status-chip--success">translated captured</span>',
         ];
     }
 
@@ -99,7 +99,7 @@ final class StatusExtensionTest extends TestCase
             'tooltip' => 'Waiting for the client',
         ]));
 
-        self::assertSame('<span class="status-chip status-chip--warning">Translated Pending</span>', $rendered);
+        self::assertSame('<span class="status-chip status-chip--warning">translated pending</span>', $rendered);
         self::assertStringNotContainsString('title=', $rendered);
         self::assertStringNotContainsString('rel=', $rendered);
         self::assertStringNotContainsString('Waiting for the client', $rendered);
@@ -146,7 +146,7 @@ final class StatusExtensionTest extends TestCase
     public function testNoStatusMapsEachValueToItsRenderedLabel(): void
     {
         self::assertSame(
-            '<span class="status-chip status-chip--neutral">Translated Archived</span>',
+            '<span class="status-chip status-chip--neutral">translated archived</span>',
             trim($this->render('{{ quote_label()["archived"]|raw }}'))
         );
     }
