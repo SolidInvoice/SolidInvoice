@@ -32,6 +32,14 @@ return App::config([
                     // and the doctrine/migrations metadata check). DBAL detects the server
                     // version at runtime, and SQLite does not need one at all.
                     'charset' => 'UTF8',
+                    // DBAL 4.6 reverse-maps PostgreSQL `timestamp` to `datetime_immutable`, which
+                    // SolidWorxPlatformBundle overrides with the timestamptz UTCDateTimeType. A
+                    // naive column then introspects as timestamptz: the migrations metadata check
+                    // fails on migration_versions.executed_at, and Version30104_1 no longer sees
+                    // the 3.0.x columns it must convert. Keep the pre-4.6 mutable mapping.
+                    'mapping_types' => [
+                        'timestamp' => 'datetime',
+                    ],
                 ],
             ],
             'types' => [
