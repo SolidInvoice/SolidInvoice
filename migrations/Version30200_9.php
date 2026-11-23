@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
-use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
@@ -88,19 +87,19 @@ final class Version30200_9 extends AbstractMigration
             $this->addSql($insert->getSQL(), $insert->getParameters(), $insert->getParameterTypes());
         }
     }
+}
+
+/**
+ * @throws Exception
+ */
+public function down(Schema $schema): void
+{
+    $table = $schema->getTable('payments');
+
+    if ($table->hasColumn(self::COLUMN)) {
+        $table->dropColumn(self::COLUMN);
     }
 
-    /**
-     * @throws Exception
-     */
-    public function down(Schema $schema): void
-    {
-        $table = $schema->getTable('payments');
-
-        if ($table->hasColumn(self::COLUMN)) {
-            $table->dropColumn(self::COLUMN);
-        }
-
-        $this->addSql('DELETE FROM app_config WHERE setting_key = ?', [self::SETTING_KEY]);
-    }
+    $this->addSql('DELETE FROM app_config WHERE setting_key = ?', [self::SETTING_KEY]);
+}
 }

@@ -18,7 +18,6 @@ use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use function mb_substr;
