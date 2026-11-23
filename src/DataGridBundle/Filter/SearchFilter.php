@@ -22,7 +22,7 @@ use SolidInvoice\DataGridBundle\Source\ORMSource;
 final readonly class SearchFilter implements FilterInterface
 {
     /**
-     * @param string[] $searchFields
+     * @param list<string> $searchFields
      */
     public function __construct(
         private array $searchFields
