@@ -12,11 +12,13 @@ declare(strict_types=1);
  */
 
 use SolidInvoice\CoreBundle\Feature\UpgradePromptProvider;
+use SolidInvoice\CoreBundle\Storage\LocalAttachmentStorage;
 use SolidInvoice\SaasBundle\Feature\RequiredPlanLabelProvider;
 use SolidInvoice\SaasBundle\Form\Extension\FeatureRestrictedExtension as SaasFeatureRestrictedExtension;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use SolidWorx\Platform\PlatformBundle\Feature\SubscriberResolver;
 use SolidWorx\Platform\SaasBundle\Feature\FeatureConfigRegistry;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -32,6 +34,20 @@ return static function (ContainerConfigurator $containerConfigurator, ContainerB
         ->autoconfigure()
         ->public()
         ->bind('$projectDir', '%kernel.project_dir%');
+
+    // Keep test runs off the real var/attachments directory entirely — each
+    // kernel (Kernel, SaasKernel) already has its own cache dir, so this
+    // isolates attachment blobs the same way those kernels isolate their
+    // databases. A compiler pass, not $services->set(), because the service
+    // is registered by CoreBundle's own services.php (a bundle extension),
+    // which loads after this file.
+    $container->addCompilerPass(new class() implements CompilerPassInterface {
+        public function process(ContainerBuilder $container): void
+        {
+            $container->getDefinition(LocalAttachmentStorage::class)
+                ->setArgument('$attachmentsDir', '%kernel.cache_dir%/attachments');
+        }
+    }, priority: -256);
 
     // Expose wiring-contract aliases publicly so functional smoke tests can
     // assert the correct concrete implementation is resolved.

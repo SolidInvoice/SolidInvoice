@@ -33,6 +33,8 @@ final class ConfigProvider implements ProviderInterface
     {
         return [
             new Config('invoice/watermark', '1', 'settings.description.invoice.watermark', CheckboxType::class),
+            new Config('invoice/attachments/max_file_size', '10', 'settings.description.invoice.attachments.max_file_size', IntegerType::class),
+            new Config('invoice/attachments/max_per_invoice', '10', 'settings.description.invoice.attachments.max_per_invoice', IntegerType::class),
             new Config('invoice/bcc_address', null, 'settings.description.invoice.bcc_address', EmailType::class),
             new Config('invoice/email_subject', 'New Invoice - #{id}', 'settings.description.invoice.email_subject', TextType::class),
             new Config(PaymentTerms::CONFIG_PATH, PaymentTerms::Net30->value, 'settings.description.invoice.payment_terms', PaymentTermsSettingType::class),
