@@ -273,4 +273,62 @@ final class InvoiceRepositoryTest extends KernelTestCase
 
         self::assertSame(0, $this->repository->countCreatedInMonth($month));
     }
+
+    /**
+     * An invoice due today is not overdue today; it becomes overdue at 00:00 on the day after the
+     * due date. The comparison must run on calendar dates, not on the clock's time-of-day, so this
+     * pins the frozen clock away from midnight (10:00) to prove the boundary is date-based.
+     */
+    public function testGetPendingOverdueInvoicesExcludesInvoiceDueToday(): void
+    {
+        InvoiceFactory::createOne([
+            'company' => $this->company,
+            'status' => InvoiceStatus::Pending,
+            'due' => $this->clock->now()->setTime(0, 0),
+        ]);
+
+        $results = iterator_to_array($this->repository->getPendingOverdueInvoices());
+
+        self::assertCount(0, $results);
+    }
+
+    public function testGetPendingOverdueInvoicesIncludesInvoiceDueYesterday(): void
+    {
+        $invoice = InvoiceFactory::createOne([
+            'company' => $this->company,
+            'status' => InvoiceStatus::Pending,
+            'due' => $this->clock->now()->modify('-1 day')->setTime(0, 0),
+        ]);
+
+        $results = iterator_to_array($this->repository->getPendingOverdueInvoices());
+
+        self::assertCount(1, $results);
+        self::assertSame($invoice->getId()->toBase32(), $results[0]->getId()->toBase32());
+    }
+
+    public function testGetPendingOverdueInvoicesExcludesInvoiceDueTomorrow(): void
+    {
+        InvoiceFactory::createOne([
+            'company' => $this->company,
+            'status' => InvoiceStatus::Pending,
+            'due' => $this->clock->now()->modify('+1 day')->setTime(0, 0),
+        ]);
+
+        $results = iterator_to_array($this->repository->getPendingOverdueInvoices());
+
+        self::assertCount(0, $results);
+    }
+
+    public function testGetPendingOverdueInvoicesExcludesInvoiceWithNoDueDate(): void
+    {
+        InvoiceFactory::createOne([
+            'company' => $this->company,
+            'status' => InvoiceStatus::Pending,
+            'due' => null,
+        ]);
+
+        $results = iterator_to_array($this->repository->getPendingOverdueInvoices());
+
+        self::assertCount(0, $results);
+    }
 }
