@@ -1342,11 +1342,13 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             class_metadata_factory_name?: scalar|Param|null, // Default: "Doctrine\\ORM\\Mapping\\ClassMetadataFactory"
  *             default_repository_class?: scalar|Param|null, // Default: "Doctrine\\ORM\\EntityRepository"
  *             auto_mapping?: scalar|Param|null, // Default: false
+ *             auto_discover_entities?: bool|Param|null, // Registers all entity classes discovered by the container scan, removing the need for explicit "mappings". When not set, enabled if neither "mappings" nor "auto_mapping" is configured and Symfony 8.2 and doctrine/orm 3.6 are available. // Default: null
  *             naming_strategy?: scalar|Param|null, // Default: "doctrine.orm.naming_strategy.default"
  *             quote_strategy?: scalar|Param|null, // Default: "doctrine.orm.quote_strategy.default"
  *             typed_field_mapper?: scalar|Param|null, // Default: "doctrine.orm.typed_field_mapper.default"
  *             entity_listener_resolver?: scalar|Param|null, // Default: null
  *             fetch_mode_subselect_batch_size?: scalar|Param|null,
+ *             use_schema_editor_api?: bool|Param|null, // Set to "true" or "false" to explicitly opt in or out of the schema editor API for schema generation. Requires doctrine/dbal 4.5 or higher and doctrine/orm 3.8 or higher. // Default: null
  *             repository_factory?: scalar|Param|null, // Default: "doctrine.orm.container_repository_factory"
  *             schema_ignore_classes?: list<scalar|Param|null>,
  *             validate_xml_mapping?: bool|Param, // Set to "true" to opt-in to the new mapping driver mode that was added in Doctrine ORM 2.14 and will be mandatory in ORM 3.0. See https://github.com/doctrine/orm/pull/6728. // Default: false
@@ -1384,7 +1386,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 mapping?: scalar|Param|null, // Default: true
  *                 type?: scalar|Param|null,
  *                 dir?: scalar|Param|null,
- *                 alias?: scalar|Param|null,
+ *                 alias?: scalar|Param|null, // Deprecated: The "doctrine.orm.entity_managers..mappings..alias.alias" option is deprecated and will be removed in DoctrineBundle 4.0, as Doctrine ORM no longer supports entity namespace aliases.
  *                 prefix?: scalar|Param|null,
  *                 is_bundle?: bool|Param,
  *             }>,
@@ -1943,11 +1945,15 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         prefixes?: list<scalar|Param|null>,
  *         sample_rate?: float|Param, // The sampling factor to apply to events. A value of 0 will deny sending any event, and a value of 1 will send all events.
  *         enable_tracing?: bool|Param,
- *         traces_sample_rate?: float|Param, // The sampling factor to apply to transactions. A value of 0 will deny sending any transaction, and a value of 1 will send all transactions.
+ *         traces_sample_rate?: float|Param, // The sampling factor to apply to transactions. A value of 0 will deny sending any transaction, and a value of 1 will send all transactions. A value of null disables tracing unless "traces_sampler" is set.
  *         traces_sampler?: scalar|Param|null,
  *         profiles_sample_rate?: float|Param, // The sampling factor to apply to profiles. A value of 0 will deny sending any profiles, and a value of 1 will send all profiles. Profiles are sampled in relation to traces_sample_rate
+ *         profiles_sampler?: scalar|Param|null,
+ *         profile_session_sample_rate?: float|Param, // The sampling factor to apply to continuous profiling sessions. A value of 0 disables continuous profiling, and a value of 1 profiles every session.
+ *         profile_lifecycle?: "manual"|"trace"|Param, // Whether the continuous profiler is started and stopped manually ("manual") or runs while a sampled transaction is active ("trace").
  *         enable_logs?: bool|Param,
  *         log_flush_threshold?: mixed, // Default: null
+ *         metric_flush_threshold?: mixed, // Default: null
  *         enable_metrics?: bool|Param, // Default: true
  *         attach_stacktrace?: bool|Param,
  *         attach_metric_code_locations?: bool|Param,
@@ -1961,6 +1967,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         server_name?: scalar|Param|null,
  *         ignore_exceptions?: list<scalar|Param|null>,
  *         ignore_transactions?: list<scalar|Param|null>,
+ *         trace_ignore_status_codes?: list<mixed>,
  *         before_send?: scalar|Param|null,
  *         before_send_transaction?: scalar|Param|null,
  *         before_send_check_in?: scalar|Param|null,
@@ -1972,6 +1979,8 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         tags?: array<string, scalar|Param|null>,
  *         error_types?: scalar|Param|null,
  *         max_breadcrumbs?: int|Param,
+ *         max_breadth?: mixed,
+ *         send_client_reports?: bool|Param,
  *         before_breadcrumb?: mixed,
  *         in_app_exclude?: list<scalar|Param|null>,
  *         in_app_include?: list<scalar|Param|null>,
@@ -2019,6 +2028,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         http_connect_timeout?: float|Param, // The maximum number of seconds to wait while trying to connect to a server. It works only when using the default transport.
  *         http_timeout?: float|Param, // The maximum execution time for the request+response as a whole. It works only when using the default transport.
  *         http_ssl_verify_peer?: bool|Param,
+ *         http_ssl_native_ca?: bool|Param,
  *         http_compression?: bool|Param,
  *         capture_silenced_errors?: bool|Param,
  *         max_request_body_size?: "none"|"never"|"small"|"medium"|"always"|Param,
