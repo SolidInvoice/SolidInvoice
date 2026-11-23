@@ -56,7 +56,7 @@ final readonly class BillingPdfAction
     {
         [$entity, $number] = $data instanceof Invoice ? ['invoice', $data->getInvoiceId()] : ['quote', $data->getQuoteId()];
 
-        $etag = hash('xxh128', sprintf('%s|%s', $data->getId(), $data->getUpdated()?->format('U.u')));
+        $etag = hash('xxh128', sprintf('%s|%s', $data->getId(), $data->getUpdated()->format('U.u')));
 
         $notModified = new Response();
         $notModified->setPrivate();

@@ -23,22 +23,30 @@ use Symfony\Component\Serializer\Attribute\Ignore;
 
 trait TimeStampable
 {
+    /**
+     * Gedmo sets this on prePersist, before the entity is ever read back, so it is never
+     * observed uninitialized. The column is NOT NULL; the property type matches that.
+     */
     #[Gedmo\Timestampable(on: 'create')]
     #[ApiProperty(iris: ['https://schema.org/DateTime'])]
     #[ORM\Column(name: 'created', type: Types::DATETIME_IMMUTABLE)]
     #[Ignore]
-    protected ?DateTimeImmutable $created = null;
+    protected DateTimeImmutable $created;
 
+    /**
+     * Gedmo sets this on prePersist and preUpdate, before the entity is ever read back, so it is
+     * never observed uninitialized. The column is NOT NULL; the property type matches that.
+     */
     #[Gedmo\Timestampable(on: 'update')]
     #[ApiProperty(iris: ['https://schema.org/DateTime'])]
     #[ORM\Column(name: 'updated', type: Types::DATETIME_IMMUTABLE)]
     #[Ignore]
-    protected ?DateTimeImmutable $updated = null;
+    protected DateTimeImmutable $updated;
 
     /**
      * Returns created.
      */
-    public function getCreated(): ?DateTimeImmutable
+    public function getCreated(): DateTimeImmutable
     {
         return $this->created;
     }
@@ -55,7 +63,7 @@ trait TimeStampable
     /**
      * Returns updated.
      */
-    public function getUpdated(): ?DateTimeImmutable
+    public function getUpdated(): DateTimeImmutable
     {
         return $this->updated;
     }

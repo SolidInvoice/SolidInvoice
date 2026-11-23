@@ -17,4 +17,5 @@ enum InvoiceLineType: string
 {
     case INVOICE = 'invoice';
     case RECURRING_INVOICE = 'recurring_invoice';
+    case CREDIT_NOTE = 'credit_note';
 }

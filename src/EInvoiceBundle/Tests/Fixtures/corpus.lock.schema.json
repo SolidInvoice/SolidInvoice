@@ -1,0 +1,155 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://solidinvoice.co/schema/einvoicing/corpus.lock.schema.json",
+    "title": "E-invoicing conformance corpus lock file",
+    "description": "Pins every external conformance corpus to one immutable ref. No corpus is committed to this repository; see CORPUS-LICENCES.md.",
+    "type": "object",
+    "required": [
+        "corpora"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "corpora": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "$ref": "#/$defs/corpus"
+            }
+        }
+    },
+    "$defs": {
+        "corpus": {
+            "type": "object",
+            "required": [
+                "id",
+                "title",
+                "kind",
+                "url",
+                "ref",
+                "licence",
+                "licenceUrl",
+                "committed",
+                "paths",
+                "minCases"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "description": "Directory name under corpus/, and the id the test harness refers to.",
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+                },
+                "title": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "kind": {
+                    "description": "git: shallow clone at ref, pinned by commit. zip: release asset download, pinned by sha256.",
+                    "enum": [
+                        "git",
+                        "zip"
+                    ]
+                },
+                "url": {
+                    "type": "string",
+                    "pattern": "^https://"
+                },
+                "ref": {
+                    "description": "The upstream tag or release name the pin was read from.",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "commit": {
+                    "description": "Required for kind git. What git ls-remote prints for refs/tags/<ref>. A moved tag is a hard failure.",
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{40}$"
+                },
+                "sha256": {
+                    "description": "Required for kind zip. Checked before the archive is extracted.",
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                },
+                "licence": {
+                    "description": "SPDX identifier, or UNLICENSED when the source carries no licence at all.",
+                    "enum": [
+                        "EUPL-1.2",
+                        "Apache-2.0",
+                        "UNLICENSED"
+                    ]
+                },
+                "licenceUrl": {
+                    "description": "The licence as it stands at ref, not on the upstream default branch.",
+                    "type": "string",
+                    "pattern": "^https://"
+                },
+                "committed": {
+                    "description": "Always false. No corpus file is committed to this repository.",
+                    "const": false
+                },
+                "paths": {
+                    "description": "The paths kept from the source. Everything else is discarded after the pin is verified.",
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                },
+                "minCases": {
+                    "description": "Floor for the number of parsed cases. Set just under the measured count, so a bump that drops cases fails.",
+                    "type": "integer",
+                    "minimum": 1
+                }
+            },
+            "allOf": [
+                {
+                    "if": {
+                        "required": [
+                            "kind"
+                        ],
+                        "properties": {
+                            "kind": {
+                                "const": "git"
+                            }
+                        }
+                    },
+                    "then": {
+                        "required": [
+                            "commit"
+                        ],
+                        "not": {
+                            "required": [
+                                "sha256"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "required": [
+                            "kind"
+                        ],
+                        "properties": {
+                            "kind": {
+                                "const": "zip"
+                            }
+                        }
+                    },
+                    "then": {
+                        "required": [
+                            "sha256"
+                        ],
+                        "not": {
+                            "required": [
+                                "commit"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

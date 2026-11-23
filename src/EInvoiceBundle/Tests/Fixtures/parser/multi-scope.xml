@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testSet xmlns="http://difi.no/xsd/vefa/validator/1.0" configuration="peppolbis-en16931-base-3.0-ubl">
+	<assert>
+		<scope>DE-R-023-1</scope>
+		<scope>DE-R-023-2</scope>
+	</assert>
+	<test>
+		<assert>
+			<error>DE-R-023-1</error>
+			<error>DE-R-023-2</error>
+		</assert>
+		<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" />
+	</test>
+</testSet>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testSet xmlns="http://difi.no/xsd/vefa/validator/1.0" configuration="tc434-ubl">
+	<assert>
+		<scope>BR-MULTI</scope>
+	</assert>
+	<test>
+		<assert>
+			<description>Fires two rules at once</description>
+			<error>BR-01</error>
+			<error>BR-02</error>
+		</assert>
+		<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" />
+	</test>
+	<test>
+		<assert>
+			<success>BR-01</success>
+		</assert>
+		<Order xmlns="urn:oasis:names:specification:ubl:schema:xsd:Order-2" />
+	</test>
+	<test>
+		<assert>
+			<success>BR-01</success>
+		</assert>
+		<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" />
+	</test>
+</testSet>

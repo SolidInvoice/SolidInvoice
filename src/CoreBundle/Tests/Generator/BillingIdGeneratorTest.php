@@ -20,6 +20,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator;
 use SolidInvoice\CoreBundle\Generator\BillingIdGenerator\IdGeneratorInterface;
+use SolidInvoice\InvoiceBundle\Entity\CreditNote;
 use SolidInvoice\InvoiceBundle\Entity\Invoice;
 use SolidInvoice\SettingsBundle\SystemConfig;
 use Symfony\Component\DependencyInjection\ServiceLocator;
@@ -154,5 +155,40 @@ final class BillingIdGeneratorTest extends TestCase
         );
 
         self::assertSame('INV-10-00', $generator->generate(new Invoice()));
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws JsonException
+     */
+    public function testGenerateForCreditNoteUsesCreditNoteSettingSectionAndDefaultPrefix(): void
+    {
+        $autoIncrementGenerator = $this->createMock(IdGeneratorInterface::class);
+
+        $autoIncrementGenerator->expects(self::once())
+            ->method('generate')
+            ->willReturn('1');
+
+        $systemConfig = $this->createMock(SystemConfig::class);
+
+        $systemConfig->expects(self::exactly(3))
+            ->method('get')
+            ->willReturnMap([
+                ['credit_note/id_generation/strategy', 'auto_increment'],
+                ['credit_note/id_generation/id_prefix', 'CN-'],
+                ['credit_note/id_generation/id_suffix', ''],
+            ]);
+
+        $generator = new BillingIdGenerator(
+            new ServiceLocator(
+                [
+                    'auto_increment' => static fn () => $autoIncrementGenerator,
+                ],
+            ),
+            $systemConfig,
+        );
+
+        self::assertSame('CN-1', $generator->generate(new CreditNote()));
     }
 }
