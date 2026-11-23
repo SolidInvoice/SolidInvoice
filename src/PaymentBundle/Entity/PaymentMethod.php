@@ -93,6 +93,9 @@ class PaymentMethod implements GatewayConfigInterface, Stringable, CryptedInterf
     #[Ignore]
     private array $config = [];
 
+    /**
+     * @var array<string, string|true>
+     */
     private array $decryptedConfig = [];
 
     #[ORM\Column(name: 'internal', type: Types::BOOLEAN, nullable: true)]
