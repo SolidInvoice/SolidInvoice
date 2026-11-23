@@ -310,6 +310,41 @@ final class CreateInvoiceTest extends LiveComponentTest
     }
 
     /**
+     * Regression test for issue #2960.
+     *
+     * Old cached pages POST to /_components/CreateInvoice/send (or /Send).
+     * Without the backward-compat alias this throws InvalidArgumentException
+     * ("Expected method 'send' on class 'CreateInvoice'").
+     * With it, the call delegates to saveSend() and behaves identically.
+     *
+     * @see https://github.com/SolidInvoice/SolidInvoice/issues/2960
+     */
+    public function testLegacySendActionDelegatesToSaveSend(): void
+    {
+        $client = ClientFactory::createOne(['name' => 'Legacy Client', 'currencyCode' => 'USD']);
+
+        $dto = new InvoiceFormDTO();
+        $dto->invoiceDate = CarbonImmutable::parse('2021-01-01');
+        $dto->client = $client;
+        $dto->lines->add(new Line()->setName('Consulting')->setPrice(10000)->setQty(1));
+
+        $component = $this->createLiveComponent(
+            name: CreateInvoice::class,
+            data: ['dto' => $dto],
+            client: $this->client,
+        )->actingAs($this->getUser());
+
+        // Before the fix this threw InvalidArgumentException.
+        // After the fix it delegates to saveSend() and throws for no recipients.
+        try {
+            $component->call('send');
+            self::fail('Expected UnprocessableEntityHttpException for no recipients');
+        } catch (UnprocessableEntityHttpException $e) {
+            self::assertStringContainsString(self::getContainer()->get('translator')->trans('invoice.users.min', [], 'validators'), $e->getMessage());
+        }
+    }
+
+    /**
      * @see https://github.com/SolidInvoice/SolidInvoice/issues/2959
      */
     public function testChangingTheClientOnEditSavesTheNewClient(): void

@@ -218,6 +218,18 @@ final class CreateInvoice extends AbstractController
         return $this->saveInvoice('send');
     }
 
+    /**
+     * Backward-compatible alias for saveSend().
+     * Old cached pages may still POST to /_components/CreateInvoice/send (or /Send).
+     *
+     * @see https://github.com/SolidInvoice/SolidInvoice/issues/2960
+     */
+    #[LiveAction]
+    public function send(): ?Response
+    {
+        return $this->saveSend();
+    }
+
     private function saveInvoice(string $action): ?Response
     {
         $this->submitForm();
