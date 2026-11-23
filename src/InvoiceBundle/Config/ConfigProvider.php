@@ -22,10 +22,15 @@ use SolidInvoice\SettingsBundle\DTO\Config;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 final class ConfigProvider implements ProviderInterface
 {
+    public const string DEFAULT_TERMS = 'invoice/default_terms';
+
+    public const string DEFAULT_NOTES = 'invoice/default_notes';
+
     /**
      * @return Config[]
      */
@@ -36,6 +41,8 @@ final class ConfigProvider implements ProviderInterface
             new Config('invoice/bcc_address', null, 'settings.description.invoice.bcc_address', EmailType::class),
             new Config('invoice/email_subject', 'New Invoice - #{id}', 'settings.description.invoice.email_subject', TextType::class),
             new Config(PaymentTerms::CONFIG_PATH, PaymentTerms::Net30->value, 'settings.description.invoice.payment_terms', PaymentTermsSettingType::class),
+            new Config(self::DEFAULT_TERMS, null, 'settings.description.invoice.default_terms', TextareaType::class),
+            new Config(self::DEFAULT_NOTES, null, 'settings.description.invoice.default_notes', TextareaType::class),
             new Config('invoice/id_generation/strategy', 'auto_increment', '', BillingIdConfigurationType::class),
             new Config('invoice/id_generation/id_prefix', '', 'settings.description.invoice.id_generation.id_prefix', TextType::class),
             new Config('invoice/id_generation/id_suffix', '', 'settings.description.invoice.id_generation.id_suffix', TextType::class),

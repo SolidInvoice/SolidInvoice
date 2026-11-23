@@ -14,11 +14,13 @@ declare(strict_types=1);
 namespace SolidInvoice\QuoteBundle\Action;
 
 use Brick\Math\Exception\MathException;
+use Carbon\CarbonImmutable;
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\QuoteBundle\Config\ConfigProvider;
 use SolidInvoice\QuoteBundle\DTO\QuoteFormDTO;
 use SolidInvoice\QuoteBundle\Entity\Line;
 use SolidInvoice\QuoteBundle\Enum\QuoteClientMode;
@@ -27,6 +29,7 @@ use SolidInvoice\QuoteBundle\Mailer\QuoteMailer;
 use SolidInvoice\QuoteBundle\Manager\QuoteFormManager;
 use SolidInvoice\QuoteBundle\Model\Graph;
 use SolidInvoice\SaasBundle\Feature\Feature;
+use SolidInvoice\SettingsBundle\SystemConfig;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -49,6 +52,7 @@ final class Create extends AbstractController
         private readonly QuoteFormManager $formManager,
         private readonly FeatureGate $featureGate,
         private readonly QuoteMailer $quoteMailer,
+        private readonly SystemConfig $systemConfig,
     ) {
     }
 
@@ -74,6 +78,11 @@ final class Create extends AbstractController
 
         // Set client if provided
         $dto->client = $client;
+
+        $validityDays = $this->systemConfig->get(ConfigProvider::VALIDITY_DAYS);
+        $dto->due = CarbonImmutable::today()->addDays((int) ($validityDays ?? ConfigProvider::DEFAULT_VALIDITY_DAYS));
+        $dto->terms = $this->systemConfig->get(ConfigProvider::DEFAULT_TERMS);
+        $dto->notes = $this->systemConfig->get(ConfigProvider::DEFAULT_NOTES);
 
         // Add one empty line item by default
         $dto->lines->add(new Line());

@@ -21,6 +21,7 @@ use Psr\Clock\ClockInterface;
 use SolidInvoice\ClientBundle\Entity\Client;
 use SolidInvoice\ClientBundle\Repository\ClientRepository;
 use SolidInvoice\CoreBundle\Billing\TotalCalculator;
+use SolidInvoice\InvoiceBundle\Config\ConfigProvider;
 use SolidInvoice\InvoiceBundle\DTO\InvoiceFormDTO;
 use SolidInvoice\InvoiceBundle\Email\InvoiceEmail;
 use SolidInvoice\InvoiceBundle\Entity\Line;
@@ -91,6 +92,8 @@ final class Create extends AbstractController
         $dto->invoiceDate = CarbonImmutable::now();
         $dto->paymentTerms = PaymentTerms::forClient($client, $this->systemConfig);
         $dto->due = $dto->paymentTerms->dueDate($dto->invoiceDate);
+        $dto->terms = $this->systemConfig->get(ConfigProvider::DEFAULT_TERMS);
+        $dto->notes = $this->systemConfig->get(ConfigProvider::DEFAULT_NOTES);
 
         // Add one empty line item by default
         $dto->lines->add(new Line());

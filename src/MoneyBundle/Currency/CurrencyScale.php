@@ -84,6 +84,19 @@ final readonly class CurrencyScale
     }
 
     /**
+     * A minor-unit amount as a decimal string at the currency's own precision ("1250.00", JPY
+     * "1250", BHD "12.500"), the API's decimal money format.
+     *
+     * @throws MathException
+     */
+    public function toDecimalString(BigNumber | int | string $minor, Currency $currency): string
+    {
+        $subunit = $this->subunitFor($currency);
+
+        return (string) $this->toBigDecimal($minor)->dividedBy(10 ** $subunit, $subunit, RoundingMode::HalfEven);
+    }
+
+    /**
      * @throws MathException
      */
     private function toBigDecimal(BigNumber | float | int | string $value): BigDecimal

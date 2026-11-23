@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace SolidInvoice\TaxBundle\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
@@ -32,6 +34,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -40,6 +43,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: TaxRepository::class)]
 #[UniqueEntity('name')]
 #[IncompatibleTaxConfiguration]
+#[ApiFilter(OrderFilter::class, properties: ['name'])]
 #[ApiResource(
     operations: [
         new GetCollection(),
@@ -135,6 +139,14 @@ class Tax implements Stringable
     private bool $compound = false;
 
     /**
+     * Applied to new lines by default. At most one tax per company is (see DefaultTaxListener).
+     */
+    #[ORM\Column(name: 'is_default', type: Types::BOOLEAN, options: ['default' => false])]
+    #[Groups(['tax_api:read', 'tax_api:write'])]
+    #[SerializedName('isDefault')]
+    private bool $default = false;
+
+    /**
      * @return array{Inclusive: string, Exclusive: string}
      */
     public static function getTypes(): array
@@ -146,6 +158,18 @@ class Tax implements Stringable
         ];
 
         return array_combine($types, $types);
+    }
+
+    public function isDefault(): bool
+    {
+        return $this->default;
+    }
+
+    public function setDefault(bool $default): self
+    {
+        $this->default = $default;
+
+        return $this;
     }
 
     public function getId(): Ulid

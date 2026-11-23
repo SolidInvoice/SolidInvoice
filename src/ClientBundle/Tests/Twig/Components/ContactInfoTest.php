@@ -45,13 +45,13 @@ final class ContactInfoTest extends LiveComponentTest
             'firstName' => 'Jane',
             'lastName' => 'Smith',
             'email' => 'jane@example.com',
-            'customFields' => ['phone' => '9876543210'],
+            'customFields' => ['additional_email' => 'accounts@example.com'],
         ])->call('save');
 
         /** @var CustomFieldValueRepository $repo */
         $repo = self::getContainer()->get(CustomFieldValueRepository::class);
         $values = $repo->findForRecord(CustomFieldTarget::CONTACT, $contact->getId());
         self::assertCount(1, $values);
-        self::assertSame('9876543210', $values[0]->getValue());
+        self::assertSame('accounts@example.com', $values[0]->getValue());
     }
 }

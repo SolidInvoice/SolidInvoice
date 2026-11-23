@@ -45,12 +45,14 @@ final readonly class ClientWriteTools
      * @param string|null $first_name Contact first name
      * @param string|null $last_name  Contact last name
      * @param string      $email      Contact email (required, must be valid)
+     * @param string|null $phone      Contact phone number
+     * @param string|null $mobile     Contact mobile number
      *
      * @return array<string, mixed>
      */
-    #[McpTool(name: 'add_contact', description: 'Add a new contact (email + optional name) to an existing client.')]
+    #[McpTool(name: 'add_contact', description: 'Add a new contact (email + optional name, phone and mobile number) to an existing client.')]
     #[McpScopeRequired(McpScope::Write)]
-    public function addContact(string $client_id, string $email, ?string $first_name = null, ?string $last_name = null): array
+    public function addContact(string $client_id, string $email, ?string $first_name = null, ?string $last_name = null, ?string $phone = null, ?string $mobile = null): array
     {
         $this->scopeGuard->require(McpScope::Write);
 
@@ -68,6 +70,8 @@ final readonly class ClientWriteTools
         $contact->setEmail($email);
         $contact->setFirstName($first_name);
         $contact->setLastName($last_name);
+        $contact->setPhone($phone);
+        $contact->setMobile($mobile);
         $contact->setClient($client);
         $contact->setCompany($client->getCompany());
 

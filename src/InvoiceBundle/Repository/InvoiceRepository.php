@@ -430,45 +430,41 @@ class InvoiceRepository extends EntityRepository
      */
     public function getTotalOutstandingByCurrency(): array
     {
-        $qb = $this->createQueryBuilder('i');
-
-        $qb->select('SUM(i.balance) as total', 'c.currencyCode')
-            ->innerJoin('i.client', 'c')
-            ->where('i.status = :pendingStatus OR i.status = :overdueStatus')
-            ->setParameter('pendingStatus', InvoiceStatus::Pending)
-            ->setParameter('overdueStatus', InvoiceStatus::Overdue)
-            ->groupBy('c.currencyCode');
-
-        $results = [];
-        foreach ($qb->getQuery()->getArrayResult() as $result) {
-            if (null !== $result['currencyCode'] && '' !== $result['currencyCode'] && null !== $result['total']) {
-                $results[$result['currencyCode']] = BigInteger::of($result['total']);
-            }
-        }
-
-        return $results;
+        return array_map(static fn (array $summary): BigInteger => $summary['amount'], $this->getBalanceSummaryByCurrency(InvoiceStatus::Pending, InvoiceStatus::Overdue));
     }
 
     /**
-     * Get overdue invoice totals grouped by currency for dashboard stats.
+     * Get the total overdue amount grouped by currency.
      *
      * @return array<string, BigInteger>
      * @throws MathException
      */
     public function getOverdueAmountByCurrency(): array
     {
+        return array_map(static fn (array $summary): BigInteger => $summary['amount'], $this->getBalanceSummaryByCurrency(InvoiceStatus::Overdue));
+    }
+
+    /**
+     * The balance still owed on invoices in these statuses, and how many there are, per client
+     * currency (in the minor unit).
+     *
+     * @return array<string, array{amount: BigInteger, count: int}>
+     * @throws MathException
+     */
+    public function getBalanceSummaryByCurrency(InvoiceStatus ...$statuses): array
+    {
         $qb = $this->createQueryBuilder('i');
 
-        $qb->select('SUM(i.balance) as total', 'c.currencyCode')
+        $qb->select('SUM(i.balance) as total', 'COUNT(i.id) as invoices', 'c.currencyCode')
             ->innerJoin('i.client', 'c')
-            ->where('i.status = :status')
-            ->setParameter('status', InvoiceStatus::Overdue)
+            ->where('i.status IN (:statuses)')
+            ->setParameter('statuses', $statuses)
             ->groupBy('c.currencyCode');
 
         $results = [];
         foreach ($qb->getQuery()->getArrayResult() as $result) {
             if (null !== $result['currencyCode'] && '' !== $result['currencyCode'] && null !== $result['total']) {
-                $results[$result['currencyCode']] = BigInteger::of($result['total']);
+                $results[$result['currencyCode']] = ['amount' => BigInteger::of($result['total']), 'count' => (int) $result['invoices']];
             }
         }
 
@@ -494,46 +490,6 @@ class InvoiceRepository extends EntityRepository
         }
 
         return $results;
-    }
-
-    /**
-     * Get recently sent invoices (pending status) for activity feed.
-     *
-     * @return Invoice[]
-     */
-    public function getRecentlySentInvoices(int $limit = 5): array
-    {
-        $qb = $this->createQueryBuilder('i');
-
-        $qb
-            ->innerJoin('i.client', 'c')
-            ->addSelect('c')
-            ->where('i.status = :status')
-            ->setParameter('status', InvoiceStatus::Pending)
-            ->orderBy('i.updated', 'DESC')
-            ->setMaxResults($limit);
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * Get recently generated recurring invoices for activity feed.
-     *
-     * @return Invoice[]
-     */
-    public function getRecentRecurringGeneratedInvoices(int $limit = 5): array
-    {
-        $qb = $this->createQueryBuilder('i');
-
-        $qb
-            ->innerJoin('i.client', 'c')
-            ->addSelect('c')
-            ->innerJoin('i.recurringInvoice', 'ri')
-            ->addSelect('ri')
-            ->orderBy('i.created', 'DESC')
-            ->setMaxResults($limit);
-
-        return $qb->getQuery()->getResult();
     }
 
     /**

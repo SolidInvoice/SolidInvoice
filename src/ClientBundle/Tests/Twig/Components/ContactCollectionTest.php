@@ -38,7 +38,7 @@ final class ContactCollectionTest extends LiveComponentTest
             'firstName' => 'John',
             'lastName' => 'Doe',
             'email' => 'john@example.com',
-            'customFields' => ['phone' => '1234567890'],
+            'customFields' => ['additional_email' => 'accounts@example.com'],
         ])->call('save');
 
         $contactRepository = self::getContainer()->get('doctrine')->getRepository(Contact::class);
@@ -50,6 +50,6 @@ final class ContactCollectionTest extends LiveComponentTest
         $repo = self::getContainer()->get(CustomFieldValueRepository::class);
         $values = $repo->findForRecord(CustomFieldTarget::CONTACT, $contact->getId());
         self::assertCount(1, $values);
-        self::assertSame('1234567890', $values[0]->getValue());
+        self::assertSame('accounts@example.com', $values[0]->getValue());
     }
 }

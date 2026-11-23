@@ -20,6 +20,7 @@ use SolidInvoice\CoreBundle\Form\Type\CustomFieldValueCollectionType;
 use SolidInvoice\SaasBundle\Feature\Feature;
 use SolidWorx\Platform\PlatformBundle\Feature\FeatureGate;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -39,6 +40,8 @@ class ContactType extends AbstractType
         $builder->add('firstName', null, ['label' => 'client.contact.first_name.label', 'sanitize_html' => true, 'allow_single_quotes' => true]);
         $builder->add('lastName', null, ['label' => 'client.contact.last_name.label', 'sanitize_html' => true, 'allow_single_quotes' => true]);
         $builder->add('email', null, ['label' => 'client.contact.email.label']);
+        $builder->add('phone', TelType::class, ['label' => 'client.contact.phone.label', 'required' => false]);
+        $builder->add('mobile', TelType::class, ['label' => 'client.contact.mobile.label', 'required' => false]);
 
         if ($this->featureGate->isEnabled(Feature::CustomFields->value)) {
             $builder->add('customFields', CustomFieldValueCollectionType::class, [

@@ -13,46 +13,42 @@ declare(strict_types=1);
 
 namespace SolidInvoice\DashboardBundle\Widgets;
 
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
+use Brick\Math\BigInteger;
+use Brick\Math\Exception\MathException;
 use RuntimeException;
-use SolidInvoice\InvoiceBundle\Entity\Invoice;
+use SolidInvoice\DashboardBundle\Stats\DashboardStats;
 use SolidInvoice\InvoiceBundle\Enum\InvoiceStatus;
-use SolidInvoice\InvoiceBundle\Repository\InvoiceRepository;
-use SolidInvoice\PaymentBundle\Entity\Payment;
 use SolidInvoice\PaymentBundle\Repository\PaymentRepository;
 use SolidInvoice\SettingsBundle\SystemConfig;
+use function array_map;
 
 /**
  * @see \SolidInvoice\DashboardBundle\Tests\Widgets\HeroStatsWidgetTest
  */
 final readonly class HeroStatsWidget implements WidgetInterface
 {
-    private ObjectManager $manager;
-
     public function __construct(
-        ManagerRegistry $registry,
+        private DashboardStats $stats,
+        private PaymentRepository $paymentRepository,
         private SystemConfig $systemConfig,
     ) {
-        $this->manager = $registry->getManager();
     }
 
     /**
      * @return array<string, mixed>
+     *
+     * @throws MathException
      */
     public function getData(): array
     {
-        /** @var InvoiceRepository $invoiceRepository */
-        $invoiceRepository = $this->manager->getRepository(Invoice::class);
-        /** @var PaymentRepository $paymentRepository */
-        $paymentRepository = $this->manager->getRepository(Payment::class);
+        $amounts = static fn (array $summary): array => array_map(static fn (array $row): BigInteger => $row['amount'], $summary);
 
         return [
-            'totalOutstanding' => $invoiceRepository->getTotalOutstandingByCurrency(),
-            'overdueCount' => $invoiceRepository->getCountByStatus(InvoiceStatus::Overdue),
-            'overdueAmount' => $invoiceRepository->getOverdueAmountByCurrency(),
-            'paymentsThisMonth' => $paymentRepository->getPaymentsThisMonth(),
-            'totalRevenue' => $paymentRepository->getTotalIncome(),
+            'totalOutstanding' => $amounts($this->stats->outstanding()),
+            'overdueCount' => $this->stats->invoiceCount(InvoiceStatus::Overdue),
+            'overdueAmount' => $amounts($this->stats->overdue()),
+            'paymentsThisMonth' => $amounts($this->stats->paidThisMonth()),
+            'totalRevenue' => $this->paymentRepository->getTotalIncome(),
             'defaultCurrency' => $this->defaultCurrency(),
         ];
     }

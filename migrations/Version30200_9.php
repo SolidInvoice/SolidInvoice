@@ -87,18 +87,19 @@ final class Version30200_9 extends AbstractMigration
             $this->addSql($insert->getSQL(), $insert->getParameters(), $insert->getParameterTypes());
         }
     }
+}
 
-    /**
-     * @throws Exception
-     */
-    public function down(Schema $schema): void
-    {
-        $table = $schema->getTable('payments');
+/**
+ * @throws Exception
+ */
+public function down(Schema $schema): void
+{
+    $table = $schema->getTable('payments');
 
-        if ($table->hasColumn(self::COLUMN)) {
-            $table->dropColumn(self::COLUMN);
-        }
-
-        $this->addSql('DELETE FROM app_config WHERE setting_key = ?', [self::SETTING_KEY]);
+    if ($table->hasColumn(self::COLUMN)) {
+        $table->dropColumn(self::COLUMN);
     }
+
+    $this->addSql('DELETE FROM app_config WHERE setting_key = ?', [self::SETTING_KEY]);
+}
 }
