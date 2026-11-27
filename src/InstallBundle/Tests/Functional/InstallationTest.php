@@ -158,10 +158,7 @@ final class InstallationTest extends PantherTestCase
             ->click('label[data-testid="database-driver-sqlite"]')
             ->wait(200)
             ->click('button[name="installation[navigator][next]"]')
-            ->use(
-                static fn (Client $client) => $client->waitFor('button[name="installation[navigator][next]"]')
-            )
-            ->assertSee('User Account')
+            ->waitUntilSeeIn('#current_step_text', 'User Account')
             ->selectFieldOption('installation[user_account][locale]', 'en')
             ->fillField('installation[user_account][firstName]', $firstName)
             ->fillField('installation[user_account][lastName]', $lastName)
