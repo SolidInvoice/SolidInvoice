@@ -39,9 +39,13 @@ final readonly class SaasMenu
             return;
         }
 
-        $subscription = $this->subscriptionManager->getSubscriptionFor(
-            $this->companyRepository->find($this->companySelector->getCompany())
-        );
+        $company = $this->companyRepository->find($this->companySelector->getCompany());
+
+        if ($company === null) {
+            return;
+        }
+
+        $subscription = $this->subscriptionManager->getSubscriptionFor($company);
 
         if (! $subscription instanceof Subscription) {
             return;
